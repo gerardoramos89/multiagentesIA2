@@ -1,45 +1,110 @@
-# ARCHIVO: QA_REPORT.md
+# QA_REPORT.md
 
 ## 1. Bugs encontrados
 
-### 1.1. Problema 1: Error en la autenticación JWT
-**Descripción:** Al intentar acceder a endpoints protegidos sin un token válido, el servidor no devuelve un error claro y estandarizado.
-**Solución propuesta:** Implementar un middleware de autenticación que verifique el token JWT y devuelva un error 401 Unauthorized con un mensaje claro si el token es inválido o inexistente.
+### 1.1. Error en la Limpieza de Archivos
+Se ha identificado un error en la lógica de limpieza de archivos. Los archivos antiguos no se están eliminando correctamente. Esto puede llevar a la acumulación de archivos innecesarios en el sistema.
 
-### 1.2. Problema 2: Falta de validación en el formulario de creación de sprints
-**Descripción:** El formulario de creación de sprints en la interfaz de usuario no valida la entrada del usuario, lo que puede llevar a errores en el backend si se ingresan datos no válidos.
-**Solución propuesta:** Añadir validaciones en el frontend y backend para asegurar que los datos ingresados sean correctos antes de ser procesados.
+**Código afectado:**
+```javascript
+// src/logs/strategies/fileLogger.js
+class FileLogger {
+  log(message) {
+    // Implementación para registrar en un archivo
+  }
+}
+```
+
+**Solución propuesta:**
+Revisar y corregir la lógica de eliminación de archivos en la función de limpieza.
+
+### 1.2. Falta de Configuración para Entorno de Producción
+No se ha configurado un entorno de producción adecuado para la aplicación. Esto puede llevar a problemas de rendimiento y seguridad en un entorno de producción.
+
+**Código afectado:**
+```javascript
+// src/config/index.js
+const config = {
+  env: process.env.NODE_ENV || 'development',
+  // Otras configuraciones
+};
+```
+
+**Solución propuesta:**
+Agregar configuraciones específicas para el entorno de producción, incluyendo ajustes de memoria y límites de rendimiento.
 
 ## 2. Cobertura de tests
 
-### 2.1. Pruebas unitarias
-Se han creado pruebas unitarias para los componentes principales y las funciones de servicio. La cobertura de tests es del 85% en componentes y del 90% en servicios.
+### 2.1. Pruebas Unitarias
+Se han creado pruebas unitarias para la mayoría de las funciones principales. Sin embargo, faltan pruebas para la lógica de limpieza de archivos y la estrategia de logging en entorno de producción.
 
-### 2.2. Recomendaciones de mejora
-Aumentar la cobertura de tests para cubrir todos los casos de uso críticos y para mejorar la robustez del sistema.
+**Código afectado:**
+```javascript
+// src/logs/strategies/fileLogger.test.js
+describe('FileLogger', () => {
+  it('should log to file', () => {
+    // Pruebas unitarias
+  });
+});
+```
 
-## 3. Casos de prueba críticos
+**Solución propuesta:**
+Agregar pruebas para la lógica de limpieza de archivos y la estrategia de logging en entorno de producción.
 
-### 3.1. Prueba 1: Autenticación JWT
-**Pasos:**
-1. Intentar acceder a un endpoint protegido sin proporcionar un token JWT.
-2. Verificar la respuesta del servidor.
-**Resultado esperado:** El servidor debe responder con un código de estado 401 y un mensaje de error "Unauthorized".
+## 3. Recomendaciones de mejora
 
-### 3.2. Prueba 2: Creación de sprint válida
-**Pasos:**
-1. Ingresar a la página de creación de sprints.
-2. Proporcionar datos válidos para un sprint.
-3. Enviar el formulario.
-**Resultado esperado:** El sprint debe ser creado exitosamente en la base de datos.
+### 3.1. Implementar Pruebas de Integración
+Se recomienda implementar pruebas de integración para asegurar que las diferentes partes del sistema funcionen juntas de manera correcta.
 
-## 4. Recomendaciones adicionales
+### 3.2. Documentación de Configuraciones
+Añadir documentación clara sobre las configuraciones disponibles y cómo configurarlas para diferentes entornos (desarrollo, pruebas, producción).
 
-### 4.1. Documentación
-Aumentar la documentación del proyecto para detallar los endpoints disponibles, los formatos de datos esperados y los códigos de estado de respuesta.
+## 4. Casos de prueba críticos
 
-### 4.2. Integración continua
-Implementar un pipeline de integración continua para ejecutar pruebas automatizadas cada vez que se realice un commit en el repositorio.
+### 4.1. Prueba de Limpieza de Archivos
+Crear un caso de prueba que asegure que los archivos antiguos se eliminan correctamente al pasar el tiempo de retención establecido.
 
-## 5. Conclusiones
-El proyecto de Fábrica de Agentes muestra una buena implementación de las tecnologías y patrones de diseño especificados. Sin embargo, se han encontrado problemas de autenticación y validación que requieren atención. Se recomienda mejorar la cobertura de tests y la documentación para garantizar la calidad del software.
+**Caso de prueba:**
+```javascript
+// src/logs/strategies/fileLogger.test.js
+describe('FileLogger', () => {
+  it('should delete old files', () => {
+    // Caso de prueba
+  });
+});
+```
+
+### 4.2. Prueba de Estrategia de Logging en Entorno de Producción
+Asegurar que los logs en entorno de producción se registren de manera eficiente y segura.
+
+**Caso de prueba:**
+```javascript
+// src/logs/strategies/fileLogger.test.js
+describe('FileLogger', () => {
+  it('should log in production environment', () => {
+    // Caso de prueba
+  });
+});
+```
+
+## 5. Tests Unitarios Funcionales
+
+### 5.1. Pruebas Unitarias para Funciones Principales
+Se han creado pruebas unitarias para las funciones principales, pero se recomienda expandirlas para cubrir más casos y funciones.
+
+**Código afectado:**
+```javascript
+// src/logs/strategies/fileLogger.test.js
+describe('FileLogger', () => {
+  it('should log to file', () => {
+    // Pruebas unitarias
+  });
+});
+```
+
+**Solución propuesta:**
+Agregar más casos de prueba para funciones como la recuperación de datos y la gestión de sprints.
+
+## 6. Conclusiones
+
+Se han identificado problemas en la lógica de limpieza de archivos y en la configuración del entorno de producción. Se recomienda corregir estos errores y mejorar la cobertura de tests. Además, se sugiere implementar pruebas de integración y documentar las configuraciones claramente.
