@@ -1,54 +1,259 @@
-```json
-{
-  "nombre_del_archivo": "nombre_del_archivo.ext",
-  "contenido": [
-    {
-      "seccion": "Introducción",
-      "contenido": "El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías: Frontend: Next.js, React, Tailwind, Backend: Node.js, IA: Ollama, APIs: Trello API, GitHub API."
-    },
-    {
-      "seccion": "Estructura de Carpetas",
-      "contenido": "/src /components /pages /services /utils /public"
-    },
-    {
-      "seccion": "Patrones de Diseño",
-      "contenido": [
-        {
-          "patron": "Patrón de Diseño de Servicios",
-          "contenido": "Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta /services."
-        },
-        {
-          "patron": "Patrón de Diseño de Componentes",
-          "contenido": "Los componentes de React se organizarán en la carpeta /components. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código."
-        }
-      ]
-    },
-    {
-      "seccion": "Decisiones Técnicas",
-      "contenido": [
-        {
-          "decision": "Administración de Estado",
-          "contenido": "Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones."
-        },
-        {
-          "decision": "Gestión de Errores",
-          "contenido": "Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo."
-        },
-        {
-          "decision": "Autenticación y Seguridad",
-          "contenido": "La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud."
-        }
-      ]
-    },
-    {
-      "seccion": "Escalabilidad",
-      "contenido": [
-        {
-          "escalabilidad": "Escalabilidad del Backend",
-          "contenido": "El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios."
-        }
-      ]
+```javascript
+// Importaciones necesarias
+import { Router } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { validationResult } from 'express-validator';
+import { getCustomRepository } from 'typeorm';
+import { SprintRepository } from '../repositories/SprintRepository';
+import { Sprint } from '../entities/Sprint';
+import { Task } from '../entities/Task';
+import { validateSprint } from '../validators/sprintValidator';
+
+// Definición del router
+const router = Router();
+
+// Ruta para crear un nuevo sprint
+router.post('/sprints', validateSprint, async (req, res) => {
+  try {
+    // Validación de los datos de entrada
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  ]
+
+    // Creación de un nuevo sprint
+    const sprintRepository = getCustomRepository(SprintRepository);
+    const newSprint = new Sprint();
+    newSprint.id = uuidv4();
+    newSprint.name = req.body.name;
+    newSprint.startDate = req.body.startDate;
+    newSprint.endDate = req.body.endDate;
+    newSprint.status = 'active';
+
+    // Guardado del nuevo sprint en la base de datos
+    await sprintRepository.save(newSprint);
+
+    // Respuesta exitosa
+    return res.status(201).json(newSprint);
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error al crear el sprint:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// Ruta para actualizar un sprint existente
+router.put('/sprints/:id', validateSprint, async (req, res) => {
+  try {
+    // Validación de los datos de entrada
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Obtención del sprint por ID
+    const sprintRepository = getCustomRepository(SprintRepository);
+    const sprint = await sprintRepository.findOne(req.params.id);
+    if (!sprint) {
+      return res.status(404).json({ error: 'Sprint no encontrado' });
+    }
+
+    // Actualización del sprint
+    sprint.name = req.body.name;
+    sprint.startDate = req.body.startDate;
+    sprint.endDate = req.body.endDate;
+
+    // Guardado de los cambios en la base de datos
+    await sprintRepository.save(sprint);
+
+    // Respuesta exitosa
+    return res.status(200).json(sprint);
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error al actualizar el sprint:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// Exportación del router
+export default router;
+```
+
+```javascript
+// Validador para la creación y actualización de sprints
+import { check } from 'express-validator';
+
+export const validateSprint = [
+  check('name').notEmpty().withMessage('El nombre del sprint es obligatorio'),
+  check('startDate').isISO8601().withMessage('La fecha de inicio debe ser una fecha válida'),
+  check('endDate').isISO8601().withMessage('La fecha de finalización debe ser una fecha válida').custom((value, { req }) => {
+    if (new Date(value) <= new Date(req.body.startDate)) {
+      throw new Error('La fecha de finalización debe ser posterior a la fecha de inicio');
+    }
+    return true;
+  })
+];
+```
+
+```javascript
+// Definición de la entidad Sprint
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Task } from './Task';
+
+@Entity()
+export class Sprint {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  startDate: Date;
+
+  @Column()
+  endDate: Date;
+
+  @Column()
+  status: string;
+
+  @OneToMany(() => Task, task => task.sprint)
+  tasks: Task[];
 }
+```
+
+```javascript
+// Definición del repositorio de sprints
+import { EntityRepository, Repository } from 'typeorm';
+import { Sprint } from '../entities/Sprint';
+
+@EntityRepository(Sprint)
+export class SprintRepository extends Repository<Sprint> {}
+```
+
+```javascript
+// Importaciones necesarias
+import { Router } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { validationResult } from 'express-validator';
+import { getCustomRepository } from 'typeorm';
+import { TaskRepository } from '../repositories/TaskRepository';
+import { Task } from '../entities/Task';
+import { Sprint } from '../entities/Sprint';
+import { validateTask } from '../validators/taskValidator';
+
+// Definición del router
+const router = Router();
+
+// Ruta para crear una nueva tarea
+router.post('/tasks', validateTask, async (req, res) => {
+  try {
+    // Validación de los datos de entrada
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Creación de una nueva tarea
+    const taskRepository = getCustomRepository(TaskRepository);
+    const newTask = new Task();
+    newTask.id = uuidv4();
+    newTask.name = req.body.name;
+    newTask.description = req.body.description;
+    newTask.status = 'pending';
+    newTask.sprint = req.body.sprint;
+
+    // Guardado de la nueva tarea en la base de datos
+    await taskRepository.save(newTask);
+
+    // Respuesta exitosa
+    return res.status(201).json(newTask);
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error al crear la tarea:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// Ruta para actualizar una tarea existente
+router.put('/tasks/:id', validateTask, async (req, res) => {
+  try {
+    // Validación de los datos de entrada
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Obtención de la tarea por ID
+    const taskRepository = getCustomRepository(TaskRepository);
+    const task = await taskRepository.findOne(req.params.id);
+    if (!task) {
+      return res.status(404).json({ error: 'Tarea no encontrada' });
+    }
+
+    // Actualización de la tarea
+    task.name = req.body.name;
+    task.description = req.body.description;
+    task.status = req.body.status;
+    task.sprint = req.body.sprint;
+
+    // Guardado de los cambios en la base de datos
+    await taskRepository.save(task);
+
+    // Respuesta exitosa
+    return res.status(200).json(task);
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error al actualizar la tarea:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// Exportación del router
+export default router;
+```
+
+```javascript
+// Validador para la creación y actualización de tareas
+import { check } from 'express-validator';
+
+export const validateTask = [
+  check('name').notEmpty().withMessage('El nombre de la tarea es obligatorio'),
+  check('description').optional().isLength({ min: 10 }).withMessage('La descripción debe tener al menos 10 caracteres'),
+  check('status').isIn(['pending', 'in progress', 'completed']).withMessage('El estado de la tarea debe ser uno de los siguientes: pending, in progress, completed'),
+  check('sprint').isUUID(4).withMessage('El ID del sprint debe ser un UUID válido')
+];
+```
+
+```javascript
+// Definición de la entidad Task
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Sprint } from './Sprint';
+
+@Entity()
+export class Task {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
+
+  @Column()
+  status: string;
+
+  @ManyToOne(() => Sprint, sprint => sprint.tasks)
+  sprint: Sprint;
+}
+```
+
+```javascript
+// Definición del repositorio de tareas
+import { EntityRepository, Repository } from 'typeorm';
+import { Task } from '../entities/Task';
+
+@EntityRepository(Task)
+export class TaskRepository extends Repository<Task> {}
 ```

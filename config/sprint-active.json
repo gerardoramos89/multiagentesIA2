@@ -56,15 +56,24 @@
       "title": "Revisar y ajustar los esquemas JSON para mayor flexibilidad y eficiencia.",
       "description": "[DEV/QA] Revisar y ajustar los esquemas JSON para mayor flexibilidad y eficiencia.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T04:54:30.076Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:54:30.076Z",
+      "completedAt": "2026-10-25T04:55:46.953Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "487c145a925c2a3d4544937053c8ddaa144aebd2"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792903831648-4",
       "title": "Implementar pruebas unitarias para la función de commit automático.",
       "description": "[DEV/QA] Implementar pruebas unitarias para la función de commit automático.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:55:48.972Z"
     },
     {
       "id": "task-1792903831648-5",
@@ -110,6 +119,7 @@
   "filesChanged": [
     "STRATEGY.md",
     "arquitectura_proyecto_f_brica_de_agentes.md",
-    "ARCHITECTURE.md"
+    "ARCHITECTURE.md",
+    "nombre_del_archivo.ext"
   ]
 }

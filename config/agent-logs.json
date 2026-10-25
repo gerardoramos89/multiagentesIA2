@@ -1,47 +1,5 @@
 [
   {
-    "agent": "qa",
-    "message": "Preparando commit...",
-    "timestamp": "2026-10-25T04:42:19.454Z",
-    "level": "info"
-  },
-  {
-    "agent": "qa",
-    "message": "✅ Push exitoso: 4a78815",
-    "timestamp": "2026-10-25T04:42:22.454Z",
-    "level": "success"
-  },
-  {
-    "agent": "qa",
-    "message": "✅ Completado en 88.5s",
-    "timestamp": "2026-10-25T04:42:22.463Z",
-    "level": "success"
-  },
-  {
-    "agent": "doc",
-    "message": "🎯 Trabajando en: 📝 [DOC] Documentación completa del sprint",
-    "timestamp": "2026-10-25T04:42:24.469Z",
-    "level": "info"
-  },
-  {
-    "agent": "doc",
-    "message": "📝 Inyectando contexto para README vivo...",
-    "timestamp": "2026-10-25T04:42:24.475Z",
-    "level": "info"
-  },
-  {
-    "agent": "doc",
-    "message": "Iniciando: 📝 [DOC] Documentación completa del sprint",
-    "timestamp": "2026-10-25T04:42:24.482Z",
-    "level": "info"
-  },
-  {
-    "agent": "doc",
-    "message": "Generando con deepseek-coder-v2:16b (con contexto cruzado)...",
-    "timestamp": "2026-10-25T04:42:24.491Z",
-    "level": "info"
-  },
-  {
     "agent": "doc",
     "message": "✅ Archivo creado: README.md en 82s",
     "timestamp": "2026-10-25T04:43:46.008Z",
@@ -297,6 +255,48 @@
     "agent": "dev",
     "message": "Preparando commit...",
     "timestamp": "2026-10-25T04:55:43.692Z",
+    "level": "info"
+  },
+  {
+    "agent": "dev",
+    "message": "✅ Push exitoso: 487c145",
+    "timestamp": "2026-10-25T04:55:46.953Z",
+    "level": "success"
+  },
+  {
+    "agent": "dev",
+    "message": "✅ Completado en 76.9s",
+    "timestamp": "2026-10-25T04:55:46.962Z",
+    "level": "success"
+  },
+  {
+    "agent": "dev",
+    "message": "🎯 Trabajando en: Implementar pruebas unitarias para la función de commit automático.",
+    "timestamp": "2026-10-25T04:55:48.974Z",
+    "level": "info"
+  },
+  {
+    "agent": "dev",
+    "message": "Iniciando: Implementar pruebas unitarias para la función de commit automático.",
+    "timestamp": "2026-10-25T04:55:48.982Z",
+    "level": "info"
+  },
+  {
+    "agent": "dev",
+    "message": "Generando con deepseek-coder-v2:16b (con contexto cruzado)...",
+    "timestamp": "2026-10-25T04:55:48.992Z",
+    "level": "info"
+  },
+  {
+    "agent": "dev",
+    "message": "✅ Archivo creado: nombre_del_archivo.ext en 219s",
+    "timestamp": "2026-10-25T04:59:27.725Z",
+    "level": "success"
+  },
+  {
+    "agent": "dev",
+    "message": "Preparando commit...",
+    "timestamp": "2026-10-25T04:59:27.735Z",
     "level": "info"
   }
 ]
