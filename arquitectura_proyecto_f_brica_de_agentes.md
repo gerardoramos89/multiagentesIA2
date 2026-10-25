@@ -1,98 +1,76 @@
 # Arquitectura del Proyecto de Fábrica de Agentes
 
 ## 1. Introducción
-El Proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con inteligencia artificial (IA). Este sistema estará construido utilizando tecnologías modernas y robustas, asegurando una alta escalabilidad y seguridad.
+El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con inteligencia artificial (IA). Este sistema estará construido utilizando una combinación de tecnologías modernas y herramientas específicas para garantizar un rendimiento óptimo y una experiencia de usuario satisfactoria.
 
 ## 2. Estructura de Carpetas
 La estructura de carpetas del proyecto se organizará de la siguiente manera:
 
 ```
 /proyecto-fábrica-de-agentes
-  /src
-    /components
-    /context
-    /hooks
-    /pages
-    /public
-    /services
-    /utils
-  /tests
-  /config
-  /scripts
-  /docs
-    ARCHITECTURE.md
+├── src
+│   ├── components
+│   ├── context
+│   ├── hooks
+│   ├── pages
+│   ├── services
+│   ├── utils
+│   ├── App.js
+│   ├── index.js
+├── public
+├── .gitignore
+├── package.json
+├── README.md
 ```
 
 ## 3. Tecnologías Utilizadas
 - **Frontend:**
-  - **Next.js** para el desarrollo de la aplicación de una sola página.
-  - **React** para la creación de componentes reutilizables.
-  - **Tailwind** para el diseño y estilos.
+  - **Next.js** para el desarrollo del frontend.
+  - **React** como biblioteca principal para la construcción de componentes.
+  - **Tailwind CSS** para estilos y diseño responsive.
 
 - **Backend:**
-  - **Node.js** para el servidor y la lógica empresarial.
-  - **Ollama** para la integración de la IA.
+  - **Node.js** como entorno de ejecución.
+  - **Ollama** como servicio de IA para la generación de contenido.
 
-- **APIs Externas:**
-  - **Trello API** para la gestión de tareas y sprints.
-  - **GitHub API** para integración y gestión de repositorios.
+- **APIs:**
+  - **Trello API** para la integración con el tablero de Trello.
+  - **GitHub API** para la gestión de repositorios y colaboraciones.
 
 ## 4. Patrones de Diseño
 ### 4.1. Patrón de Contexto (Context API)
 Se utilizará el Patrón de Contexto para el manejo de estados globales y la transmisión de datos entre componentes.
 
 ### 4.2. Patrón de Hooks (Custom Hooks)
-Se crearán Custom Hooks para abstraer la lógica de negocio y reutilización de código.
+Se crearán custom hooks para abstraer la lógica de negocio y reutilización de código.
 
-## 5. Esquemas JSON
-### 5.1. Definición de Esquemas
-Los esquemas JSON se definirán con claridad y precisión para un manejo de datos eficiente y escalable.
+## 5. Decisiones Técnicas
+### 5.1. Esquemas JSON
+Se definirán esquemas JSON claros y específicos para el manejo de datos en el sistema. Esto incluirá:
+- Esquema para proyectos.
+- Esquema para tareas.
+- Esquema para usuarios.
 
-```json
-{
-  "sprint": {
-    "id": "UUID",
-    "name": "string",
-    "startDate": "date",
-    "endDate": "date",
-    "tasks": [
-      {
-        "id": "UUID",
-        "title": "string",
-        "description": "string",
-        "status": "pending | in_progress | completed",
-        "assignedTo": "UUID"
-      }
-    ]
-  }
-}
-```
+### 5.2. Autenticación y Seguridad
+Se implementará un sistema de autenticación robusto utilizando OAuth y JWT para garantizar la seguridad de los datos y las operaciones del sistema.
 
-### 5.2. Validación con JSON Schema
-Se utilizará JSON Schema para validar la estructura y tipos de datos en los esquemas JSON.
+### 5.3. Escalabilidad
+Se diseñará la arquitectura para permitir escalabilidad tanto horizontal como vertical. Se utilizarán servicios en la nube y patrones de diseño como el de microservicios para facilitar la escalabilidad.
 
-## 6. Seguridad
-### 6.1. Autenticación y Autorización
-- **OAuth 2.0** para la autenticación de usuarios.
-- **JWT** para la seguridad de las APIs.
+## 6. Herramientas de Desarrollo
+- **Editor de Código:** Visual Studio Code.
+- **Gestión de Dependencias:** npm.
+- **Control de Versiones:** GitHub.
+- **Herramientas de Testing:** Jest para pruebas unitarias y pruebas de integración.
 
-### 6.2. Protección de Datos
-- Todas las comunicaciones entre frontend y backend serán encriptadas utilizando TLS.
-- Los datos sensibles se almacenarán de manera segura en bases de datos gestionadas adecuadamente.
-
-## 7. Escalabilidad
-### 7.1. Diseño de Microservicios
-Se planea utilizar microservicios para escalar la aplicación según las necesidades, permitiendo un escalado independiente de componentes.
-
-### 7.2. Almacenamiento en la Nube
-Se utilizarán servicios en la nube para escalar el almacenamiento y la capacidad de procesamiento según sea necesario.
+## 7. Seguridad
+- Implementación de autenticación y autorización utilizando OAuth y JWT.
+- Protección de datos sensibles mediante encriptación en reposo y transmisión.
+- Validación de entradas para prevenir inyecciones SQL y otros tipos de ataques.
 
 ## 8. Reducción de Deuda Técnica
-### 8.1. Pruebas Automatizadas
-Se implementarán pruebas unitarias y de integración utilizando **Jest** y **React Testing Library** para asegurar la calidad del código.
-
-### 8.2. Monitoreo y Registro
-Se utilizará **ELK Stack** para el monitoreo y registro de eventos y métricas para una rápida detección de problemas y mejoras continuas.
+- Planificación de refactorizaciones y mejoras continuas para mantener el código limpio y eficiente.
+- Implementación de prácticas de desarrollo ágiles para responder rápidamente a cambios en los requisitos.
 
 ## 9. Conclusiones
-Este proyecto se ha diseñado con una arquitectura modular y escalable, asegurando una alta disponibilidad y rendimiento. Las tecnologías y patrones de diseño seleccionados proporcionan una base sólida para futuras ampliaciones y mejoras.
+Este documento resume las decisiones de diseño y arquitectura para el proyecto de Fábrica de Agentes. Las tecnologías, patrones de diseño y decisiones técnicas elegidas buscan garantizar una solución escalable, segura y de alto rendimiento que satisfaga las necesidades del sistema de gestión de sprints con IA.
