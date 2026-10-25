@@ -1,259 +1,54 @@
 ```javascript
 // Importaciones necesarias
-import { Router } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { validationResult } from 'express-validator';
-import { getCustomRepository } from 'typeorm';
-import { SprintRepository } from '../repositories/SprintRepository';
-import { Sprint } from '../entities/Sprint';
-import { Task } from '../entities/Task';
-import { validateSprint } from '../validators/sprintValidator';
+import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Definición del router
-const router = Router();
+// Definición de la URL base para las llamadas a la API
+const API_BASE_URL = 'https://api.trello.com/1';
 
-// Ruta para crear un nuevo sprint
-router.post('/sprints', validateSprint, async (req, res) => {
-  try {
-    // Validación de los datos de entrada
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+// Creación de un thunk para obtener datos de Trello
+export const fetchTrelloData = createAsyncThunk(
+  'trello/fetchData',
+  async (boardId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/boards/${boardId}/cards`, {
+        params: {
+          key: process.env.REACT_APP_TRELLO_API_KEY,
+          token: process.env.REACT_APP_TRELLO_API_TOKEN,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : { message: error.message });
     }
-
-    // Creación de un nuevo sprint
-    const sprintRepository = getCustomRepository(SprintRepository);
-    const newSprint = new Sprint();
-    newSprint.id = uuidv4();
-    newSprint.name = req.body.name;
-    newSprint.startDate = req.body.startDate;
-    newSprint.endDate = req.body.endDate;
-    newSprint.status = 'active';
-
-    // Guardado del nuevo sprint en la base de datos
-    await sprintRepository.save(newSprint);
-
-    // Respuesta exitosa
-    return res.status(201).json(newSprint);
-  } catch (error) {
-    // Manejo de errores
-    console.error('Error al crear el sprint:', error);
-    return res.status(500).json({ error: 'Error interno del servidor' });
   }
+);
+
+// Definición del slice de Redux para el estado de Trello
+const trelloSlice = createSlice({
+  name: 'trello',
+  initialState: {
+    data: [],
+    status: 'idle',
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTrelloData.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchTrelloData.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = action.payload;
+      })
+      .addCase(fetchTrelloData.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
+  },
 });
 
-// Ruta para actualizar un sprint existente
-router.put('/sprints/:id', validateSprint, async (req, res) => {
-  try {
-    // Validación de los datos de entrada
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    // Obtención del sprint por ID
-    const sprintRepository = getCustomRepository(SprintRepository);
-    const sprint = await sprintRepository.findOne(req.params.id);
-    if (!sprint) {
-      return res.status(404).json({ error: 'Sprint no encontrado' });
-    }
-
-    // Actualización del sprint
-    sprint.name = req.body.name;
-    sprint.startDate = req.body.startDate;
-    sprint.endDate = req.body.endDate;
-
-    // Guardado de los cambios en la base de datos
-    await sprintRepository.save(sprint);
-
-    // Respuesta exitosa
-    return res.status(200).json(sprint);
-  } catch (error) {
-    // Manejo de errores
-    console.error('Error al actualizar el sprint:', error);
-    return res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
-
-// Exportación del router
-export default router;
-```
-
-```javascript
-// Validador para la creación y actualización de sprints
-import { check } from 'express-validator';
-
-export const validateSprint = [
-  check('name').notEmpty().withMessage('El nombre del sprint es obligatorio'),
-  check('startDate').isISO8601().withMessage('La fecha de inicio debe ser una fecha válida'),
-  check('endDate').isISO8601().withMessage('La fecha de finalización debe ser una fecha válida').custom((value, { req }) => {
-    if (new Date(value) <= new Date(req.body.startDate)) {
-      throw new Error('La fecha de finalización debe ser posterior a la fecha de inicio');
-    }
-    return true;
-  })
-];
-```
-
-```javascript
-// Definición de la entidad Sprint
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Task } from './Task';
-
-@Entity()
-export class Sprint {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
-  name: string;
-
-  @Column()
-  startDate: Date;
-
-  @Column()
-  endDate: Date;
-
-  @Column()
-  status: string;
-
-  @OneToMany(() => Task, task => task.sprint)
-  tasks: Task[];
-}
-```
-
-```javascript
-// Definición del repositorio de sprints
-import { EntityRepository, Repository } from 'typeorm';
-import { Sprint } from '../entities/Sprint';
-
-@EntityRepository(Sprint)
-export class SprintRepository extends Repository<Sprint> {}
-```
-
-```javascript
-// Importaciones necesarias
-import { Router } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { validationResult } from 'express-validator';
-import { getCustomRepository } from 'typeorm';
-import { TaskRepository } from '../repositories/TaskRepository';
-import { Task } from '../entities/Task';
-import { Sprint } from '../entities/Sprint';
-import { validateTask } from '../validators/taskValidator';
-
-// Definición del router
-const router = Router();
-
-// Ruta para crear una nueva tarea
-router.post('/tasks', validateTask, async (req, res) => {
-  try {
-    // Validación de los datos de entrada
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    // Creación de una nueva tarea
-    const taskRepository = getCustomRepository(TaskRepository);
-    const newTask = new Task();
-    newTask.id = uuidv4();
-    newTask.name = req.body.name;
-    newTask.description = req.body.description;
-    newTask.status = 'pending';
-    newTask.sprint = req.body.sprint;
-
-    // Guardado de la nueva tarea en la base de datos
-    await taskRepository.save(newTask);
-
-    // Respuesta exitosa
-    return res.status(201).json(newTask);
-  } catch (error) {
-    // Manejo de errores
-    console.error('Error al crear la tarea:', error);
-    return res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
-
-// Ruta para actualizar una tarea existente
-router.put('/tasks/:id', validateTask, async (req, res) => {
-  try {
-    // Validación de los datos de entrada
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    // Obtención de la tarea por ID
-    const taskRepository = getCustomRepository(TaskRepository);
-    const task = await taskRepository.findOne(req.params.id);
-    if (!task) {
-      return res.status(404).json({ error: 'Tarea no encontrada' });
-    }
-
-    // Actualización de la tarea
-    task.name = req.body.name;
-    task.description = req.body.description;
-    task.status = req.body.status;
-    task.sprint = req.body.sprint;
-
-    // Guardado de los cambios en la base de datos
-    await taskRepository.save(task);
-
-    // Respuesta exitosa
-    return res.status(200).json(task);
-  } catch (error) {
-    // Manejo de errores
-    console.error('Error al actualizar la tarea:', error);
-    return res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
-
-// Exportación del router
-export default router;
-```
-
-```javascript
-// Validador para la creación y actualización de tareas
-import { check } from 'express-validator';
-
-export const validateTask = [
-  check('name').notEmpty().withMessage('El nombre de la tarea es obligatorio'),
-  check('description').optional().isLength({ min: 10 }).withMessage('La descripción debe tener al menos 10 caracteres'),
-  check('status').isIn(['pending', 'in progress', 'completed']).withMessage('El estado de la tarea debe ser uno de los siguientes: pending, in progress, completed'),
-  check('sprint').isUUID(4).withMessage('El ID del sprint debe ser un UUID válido')
-];
-```
-
-```javascript
-// Definición de la entidad Task
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Sprint } from './Sprint';
-
-@Entity()
-export class Task {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
-  name: string;
-
-  @Column()
-  description: string;
-
-  @Column()
-  status: string;
-
-  @ManyToOne(() => Sprint, sprint => sprint.tasks)
-  sprint: Sprint;
-}
-```
-
-```javascript
-// Definición del repositorio de tareas
-import { EntityRepository, Repository } from 'typeorm';
-import { Task } from '../entities/Task';
-
-@EntityRepository(Task)
-export class TaskRepository extends Repository<Task> {}
+// Exportación de los reducers y thunks
+export default trelloSlice.reducer;
 ```
