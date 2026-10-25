@@ -1,67 +1,98 @@
 # Arquitectura del Proyecto de Fábrica de Agentes
 
 ## 1. Introducción
-El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con inteligencia artificial (IA). El sistema estará construido utilizando las siguientes tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, y GitHub API.
+El Proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con inteligencia artificial (IA). Este sistema estará construido utilizando tecnologías modernas y robustas, asegurando una alta escalabilidad y seguridad.
 
 ## 2. Estructura de Carpetas
 La estructura de carpetas del proyecto se organizará de la siguiente manera:
 
 ```
-/src
-  /components
-    /common
-    /features
-      /home
-      /dashboard
-      /agent
-  /contexts
-  /hooks
-  /services
-    /api
-    /data
-  /styles
-    /tailwind
-  /utils
+/proyecto-fábrica-de-agentes
+  /src
+    /components
+    /context
+    /hooks
+    /pages
+    /public
+    /services
+    /utils
+  /tests
+  /config
+  /scripts
+  /docs
+    ARCHITECTURE.md
 ```
 
-## 3. Patrones de Diseño
-### 3.1. Patrón de Contexto (Context API)
-Se utilizará el Patrón de Contexto para la gestión de estados globales. Esto permitirá una gestión centralizada de datos como el estado de autenticación, configuraciones del sistema, etc.
+## 3. Tecnologías Utilizadas
+- **Frontend:**
+  - **Next.js** para el desarrollo de la aplicación de una sola página.
+  - **React** para la creación de componentes reutilizables.
+  - **Tailwind** para el diseño y estilos.
 
-### 3.2. Patrón de Hooks
-Se implementarán hooks personalizados para abstraer la lógica de negocio y reutilización de código. Estos hooks se ubicarán en la carpeta `/hooks`.
+- **Backend:**
+  - **Node.js** para el servidor y la lógica empresarial.
+  - **Ollama** para la integración de la IA.
 
-## 4. Tecnologías y Herramientas
-### 4.1. Frontend
-- **Next.js**: Para el renderizado del lado del servidor y la gestión de rutas.
-- **React**: Biblioteca para la construcción de interfaces de usuario.
-- **Tailwind CSS**: Para estilos y diseño atómico.
+- **APIs Externas:**
+  - **Trello API** para la gestión de tareas y sprints.
+  - **GitHub API** para integración y gestión de repositorios.
 
-### 4.2. Backend
-- **Node.js**: Entorno de ejecución para el servidor.
-- **Ollama**: API de inteligencia artificial para la integración con la IA del sistema.
-- **Trello API**: Para la integración con la API de Trello para la gestión de sprints.
-- **GitHub API**: Para la integración con la API de GitHub para gestión de repositorios y colaboraciones.
+## 4. Patrones de Diseño
+### 4.1. Patrón de Contexto (Context API)
+Se utilizará el Patrón de Contexto para el manejo de estados globales y la transmisión de datos entre componentes.
 
-## 5. Decisiones Técnicas
-### 5.1. Gestión de Estados
-Se utilizará el Context API para la gestión de estados globales. Esto permitirá una fácil sincronización y acceso a los datos en toda la aplicación.
+### 4.2. Patrón de Hooks (Custom Hooks)
+Se crearán Custom Hooks para abstraer la lógica de negocio y reutilización de código.
 
-### 5.2. Optimización de Datos
-Se refactorizará la estructura de datos para reducir la redundancia y optimizar el rendimiento. Esto incluye la implementación de cachés y la gestión eficiente de solicitudes a la API.
+## 5. Esquemas JSON
+### 5.1. Definición de Esquemas
+Los esquemas JSON se definirán con claridad y precisión para un manejo de datos eficiente y escalable.
 
-### 5.3. Seguridad
-Se implementarán medidas de seguridad estándar como la autenticación de usuarios, validación de entradas y protección contra ataques comunes.
+```json
+{
+  "sprint": {
+    "id": "UUID",
+    "name": "string",
+    "startDate": "date",
+    "endDate": "date",
+    "tasks": [
+      {
+        "id": "UUID",
+        "title": "string",
+        "description": "string",
+        "status": "pending | in_progress | completed",
+        "assignedTo": "UUID"
+      }
+    ]
+  }
+}
+```
 
-### 5.4. Escalabilidad
-Se diseñará la arquitectura para permitir escalabilidad tanto vertical como horizontal. Esto incluye la implementación de un sistema de mensajería asíncrona y la distribución de la carga de trabajo entre múltiples instancias.
+### 5.2. Validación con JSON Schema
+Se utilizará JSON Schema para validar la estructura y tipos de datos en los esquemas JSON.
 
-## 6. Implementación de Patrones y Estándares
-### 6.1. Estilos de Código
-Se seguirán las directrices de estilo definidas en ESLint para mantener un código consistente y de alta calidad.
+## 6. Seguridad
+### 6.1. Autenticación y Autorización
+- **OAuth 2.0** para la autenticación de usuarios.
+- **JWT** para la seguridad de las APIs.
 
-### 6.2. Pruebas
-Se implementarán pruebas unitarias y de integración utilizando Jest y React Testing Library para garantizar la robustez del código.
+### 6.2. Protección de Datos
+- Todas las comunicaciones entre frontend y backend serán encriptadas utilizando TLS.
+- Los datos sensibles se almacenarán de manera segura en bases de datos gestionadas adecuadamente.
 
-## 7. Conclusiones
-Este documento resume las decisiones arquitectónicas y técnicas tomadas para el proyecto de Fábrica de Agentes. Las tecnologías y patrones de diseño seleccionados están orientados a proporcionar una solución escalable, segura y eficiente.
+## 7. Escalabilidad
+### 7.1. Diseño de Microservicios
+Se planea utilizar microservicios para escalar la aplicación según las necesidades, permitiendo un escalado independiente de componentes.
+
+### 7.2. Almacenamiento en la Nube
+Se utilizarán servicios en la nube para escalar el almacenamiento y la capacidad de procesamiento según sea necesario.
+
+## 8. Reducción de Deuda Técnica
+### 8.1. Pruebas Automatizadas
+Se implementarán pruebas unitarias y de integración utilizando **Jest** y **React Testing Library** para asegurar la calidad del código.
+
+### 8.2. Monitoreo y Registro
+Se utilizará **ELK Stack** para el monitoreo y registro de eventos y métricas para una rápida detección de problemas y mejoras continuas.
+
+## 9. Conclusiones
+Este proyecto se ha diseñado con una arquitectura modular y escalable, asegurando una alta disponibilidad y rendimiento. Las tecnologías y patrones de diseño seleccionados proporcionan una base sólida para futuras ampliaciones y mejoras.
