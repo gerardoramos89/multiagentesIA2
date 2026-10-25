@@ -72,15 +72,24 @@
       "title": "Añadir tests de integración para el endpoint de usuarios.",
       "description": "[DEV/QA] Añadir tests de integración para el endpoint de usuarios.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T15:45:51.297Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:45:51.297Z",
+      "completedAt": "2026-10-25T15:47:00.017Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "80d0c880658fb59a2cfc84f192b6cacf17b10dc5"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792942844976-5",
       "title": "Actualizar el diagrama de arquitectura en README.md.",
       "description": "[DEV/QA] Actualizar el diagrama de arquitectura en README.md.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:47:02.030Z"
     },
     {
       "id": "task-1792942844976-6",
@@ -120,6 +129,7 @@
     "STRATEGY.md",
     "manejo-de-errores-multiagentes.md",
     "ARCHITECTURE.md",
-    "src_auth_repository.js"
+    "src_auth_repository.js",
+    "nombre_del_archivo.ext"
   ]
 }
