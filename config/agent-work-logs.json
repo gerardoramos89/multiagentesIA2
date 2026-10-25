@@ -58,5 +58,17 @@
     "completedAt": "2026-10-25T04:26:40.794Z",
     "fileName": "README.md",
     "duration": 101
+  },
+  {
+    "agent": "po",
+    "taskId": "task-1792901699132-5",
+    "taskTitle": "📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint",
+    "prompt": "Eres un Product Owner y Estratega de Producto de élite. No generes código. Genera documentos estratégicos (STRATEGY.md). Enfócate en: objetivos de negocio medibles, criterios de aceptación claros (Given-When-Then), análisis de riesgos y roadmap.\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: 📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint\n- Descripción Detallada: Como Product Owner, al finalizar este sprint: 1) Analiza qué se logró vs lo planeado, 2) Identifica patrones de éxito y fracaso, 3) Propón 3-5 mejoras concretas para el próximo sprin...",
+    "response": "# Objetivos de Negocio Medibles\n- **Incrementar la eficiencia de los sprints en un 15%**\n- **Aumentar la satisfacción del cliente en un 10%**\n- **Reducir el tiempo de desarrollo de un sprint en un 10%**\n\n# Criterios de Aceptación Claros (Given-When-Then)\n- **Given** que el equipo ha completado el sprint actual\n- **When** el cliente realiza una revisión del sprint\n- **Then** el cliente debe estar satisfecho con el progreso y debe haber alcanzado los objetivos de negocio medibles.\n\n# Análisis de Riesgos\n- **Riesgo 1: Cambios en las especificaciones del proyecto**\n  - **Mitigación:** Establecer un proceso de revisión y aprobación de cambios con un comité de revisión interno.\n- **Riesgo 2: Problemas con la integración de la API de Trello**\n  - **Mitigación:** Realizar pruebas exhaustivas antes y después de la integración y establecer un contrato de servicio con la garantía de soporte técnico.\n- **Riesgo 3: Falta de capacidad de la IA Ollama**\n  - **Mitigación:** Planificar tareas de IA de ...",
+    "status": "done",
+    "startedAt": "2026-10-25T04:26:46.247Z",
+    "completedAt": "2026-10-25T04:27:51.310Z",
+    "fileName": "RETROSPECTIVE_SUGGESTIONS.md",
+    "duration": 65
   }
 ]

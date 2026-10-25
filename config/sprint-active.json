@@ -72,15 +72,24 @@
       "title": "Redactar el `README.md` inicial profesional, incluyendo: descripción del proyecto, guía de instalación paso a paso, variables de entorno (.env.local) y flujo de trabajo de los agentes.",
       "description": "[DOC] Redactar el `README.md` inicial profesional, incluyendo: descripción del proyecto, guía de instalación paso a paso, variables de entorno (.env.local) y flujo de trabajo de los agentes.",
       "agent": "doc",
-      "status": "working",
-      "startedAt": "2026-10-25T04:24:59.692Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:24:59.692Z",
+      "completedAt": "2026-10-25T04:26:44.220Z",
+      "output": "Generado: README.md",
+      "commits": [
+        "5c02e4737e2aae6d45ce026007a1c7351c1368e1"
+      ],
+      "filesModified": [
+        "README.md"
+      ]
     },
     {
       "id": "task-1792901699132-5",
       "title": "📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint",
       "description": "Como Product Owner, al finalizar este sprint: 1) Analiza qué se logró vs lo planeado, 2) Identifica patrones de éxito y fracaso, 3) Propón 3-5 mejoras concretas para el próximo sprint, 4) Genera un archivo RETROSPECTIVE_SUGGESTIONS.md con recomendaciones estratégicas basadas en el rendimiento del equipo.",
       "agent": "po",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:26:46.238Z"
     }
   ],
   "status": "executing",
@@ -95,6 +104,7 @@
     "STRATEGY.md",
     "ARCHITECTURE.md",
     "lib_memory-manager.ts",
-    "QA_REPORT.md"
+    "QA_REPORT.md",
+    "README.md"
   ]
 }

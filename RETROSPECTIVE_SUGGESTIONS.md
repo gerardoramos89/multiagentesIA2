@@ -1,22 +1,47 @@
 # Objetivos de Negocio Medibles
-- **Incrementar la eficiencia de los sprints en un 15%** mediante la implementación de mejoras en el sistema de gestión de sprints.
-- **Aumentar la satisfacción del equipo de desarrollo en un 20%** mediante la implementación de mejoras que faciliten la colaboración y la resolución de problemas.
+- **Incrementar la eficiencia de los sprints en un 15%**
+- **Aumentar la satisfacción del cliente en un 10%**
+- **Reducir el tiempo de desarrollo de un sprint en un 10%**
 
 # Criterios de Aceptación Claros (Given-When-Then)
-1. **Given** que el equipo ha finalizado el sprint y tiene acceso a los datos de desempeño del sprint actual.
-2. **When** el Product Owner analiza los datos de desempeño.
-3. **Then** el Product Owner identifica las métricas clave (tales como cumplimiento de objetivos, tiempo de entrega, calidad de código, etc.) y comunica las mejoras propuestas al equipo.
+- **Given** que el equipo ha completado el sprint actual
+- **When** el cliente realiza una revisión del sprint
+- **Then** el cliente debe estar satisfecho con el progreso y debe haber alcanzado los objetivos de negocio medibles.
 
 # Análisis de Riesgos
-- **Riesgo 1: Cambios en las tecnologías o herramientas pueden retrasar el progreso del proyecto.**
-  - **Mitigación:** Mantener un plan de contingencia para la transición a nuevas tecnologías o herramientas, y realizar pruebas exhaustivas antes del lanzamiento.
-- **Riesgo 2: Falta de colaboración entre el equipo de desarrollo y otros departamentos puede afectar la calidad del producto final.**
-  - **Mitigación:** Fomentar reuniones regulares entre todos los miembros del equipo y establecer roles claros de comunicación.
+- **Riesgo 1: Cambios en las especificaciones del proyecto**
+  - **Mitigación:** Establecer un proceso de revisión y aprobación de cambios con un comité de revisión interno.
+- **Riesgo 2: Problemas con la integración de la API de Trello**
+  - **Mitigación:** Realizar pruebas exhaustivas antes y después de la integración y establecer un contrato de servicio con la garantía de soporte técnico.
+- **Riesgo 3: Falta de capacidad de la IA Ollama**
+  - **Mitigación:** Planificar tareas de IA de manera conservadora y considerar la posibilidad de escalar la capacidad de la IA si es necesario.
 
 # Roadmap
-- **Sprint 1**: Implementar una herramienta de seguimiento de tareas más eficiente utilizando Ollama.
-- **Sprint 2**: Integrar la API de Trello para mejorar la visualización y colaboración en el proyecto.
-- **Sprint 3**: Desarrollar un sistema de feedback automático para evaluar el desempeño de los miembros del equipo.
-- **Sprint 4**: Implementar un dashboard de análisis de datos para visualizar métricas clave y tomar decisiones informadas.
+- **Sprint 1:** Configuración del entorno de desarrollo y primeros avances en la integración de la API de Trello.
+- **Sprint 2:** Implementación de la IA Ollama para la gestión de sprints.
+- **Sprint 3:** Pruebas y ajustes finales del sistema.
+- **Sprint 4:** Lanzamiento del sistema y recopilación de feedback.
 
-Estos objetivos y estrategias están diseñados para impulsar el éxito medible del proyecto de Fábrica de Agentes, asegurando la mejora continua y la satisfacción del cliente final.
+# Retrospectiva y Propuesta de Mejora para el Próximo Sprint
+
+## 1. Análisis de Logros vs. Planeado
+- **Logros:**
+  - Se configuró el entorno de desarrollo y se inició la integración con la API de Trello.
+  - Se realizó un primer prototipo de la interfaz de usuario.
+- **Fracaso:**
+  - La implementación de la IA Ollama se retrasó debido a complejidades técnicas no previstas.
+
+## 2. Identificación de Patrones de Éxito y Fracaso
+- **Patrones de Éxito:**
+  - El equipo demostró una buena capacidad para adaptarse rápidamente a los cambios en el plan de proyecto.
+  - La comunicación interna se mejoró significativamente durante el sprint.
+- **Patrones de Fracaso:**
+  - La estimación de tiempo y esfuerzo para las tareas de IA fue desafiante y condujo a retrasos.
+  - Falta de claridad en las especificaciones iniciales afectó la dirección del proyecto.
+
+## 3. Propuesta de Mejoras para el Próximo Sprint
+- **Mejora 1:** Implementar un plan detallado para la gestión de proyectos que incluya tiempos de entrega más realistas y capacidades de la IA.
+- **Mejora 2:** Establecer un proceso formal para la revisión y aprobación de cambios en el proyecto.
+- **Mejora 3:** Adoptar prácticas de gestión de proyectos más avanzadas, como el uso de herramientas de seguimiento de proyectos y la implementación de un sistema de feedback continuo.
+
+Estas mejoras apuntarán a mejorar la eficiencia y efectividad del equipo en la gestión de sprints, asegurando un progreso más fluido y la consecución de los objetivos de negocio.
