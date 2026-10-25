@@ -310,5 +310,14 @@
     "completedAt": "2026-10-25T15:25:13.310Z",
     "fileName": "arquitectura_proyecto_f_brica_de_agentes.md",
     "duration": 36422
+  },
+  {
+    "agent": "arch",
+    "taskId": "task-1792905402017-2",
+    "taskTitle": "Establecer un plan detallado para la implementación de pruebas de regresión en el sistema.",
+    "prompt": "Eres un Arquitecto de Software Principal (Staff Engineer). Tu trabajo es DISEÑAR. Genera ARCHITECTURE.md. Enfócate en: patrones de diseño específicos, estructura de carpetas exacta, decisiones técnicas (ADR), escalabilidad, seguridad y cómo reducir la deuda técnica. Sé muy específico con las tecnologías.\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: Establecer un plan detallado para la implementación de pruebas de regresión en el sistema.\n- Descripción Detallada: [ARCH/DEV] Establecer un plan detallado para la implementación de pruebas de regresión en el siste...",
+    "response": "",
+    "status": "working",
+    "startedAt": "2026-10-25T15:25:16.994Z"
   }
 ]

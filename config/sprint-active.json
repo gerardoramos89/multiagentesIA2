@@ -24,15 +24,24 @@
       "title": "Definir y documentar un estándar más robusto para la serialización y deserialización de datos en el sistema.",
       "description": "[ARCH/DEV] Definir y documentar un estándar más robusto para la serialización y deserialización de datos en el sistema.",
       "agent": "arch",
-      "status": "working",
-      "startedAt": "2026-10-25T05:18:11.635Z"
+      "status": "done",
+      "startedAt": "2026-10-25T05:18:11.635Z",
+      "completedAt": "2026-10-25T15:25:16.731Z",
+      "output": "Generado: arquitectura_proyecto_f_brica_de_agentes.md",
+      "commits": [
+        "24eb84b82a6fdc4a456a7939b54d1f38424f7d9b"
+      ],
+      "filesModified": [
+        "arquitectura_proyecto_f_brica_de_agentes.md"
+      ]
     },
     {
       "id": "task-1792905402017-2",
       "title": "Establecer un plan detallado para la implementación de pruebas de regresión en el sistema.",
       "description": "[ARCH/DEV] Establecer un plan detallado para la implementación de pruebas de regresión en el sistema.",
       "agent": "arch",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:25:16.984Z"
     },
     {
       "id": "task-1792905402017-3",
@@ -90,6 +99,7 @@
     "isCompleted": true
   },
   "filesChanged": [
-    "STRATEGY.md"
+    "STRATEGY.md",
+    "arquitectura_proyecto_f_brica_de_agentes.md"
   ]
 }
