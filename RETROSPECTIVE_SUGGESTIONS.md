@@ -1,62 +1,65 @@
-# Objetivos de Negocio Medibles
-- **Incrementar la eficiencia de los sprints en un 15%**
-- **Aumentar la satisfacción del cliente en un 10%**
-- **Reducir el tiempo de desarrollo de un sprint en un 10%**
-
-# Criterios de Aceptación Claros (Given-When-Then)
-- **Given** que el equipo ha completado el sprint actual
-- **When** el cliente verifica el progreso en la plataforma de Trello
-- **Then** el cliente debe observar un aumento en la visibilidad de las tareas y un mejor seguimiento de las metas establecidas.
-
-# Análisis de Riesgos
-- **Riesgo 1:** Cambios en las especificaciones del proyecto que puedan retrasar el desarrollo.
-  - **Mitigación:** Establecer un plan de gestión de cambios que incluya revisiones regulares y ajustes en la planificación.
-- **Riesgo 2:** Problemas con la integración de la API de Trello.
-  - **Mitigación:** Realizar pruebas exhaustivas y establecer un plan de contingencia para resolver problemas técnicos.
-- **Riesgo 3:** Desmotivación del equipo debido a la alta presión de metas.
-  - **Mitigación:** Implementar estrategias de motivación y reconocimiento de esfuerzos.
-
-# Roadmap
-- **Sprint 1:** Configuración inicial del sistema, integración de la API de Trello y desarrollo básico de la interfaz de usuario.
-- **Sprint 2:** Implementación de la IA utilizando Ollama para la gestión de sprints.
-- **Sprint 3:** Pruebas y ajustes basados en feedback del equipo y del cliente.
-- **Sprint 4:** Liberación de la versión inicial y seguimiento de métricas clave.
-
 # Retrospectiva y Propuesta de Mejora para el Próximo Sprint
 
-## 1. Análisis de Logros vs Planeado
-- **Logros:**
-  - Se logró configurar el sistema inicial y la integración con la API de Trello.
-  - Se ha avanzado en el desarrollo de la interfaz de usuario.
-- **Fracaso:**
-  - La implementación de la IA utilizando Ollama se retrasó debido a complejidades técnicas.
-  - La planificación inicial no tomó en cuenta la complejidad de la integración de APIs.
+## 1. Análisis de Logros vs. Planeado
+
+### Logros:
+- Se logró la integración básica con la API de Trello, permitiendo la visualización y gestión inicial de tarjetas y listas.
+- Implementación inicial de la IA Ollama para tareas de generación de historias de usuario y planificación de sprints.
+- Configuración básica de la interfaz de usuario en Next.js con React y Tailwind CSS.
+
+### Fracaso:
+- La integración con la API de GitHub no se completó debido a limitaciones técnicas y falta de tiempo para resolver problemas de autenticación y permisos.
+- La IA Ollama no mostró resultados significativos en la generación de historias de usuario, requiriendo ajustes en la configuración y mejoras en el modelo de IA.
 
 ## 2. Identificación de Patrones de Éxito y Fracaso
+
 - **Patrones de Éxito:**
-  - La comunicación interna del equipo ha sido efectiva, permitiendo una adaptación rápida a los retrasos.
-  - El uso de herramientas como Trello ha mejorado la visibilidad y el seguimiento de las tareas.
+  - La integración con Trello fue más exitosa de lo esperado, mostrando una clara mejora en la gestión de tareas y proyectos.
+  - La configuración inicial de la interfaz de usuario fue eficiente, permitiendo una rápida visualización y manipulación de datos.
+
 - **Patrones de Fracaso:**
-  - La estimación de tiempo y esfuerzo para la implementación de la IA fue demasiado optimista.
-  - La falta de pruebas exhaustivas antes de la liberación inicial afectó la calidad del producto.
+  - La falta de experiencia en la integración y manipulación de APIs externas, como GitHub, resultó en retrasos y dificultades.
+  - La dependencia temprana en la IA para tareas críticas, como la generación de historias de usuario, requirió ajustes rápidos y reevaluaciones de la estrategia de IA.
 
-## 3. Propuesta de Mejora para el Próximo Sprint
-- **Mejora 1:** Concentrarse en la implementación de la IA utilizando Ollama durante el siguiente sprint.
-  - **Criterios de Aceptación:**
-    - Implementar un modelo de IA que permita una gestión de sprints más eficiente.
-    - Realizar pruebas intensivas para validar la efectividad de la IA.
-- **Mejora 2:** Mejorar la planificación y estimación de tiempos y esfuerzos.
-  - **Criterios de Aceptación:**
-    - Utilizar técnicas de estimación más precisas como Planning Poker.
-    - Establecer hitos claros para cada fase del proyecto.
-- **Mejora 3:** Incrementar la inversión en pruebas y feedback.
-  - **Criterios de Aceptación:**
-    - Realizar pruebas de regresión después de cada ajuste significativo.
-    - Implementar un sistema de feedback continuo con el cliente.
+## 3. Propuesta de Mejoras para el Próximo Sprint
 
-## 4. Recomendaciones Estratégicas
-- **Recomendación 1:** Priorizar la mejora continua en la gestión de proyectos y tecnología.
-- **Recomendación 2:** Fomentar la comunicación y colaboración interna para enfrentar desafíos.
-- **Recomendación 3:** Aumentar la inversión en capacitación y herramientas que apoyen la calidad y eficiencia del equipo.
+### Mejoras Concretas:
+1. **Completar la Integración con GitHub API:**
+   - **Criterios de Aceptación:**
+     - Dado que el equipo ha adquirido experiencia en la manipulación de APIs externas.
+     - Cuando el sistema esté completamente integrado con GitHub API, permitiendo la visualización y gestión avanzada de repositorios y colaboradores.
+     - Entonces, el sistema deberá mostrar una mejora significativa en la eficiencia de gestión de proyectos.
 
-Este documento estratégico proporciona una guía clara para el equipo y para el cliente, asegurando que las metas de negocio sean alcanzadas de manera efectiva y eficiente.
+2. **Optimizar y Refinar el Modelo de IA Ollama:**
+   - **Criterios de Aceptación:**
+     - Dado que el equipo ha identificado la necesidad de mejorar la capacidad de la IA para generar historias de usuario.
+     - Cuando el modelo de IA sea refinado y muestre resultados significativos en la generación de historias de usuario.
+     - Entonces, el equipo deberá ajustar la configuración de la IA para mejorar la precisión y relevancia en la planificación de sprints.
+
+3. **Ampliar la Funcionalidad de la Interfaz de Usuario:**
+   - **Criterios de Aceptación:**
+     - Dado que la interfaz actual permite una manipulación básica de datos.
+     - Cuando la interfaz sea expandida para incluir gráficos y métricas detalladas.
+     - Entonces, los usuarios deberán poder visualizar métricas clave y tomar decisiones informadas sobre el flujo de trabajo.
+
+## 4. Análisis de Riesgos y Roadmap
+
+### Riesgos Identificados:
+- Dependencia en la tecnología y herramientas externas, como Ollama y GitHub API, que pueden resultar en interrupciones y retrasos.
+- Complejidad en la integración de múltiples tecnologías y la gestión de datos en tiempo real.
+
+### Roadmap de Mejora:
+- **Sprint 2:**
+  - Completar la integración con GitHub API.
+  - Refinar y optimizar el modelo de IA Ollama.
+  - Ampliar la funcionalidad de la interfaz de usuario con gráficos y métricas avanzadas.
+
+- **Sprint 3:**
+  - Implementar pruebas y ajustes finales en la IA y la integración de APIs.
+  - Lanzamiento de una versión beta para pruebas y feedback del usuario.
+
+- **Sprint 4:**
+  - Resolución de problemas y ajustes basados en feedback del sprint anterior.
+  - Lanzamiento de la versión final y presentación de resultados.
+
+Este roadmap y las propuestas de mejora están diseñadas para enfocarse en las áreas clave de éxito y fracaso identificadas durante la retrospectiva, asegurando un progreso continuo y una mejora en la eficiencia y efectividad del sistema de gestión de sprints.

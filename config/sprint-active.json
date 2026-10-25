@@ -117,15 +117,24 @@
       "title": "📝 [DOC] Documentación completa del sprint",
       "description": "Como Technical Writer, actualiza el README.md de MultiagentesIA - Fábrica Autónoma para que sea la GUÍA VIVA del proyecto. Debe incluir: 1) Descripción actualizada, 2) Estado del desarrollo, 3) Historial de sprints, 4) Guía de instalación y uso, 5) Próximos pasos. Hazlo profesional y estructurado.",
       "agent": "doc",
-      "status": "working",
-      "startedAt": "2026-10-25T15:31:49.986Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:31:49.986Z",
+      "completedAt": "2026-10-25T15:33:12.291Z",
+      "output": "Generado: README.md",
+      "commits": [
+        "d431ab2643a38463272c72bae744cf0f3692fb01"
+      ],
+      "filesModified": [
+        "README.md"
+      ]
     },
     {
       "id": "task-1792905402017-8",
       "title": "📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint",
       "description": "Como Product Owner, al finalizar este sprint: 1) Analiza qué se logró vs lo planeado, 2) Identifica patrones de éxito y fracaso, 3) Propón 3-5 mejoras concretas para el próximo sprint, 4) Genera un archivo RETROSPECTIVE_SUGGESTIONS.md con recomendaciones estratégicas basadas en el rendimiento del equipo.",
       "agent": "po",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:33:14.303Z"
     }
   ],
   "status": "executing",
@@ -145,6 +154,7 @@
     "arquitectura_proyecto_f_brica_de_agentes.md",
     "Plan_de_Pruebas_de_Regresion.md",
     "nombre_del_archivo.ext",
-    "QA_REPORT.md"
+    "QA_REPORT.md",
+    "README.md"
   ]
 }
