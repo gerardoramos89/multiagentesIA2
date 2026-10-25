@@ -1,52 +1,25 @@
-# MultiagentesIA - Fábrica Autónoma
+# Objetivos del Sprint
+El objetivo principal de este sprint es refinar la definición de los esquemas JSON para un manejo de datos más eficiente en el futuro, y realizar una limpieza de archivos en la raíz del proyecto para mantener un entorno de desarrollo limpio y organizado.
 
-## 1. Objetivos del Sprint
+# Criterios de Aceptación
+Los criterios de aceptación para este sprint son:
 
-### 1.1. Objetivo General
-El objetivo general de este sprint es mejorar la gestión de sprints del sistema autónomo de MultiagentesIA mediante la integración de un sistema de IA avanzada.
+1. **Criterio 1**: Se ha actualizado la definición de los esquemas JSON para asegurar un manejo de datos coherente y eficiente.
+2. **Criterio 2**: Se ha realizado una limpieza de archivos en la raíz del proyecto, eliminando todos los archivos que no sean necesarios para el desarrollo actual.
+3. **Criterio 3**: Se ha implementado un sistema de verificación que asegura que la definición de esquemas JSON es clara y no contiene redundancias.
 
-### 1.2. Objetivos Específicos
-- **Integración de Ollama**: Implementar la inteligencia artificial de Ollama para predecir y optimizar los sprints basados en datos históricos y patrones de comportamiento.
-- **Refinamiento de la API de Trello**: Mejorar la interacción con la API de Trello para un manejo más eficiente de las tareas y proyectos.
-- **Desarrollo de un Manual de Uso**: Crear un manual detallado para los usuarios finales para facilitar el uso y comprensión del sistema.
+# Análisis de Riesgos
+Los principales riesgos identificados para este sprint incluyen:
 
-## 2. Criterios de Aceptación
+1. **Riesgo 1**: Cambios significativos en la estructura de datos podrían afectar negativamente el rendimiento de la aplicación.
+2. **Riesgo 2**: La eliminación de archivos podría provocar incidencias en el flujo de trabajo de los desarrolladores.
+3. **Riesgo 3**: La implementación de un sistema de verificación complejo podría requerir más tiempo de desarrollo de lo previsto.
 
-### 2.1. Dado
-- El sistema está configurado con la API de Trello.
-- Ollama está integrado y en funcionamiento.
-- Se ha comenzado el desarrollo de un manual de uso detallado.
+# Métricas de Éxito
+Las métricas de éxito para este sprint incluyen:
 
-### 2.2. Cuando
-- El sistema predice los tiempos de finalización de sprints con una precisión superior al 80%.
-- El manual de uso está 90% completo y ha sido revisado por al menos dos usuarios.
-- Se han realizado al menos tres ajustes en la API de Trello para mejorar la gestión de tareas.
+1. **Métrica 1**: Porcentaje de archivos eliminados correctamente de la raíz del proyecto.
+2. **Métrica 2**: Tiempo promedio de respuesta del sistema de verificación de esquemas JSON.
+3. **Métrica 3**: Número de incidencias reportadas por los desarrolladores relacionadas con la limpieza de archivos.
 
-### 2.3. Entonces
-- El producto debe mostrar una mejora significativa en la eficiencia de gestión de sprints.
-- Los usuarios deben poder navegar y utilizar el manual de uso sin dificultades.
-- La API de Trello debe mostrar una mejora en la capacidad de respuesta y en la precisión de los datos gestionados.
-
-## 3. Análisis de Riesgos
-
-### 3.1. Riesgos Identificados
-- **Riesgo 1**: Problemas con la integración de Ollama debido a la complejidad de la IA.
-  - **Mitigación**: Planificar un período de pruebas extensivo con datos simulados para validar la integración.
-- **Riesgo 2**: Retraso en el desarrollo del manual de uso.
-  - **Mitigación**: Asignar recursos adicionales para acelerar el proceso de redacción y revisión.
-- **Riesgo 3**: Problemas con la API de Trello que afecten la gestión de tareas.
-  - **Mitigación**: Monitorear constantemente la API y realizar ajustes en tiempo real.
-
-## 4. Métricas de Éxito
-
-### 4.1. Métricas Objetivo
-- **Métrica 1**: Porcentaje de sprints predichos con una precisión superior al 80%.
-- **Métrica 2**: Índice de satisfacción de los usuarios del manual de uso (NPS).
-- **Métrica 3**: Tiempo promedio de respuesta de la API de Trello.
-
-### 4.2. Indicadores Clave
-- **Indicador 1**: Porcentaje de sprints predichos correctamente por Ollama.
-- **Indicador 2**: Promedio de NPS del manual de uso.
-- **Indicador 3**: Tiempo promedio de respuesta de la API de Trello.
-
-Este documento estratégico proporciona una guía clara para el sprint actual, asegurando que los objetivos, criterios de aceptación y riesgos estén bien definidos para la mejora continua de MultiagentesIA - Fábrica Autónoma.
+Este documento estratégico proporciona una visión clara de los objetivos, criterios de aceptación, riesgos y métricas clave para el sprint en curso de MultiagentesIA - Fábrica Autónoma.
