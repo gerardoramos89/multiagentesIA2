@@ -24,15 +24,24 @@
       "title": "[ARCH] Diseñar la estructura de carpetas definitiva para `grtec-memory`, definir los esquemas JSON de los sprints y establecer los patrones de persistencia de datos.",
       "description": "[ARCH] Diseñar la estructura de carpetas definitiva para `grtec-memory`, definir los esquemas JSON de los sprints y establecer los patrones de persistencia de datos.",
       "agent": "arch",
-      "status": "working",
-      "startedAt": "2026-10-25T04:19:33.045Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:19:33.045Z",
+      "completedAt": "2026-10-25T04:21:20.938Z",
+      "output": "Generado: ARCHITECTURE.md",
+      "commits": [
+        "526d086fb581f1e2efbb85a978b56179671383f4"
+      ],
+      "filesModified": [
+        "ARCHITECTURE.md"
+      ]
     },
     {
       "id": "task-1792901699132-2",
       "title": "Implementar el archivo `lib/memory-manager.ts` con las funciones de lectura, escritura, extracción de skills y la función de commit automático a Git.",
       "description": "[DEV] Implementar el archivo `lib/memory-manager.ts` con las funciones de lectura, escritura, extracción de skills y la función de commit automático a Git.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:21:22.952Z"
     },
     {
       "id": "task-1792901699132-3",
@@ -65,6 +74,7 @@
     "isCompleted": true
   },
   "filesChanged": [
-    "STRATEGY.md"
+    "STRATEGY.md",
+    "ARCHITECTURE.md"
   ]
 }
