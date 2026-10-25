@@ -1,151 +1,88 @@
 ```javascript
-// Importaciones necesarias
-import express from 'express';
-import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { validateInput } from '../utils/validators';
-import { handleError } from '../utils/errorHandler';
+import axios from 'axios';
 
-// Creación del router
-const router = express.Router();
-
-// Definición de endpoints
-router.post('/sprints', async (req, res) => {
+/**
+ * Función para obtener el estado de un commit en GitHub
+ * @param {string} repo - Nombre del repositorio en GitHub
+ * @param {string} commitHash - Hash del commit
+ * @returns {Promise<Object>} - Información del commit
+ */
+async function getCommitStatus(repo, commitHash) {
   try {
-    // Validación de la entrada
-    const validationErrors = validateInput(req.body);
-    if (validationErrors.length > 0) {
-      return res.status(400).json({ errors: validationErrors });
-    }
-
-    // Llamada a la API de Ollama para generar un plan de sprints
-    const response = await axios.post('https://api.ollama.io/generatePlan', {
-      project: req.body.project,
-      duration: req.body.duration,
-      teamSize: req.body.teamSize
-    });
-
-    // Llamada a la API de Trello para crear un nuevo sprint
-    const trelloResponse = await axios.post('https://api.trello.com/1/lists', {
-      name: `Sprint ${uuidv4()}`,
-      idBoard: req.body.boardId
-    }, {
-      params: {
-        key: process.env.TRELLO_API_KEY,
-        token: process.env.TRELLO_API_TOKEN
-      }
-    });
-
-    // Respuesta exitosa
-    res.status(201).json({
-      message: 'Sprint creado exitosamente',
-      data: {
-        sprintId: trelloResponse.data.id,
-        plan: response.data.plan
-      }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${repo}/commits/${commitHash}`);
+    return response.data;
   } catch (error) {
-    handleError(error, res);
+    console.error(`Error al obtener el estado del commit ${commitHash} en el repositorio ${repo}:`, error);
+    throw error;
   }
-});
+}
 
-// Exportación del router
-export default router;
-```
-
-```javascript
-// Importaciones necesarias
-import { Request, Response } from 'express';
-
-// Función para manejar errores
-export const handleError = (error, res) => {
-  console.error(error);
-  res.status(500).json({ error: 'Hubo un error al procesar la solicitud' });
-};
-
-// Función de validación de entrada
-export const validateInput = (input) => {
-  const errors = [];
-  if (!input.project) errors.push('El proyecto es obligatorio');
-  if (!input.duration) errors.push('La duración es obligatoria');
-  if (!input.teamSize) errors.push('El tamaño del equipo es obligatorio');
-  if (!input.boardId) errors.push('El ID del tablero es obligatorio');
-  return errors;
-};
-```
-
-```javascript
-// Importaciones necesarias
-import { Request, Response } from 'express';
-import { handleError } from '../utils/errorHandler';
-
-// Middleware para manejar errores globales
-const errorMiddleware = (err, req, res, next) => {
-  handleError(err, res);
-};
-
-// Exportación del middleware
-export default errorMiddleware;
-```
-
-```javascript
-// Importaciones necesarias
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import sprintRouter from './routes/sprintRouter';
-import errorMiddleware from './middleware/errorMiddleware';
-
-// Configuración de variables de entorno
-dotenv.config();
-
-// Creación de la aplicación Express
-const app = express();
-
-// Configuración de middlewares
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-
-// Configuración de routers
-app.use('/api/v1', sprintRouter);
-
-// Configuración del middleware de errores
-app.use(errorMiddleware);
-
-// Inicio del servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
-```
-
-```javascript
-// Importaciones necesarias
-import { Request, Response } from 'express';
-import { validateInput } from '../utils/validators';
-import { handleError } from '../utils/errorHandler';
-
-// Función para validar y crear un nuevo sprint
-const createSprint = async (req, res) => {
+/**
+ * Función para crear un nuevo commit en GitHub
+ * @param {string} repo - Nombre del repositorio en GitHub
+ * @param {string} branch - Nombre de la rama
+ * @param {string} message - Mensaje del commit
+ * @param {string} filePath - Ruta del archivo a modificar
+ * @param {Buffer} fileContent - Contenido del archivo
+ * @returns {Promise<Object>} - Información del commit creado
+ */
+async function createCommit(repo, branch, message, filePath, fileContent) {
   try {
-    // Validación de la entrada
-    const validationErrors = validateInput(req.body);
-    if (validationErrors.length > 0) {
-      return res.status(400).json({ errors: validationErrors });
-    }
-
-    // Lógica para crear un nuevo sprint
-    // ...
-
-    // Respuesta exitosa
-    res.status(201).json({ message: 'Sprint creado exitosamente' });
+    const response = await axios.put(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+      message,
+      content: fileContent.toString('base64'),
+      branch,
+    });
+    return response.data;
   } catch (error) {
-    handleError(error, res);
+    console.error(`Error al crear el commit en el repositorio ${repo}:`, error);
+    throw error;
   }
-};
+}
 
-// Exportación de la función
-export default createSprint;
+/**
+ * Función para implementar la función de commit automático
+ * @param {string} repo - Nombre del repositorio en GitHub
+ * @param {string} branch - Nombre de la rama
+ * @param {string} message - Mensaje del commit
+ * @param {string} filePath - Ruta del archivo a modificar
+ * @param {Buffer} fileContent - Contenido del archivo
+ * @returns {Promise<Object>} - Información del commit creado
+ */
+async function autoCommit(repo, branch, message, filePath, fileContent) {
+  try {
+    const commitInfo = await createCommit(repo, branch, message, filePath, fileContent);
+    return commitInfo;
+  } catch (error) {
+    console.error('Error en la función de commit automático:', error);
+    throw error;
+  }
+}
+
+// Pruebas unitarias para la función de commit automático
+describe('autoCommit', () => {
+  it('debería crear un nuevo commit en GitHub', async () => {
+    const repo = 'nombre-repo';
+    const branch = 'main';
+    const message = `Commit ${uuidv4()}`;
+    const filePath = 'src/index.js';
+    const fileContent = Buffer.from('console.log("Hello, World!");');
+
+    const commitInfo = await autoCommit(repo, branch, message, filePath, fileContent);
+
+    expect(commitInfo).toHaveProperty('commit');
+    expect(commitInfo.commit).toHaveProperty('message', message);
+  });
+
+  it('debería lanzar un error si el repositorio no existe', async () => {
+    const repo = 'nonexistent-repo';
+    const branch = 'main';
+    const message = `Commit ${uuidv4()}`;
+    const filePath = 'src/index.js';
+    const fileContent = Buffer.from('console.log("Hello, World!");');
+
+    await expect(autoCommit(repo, branch, message, filePath, fileContent)).rejects.toThrow('Error al crear el commit en el repositorio nonexistent-repo:');
+  });
+});
 ```
