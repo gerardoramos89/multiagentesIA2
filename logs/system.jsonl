@@ -3056,3 +3056,59 @@
 {"ts":"2026-10-24T17:17:10.303Z","level":"AGENT","source":"doc","message":"Technical Writer empezó: 📝 [DOC] Documentación completa del sprint"}
 {"ts":"2026-10-24T17:18:38.644Z","level":"AGENT","source":"doc","message":"Technical Writer completó: 📝 [DOC] Documentación completa del sprint en 88.3s"}
 {"ts":"2026-10-24T17:18:40.662Z","level":"AGENT","source":"po","message":"Product Owner empezó: 📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint"}
+{"ts":"2026-10-24T17:19:22.876Z","level":"AGENT","source":"po","message":"Product Owner completó: 📊 [PO] Retrospectiva y propuesta de mejora para el próximo sprint en 42.2s"}
+{"ts":"2026-10-24T17:19:24.883Z","level":"SPRINT","source":"system","message":"📋 Sprint #23 completado. Generando retrospectiva..."}
+{"ts":"2026-10-24T17:19:48.594Z","level":"SPRINT","source":"system","message":"✅ Retrospectiva generada. Intentando crear tarjetas en Trello..."}
+{"ts":"2026-10-24T17:19:50.771Z","level":"SPRINT","source":"system","message":"✅ 5 tarjetas creadas en Trello. Esperando respuestas del humano..."}
+{"ts":"2026-10-24T17:34:21.942Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA..."}
+{"ts":"2026-10-24T17:34:23.419Z","level":"INFO","source":"analysis","message":"✅ Análisis completado para gerardoramos89/multiagentesIA"}
+{"ts":"2026-10-24T17:35:17.232Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA..."}
+{"ts":"2026-10-24T17:35:18.782Z","level":"INFO","source":"analysis","message":"✅ Análisis completado para gerardoramos89/multiagentesIA"}
+{"ts":"2026-10-25T03:36:10.230Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:36:11.601Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:36:11.601Z","level":"ERROR","source":"analysis","message":"Job job_1792899370230_r6bbe falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:36:18.107Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:36:19.475Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:36:19.476Z","level":"ERROR","source":"analysis","message":"Job job_1792899378107_96lswr falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:41:01.485Z","level":"INFO","source":"diagnostics","message":"Diagnóstico completado. Ready: true","meta":{"durationMs":11531}}
+{"ts":"2026-10-25T03:43:46.374Z","level":"INFO","source":"diagnostics","message":"Diagnóstico completado. Ready: true","meta":{"durationMs":2398}}
+{"ts":"2026-10-25T03:43:49.438Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:43:50.734Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:43:50.735Z","level":"ERROR","source":"analysis","message":"Job job_1792899829438_pp752 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:44:25.518Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:44:26.818Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:44:26.818Z","level":"ERROR","source":"analysis","message":"Job job_1792899865518_h5z7o falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:44:43.661Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:44:44.983Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:44:44.983Z","level":"ERROR","source":"analysis","message":"Job job_1792899883661_9at4ei falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:46:28.958Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:46:30.297Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:46:30.298Z","level":"ERROR","source":"analysis","message":"Job job_1792899988958_50hvq4 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:46:48.989Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:46:50.336Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:46:50.337Z","level":"ERROR","source":"analysis","message":"Job job_1792900008989_pivsde falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:53:45.786Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:53:47.087Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:53:47.088Z","level":"ERROR","source":"analysis","message":"Job job_1792900425786_x5sh6d falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:53:59.825Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:54:01.128Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:54:01.129Z","level":"ERROR","source":"analysis","message":"Job job_1792900439825_1c1665 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:55:28.854Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:55:30.163Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:55:30.164Z","level":"ERROR","source":"analysis","message":"Job job_1792900528854_mbbae8 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:59:02.724Z","level":"INFO","source":"diagnostics","message":"Diagnóstico completado. Ready: true","meta":{"durationMs":7007}}
+{"ts":"2026-10-25T03:59:15.131Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T03:59:16.484Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T03:59:16.485Z","level":"ERROR","source":"analysis","message":"Job job_1792900755131_92ug2 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:03:00.657Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T04:03:01.891Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:03:01.892Z","level":"ERROR","source":"analysis","message":"Job job_1792900980657_7xu2f2 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:03:44.405Z","level":"INFO","source":"diagnostics","message":"Diagnóstico completado. Ready: true","meta":{"durationMs":2282}}
+{"ts":"2026-10-25T04:03:54.862Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T04:03:56.151Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:03:56.151Z","level":"ERROR","source":"analysis","message":"Job job_1792901034862_52zfzq falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:14:16.979Z","level":"INFO","source":"diagnostics","message":"Diagnóstico completado. Ready: true","meta":{"durationMs":6913}}
+{"ts":"2026-10-25T04:14:31.857Z","level":"INFO","source":"analysis","message":"Iniciando análisis de gerardoramos89/multiagentesIA2..."}
+{"ts":"2026-10-25T04:14:33.212Z","level":"ERROR","source":"analysis","message":"❌ Error en análisis: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:14:33.212Z","level":"ERROR","source":"analysis","message":"Job job_1792901671857_uh67p8 falló: Unexpected end of JSON input"}
+{"ts":"2026-10-25T04:17:06.874Z","level":"ERROR","source":"memory","message":"Error guardando feedback: ENOENT: no such file or directory, open 'C:\\Users\\GERARD\\Documents\\Proyectos\\fabric-agents-grtec\\grtec-memory\\sprints\\sprint-1-start-feedback.json'"}

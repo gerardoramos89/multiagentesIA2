@@ -1,11 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { closeSprint } from "@/lib/agent-executor";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
-    console.log("[API /sprint/close] Cerrando sprint...");
-    const result = await closeSprint();
-    return NextResponse.json(result, { status: result.success ? 200 : 400 });
+    const body = await req.json().catch(() => ({}));
+    const { humanFeedback } = body;
+    
+    const result = await closeSprint(humanFeedback);
+    return NextResponse.json(result);
   } catch (error: any) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }

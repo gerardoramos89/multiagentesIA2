@@ -500,25 +500,18 @@ async function transitionToRetrospective(sprint: SprintState) {
   const retrospectiveResult = await generateRetrospective();
   if (retrospectiveResult.success && retrospectiveResult.retrospective) {
     sprint.retrospective = retrospectiveResult.retrospective;
+    // ✅ CAMBIO CRÍTICO: Pasar a "review" (esperando humano) en vez de "survey" (Trello)
+    sprint.status = "review";
     saveSprint(sprint);
+    log("SPRINT", "system", `✅ Retrospectiva generada. Esperando revisión humana en dashboard.`);
+    addAgentLog("po", `✅ Retrospectiva lista. Esperando feedback humano.`, "success");
     
-    log("SPRINT", "system", `✅ Retrospectiva generada. Intentando crear tarjetas en Trello...`);
-    addAgentLog("po", "📋 Creando tarjetas en Trello...", "info");
-    
-    const surveyResult = await createSurveys();
-    
-    if (surveyResult.success && surveyResult.surveys && surveyResult.surveys.length > 0) {
-      // ✅ ÉXITO: Hay tarjetas en Trello, esperar respuestas
-      sprint.status = "survey";
-      saveSprint(sprint);
-      log("SPRINT", "system", `✅ ${surveyResult.surveys.length} tarjetas creadas en Trello. Esperando respuestas del humano...`);
-      addAgentLog("po", `✅ ${surveyResult.surveys.length} tarjetas creadas. Esperando respuestas.`, "success");
-    } else {
-      // ❌ FALLÓ O NO HAY TARJETAS: Pasar directamente a review para no atascar el sistema
-      sprint.status = "review";
-      saveSprint(sprint);
-      log("SPRINT", "system", `⚠️ No se pudieron crear tarjetas en Trello. Sprint listo para cierre manual.`);
-      addAgentLog("po", `⚠️ Trello no disponible. Sprint en revisión manual.`, "warn");
+    // ✅ NUEVO: Notificar por Telegram si está configurado
+    try {
+      const { notifySprintReadyForReview } = await import("./telegram-bot");
+      await notifySprintReadyForReview(sprint.sprintNumber, retrospectiveResult.retrospective);
+    } catch (e) {
+      // Telegram opcional, no falla si no está configurado
     }
   } else {
     log("SPRINT", "system", `⚠️ Error generando retrospectiva.`);
@@ -584,101 +577,23 @@ Responde SOLO con el JSON válido, sin texto adicional.`;
   }
 }
 
-export async function createSurveys(): Promise<{ success: boolean; surveys?: SurveyQuestion[] }> {
-  const sprint = loadSprint();
-  if (!sprint || !sprint.retrospective) return { success: false };
-  try {
-    const key = process.env.TRELLO_API_KEY;
-    const token = process.env.TRELLO_TOKEN;
-    const boardId = process.env.TRELLO_BOARD_ID;
-    if (!key || !token || !boardId) throw new Error("Faltan credenciales de Trello");
 
-    const listsRes = await fetch(`https://api.trello.com/1/boards/${boardId}/lists?key=${key}&token=${token}&filter=open`);
-    if (!listsRes.ok) throw new Error(`Error obteniendo listas: ${listsRes.status}`);
-    const lists = await listsRes.json();
-    let reviewList = lists.find((l: any) => /review humano|encuesta|retrospectiva/i.test(l.name));
-    
-    if (!reviewList) {
-      const createListRes = await fetch("https://api.trello.com/1/lists", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key, token, name: "⏳ Review Humano (Tareas)", idBoard: boardId, pos: "bottom" })
-      });
-      if (!createListRes.ok) throw new Error(`Error creando lista: ${createListRes.status}`);
-      reviewList = await createListRes.json();
-    }
-
-    const surveys: SurveyQuestion[] = [];
-    const itemsToSurvey = [
-      ...sprint.retrospective.whatNeedsDefinition.map(item => ({ type: "open" as const, text: `Definir: ${item}`, question: item })),
-      ...sprint.retrospective.actionItems.map(item => ({ type: "multiple" as const, text: `Acción: ${item}`, question: item }))
-    ];
-
-    if (itemsToSurvey.length === 0) {
-      itemsToSurvey.push({ type: "open" as const, text: "Revisar y aprobar el cierre del sprint", question: "¿Estás listo para cerrar este sprint?" });
-    }
-
-    for (const item of itemsToSurvey) {
-      const cardRes = await fetch("https://api.trello.com/1/cards", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          key, token, idList: reviewList.id,
-          name: `⚠️ [ACCIÓN REQUERIDA] ${item.text.substring(0, 80)}`,
-          desc: `**🤖 El sistema está PAUSADO esperando tu respuesta.**\n\n**Contexto:**\n"${item.question}"\n\n**Instrucciones:**\nPor favor, escribe un comentario en esta tarjeta con tu decisión. En cuanto comentes, el sistema continuará.\n\n---\n⏳ *Estado: Esperando respuesta del humano...*`
-        })
-      });
-      if (!cardRes.ok) throw new Error(`Error creando tarjeta: ${cardRes.status}`);
-      const card = await cardRes.json();
-      surveys.push({ id: `survey-${Date.now()}-${surveys.length}`, question: item.question, type: item.type, options: item.type === "multiple" ? ["SÍ", "NO", "MODIFICAR"] : undefined, trelloCardId: card.id });
-    }
-
-    sprint.surveys = surveys; sprint.status = "survey"; saveSprint(sprint);
-    addAgentLog("po", `✅ ${surveys.length} tarjetas creadas en Trello`, "success");
-    return { success: true, surveys };
-  } catch (error: any) {
-    addAgentLog("po", `❌ Error creando tarjetas: ${error.message}`, "error");
-    return { success: false };
-  }
-}
-
-export async function checkSurveyResponses(): Promise<{ success: boolean; allAnswered: boolean; responses?: any[] }> {
-  const sprint = loadSprint();
-  if (!sprint || !sprint.surveys) return { success: false, allAnswered: false };
-  try {
-    const key = process.env.TRELLO_API_KEY;
-    const token = process.env.TRELLO_TOKEN;
-    if (!key || !token) return { success: false, allAnswered: false };
-
-    const responses: any[] = [];
-    let allAnswered = true;
-    for (const survey of sprint.surveys) {
-      if (!survey.trelloCardId) continue;
-      const commentsRes = await fetch(`https://api.trello.com/1/cards/${survey.trelloCardId}/actions?filter=commentCard`, { headers: { Accept: "application/json" } });
-      if (!commentsRes.ok) continue;
-      const comments = await commentsRes.json();
-      if (comments.length > 0) {
-        survey.answer = comments[comments.length - 1].data.text;
-        responses.push({ question: survey.question, answer: survey.answer, answeredAt: comments[comments.length - 1].date });
-      } else {
-        allAnswered = false;
-      }
-    }
-    saveSprint(sprint);
-    return { success: true, allAnswered, responses };
-  } catch (error: any) {
-    return { success: false, allAnswered: false };
-  }
-}
-
-export async function closeSprint(): Promise<{ success: boolean; message: string }> {
+export async function closeSprint(humanFeedback?: any): Promise<{ success: boolean; message: string }> {
   const sprint = loadSprint();
   if (!sprint) return { success: false, message: "No hay sprint activo" };
   if (sprint.status === "completed") return { success: false, message: "El sprint ya está cerrado" };
 
-  addAgentLog("po", "🔒 Cerrando sprint...", "info");
+  addAgentLog("po", "🔒 Cerrando sprint y actualizando memoria autónoma...", "info");
+  
+  // ✅ NUEVO: Usar feedback humano en lugar de surveys de Trello
   const lessonsLearned: string[] = [];
-  if (sprint.surveys) {
-    for (const survey of sprint.surveys) {
-      if (survey.answer) lessonsLearned.push(`${survey.question} → ${survey.answer}`);
+  if (humanFeedback) {
+    if (humanFeedback.achievements) lessonsLearned.push(`Logros: ${humanFeedback.achievements}`);
+    if (humanFeedback.improvements) lessonsLearned.push(`Mejoras: ${humanFeedback.improvements}`);
+    if (humanFeedback.customAnswers) {
+      Object.entries(humanFeedback.customAnswers).forEach(([key, value]) => {
+        if (value) lessonsLearned.push(`${key}: ${value}`);
+      });
     }
   }
   
@@ -686,6 +601,42 @@ export async function closeSprint(): Promise<{ success: boolean; message: string
   sprint.completedAt = new Date().toISOString();
   sprint.status = "completed";
   saveSprint(sprint);
+  
+  // ✅ Guardar feedback humano en memoria
+  try {
+    const { saveHumanFeedback } = await import("./memory-manager");
+    if (humanFeedback) {
+      saveHumanFeedback(sprint.sprintNumber, "end", humanFeedback);
+    }
+  } catch (e) {}
+  
+  // ✅ Guardar en memoria con auto-aprendizaje y logs
+  try {
+    const { saveSprintToMemory, commitMemoryToGit, getAgentLogs } = await import("./memory-manager");
+    
+    const allAgentLogs = getAgentLogs();
+    const logsArray = Object.entries(allAgentLogs).flatMap(([agent, logs]) => 
+      (logs as any[]).map(log => ({ ...log, agent }))
+    );
+    
+    saveSprintToMemory({
+      sprintNumber: sprint.sprintNumber,
+      startedAt: sprint.startedAt,
+      completedAt: sprint.completedAt,
+      tasks: sprint.tasks,
+      retrospective: sprint.retrospective,
+      vision: sprint.vision,
+      lessonsLearned,
+      filesChanged: sprint.filesChanged,
+      humanFeedback
+    }, logsArray);
+    
+    await commitMemoryToGit(sprint.sprintNumber);
+    
+    addAgentLog("po", "✅ Memoria autónoma actualizada con logs y commiteada", "success");
+  } catch (error: any) {
+    addAgentLog("po", `⚠️ Error guardando en memoria: ${error.message}`, "warn");
+  }
   
   const memory = loadChangeMemory();
   memory.sprintsCompleted++;
@@ -695,12 +646,29 @@ export async function closeSprint(): Promise<{ success: boolean; message: string
   saveChangeMemory(memory);
   
   const history = loadSprintHistory();
-  history.push({ sprintNumber: sprint.sprintNumber, startedAt: sprint.startedAt, completedAt: sprint.completedAt, tasks: sprint.tasks, retrospective: sprint.retrospective, vision: sprint.vision, lessonsLearned, filesChanged: sprint.filesChanged });
+  history.push({ 
+    sprintNumber: sprint.sprintNumber, 
+    startedAt: sprint.startedAt, 
+    completedAt: sprint.completedAt, 
+    tasks: sprint.tasks, 
+    retrospective: sprint.retrospective, 
+    vision: sprint.vision, 
+    lessonsLearned, 
+    filesChanged: sprint.filesChanged,
+    humanFeedback
+  });
   saveSprintHistory(history);
   
-  try { if (fs.existsSync(SPRINT_FILE)) fs.unlinkSync(SPRINT_FILE); } catch (e) { console.error("[EXECUTOR] Error borrando sprint:", e); }
+  try { if (fs.existsSync(SPRINT_FILE)) fs.unlinkSync(SPRINT_FILE); } catch (e) {}
   
-  addAgentLog("po", "✅ Sprint archivado en historial", "success");
-  log("SPRINT", "system", `✅ Sprint #${sprint.sprintNumber} cerrado y archivado`);
+  addAgentLog("po", "✅ Sprint archivado y equipo evolucionó", "success");
+  log("SPRINT", "system", `✅ Sprint #${sprint.sprintNumber} cerrado. Memoria autónoma actualizada.`);
+  
+  // ✅ Notificar por Telegram
+  try {
+    const { notifySprintClosed } = await import("./telegram-bot");
+    await notifySprintClosed(sprint.sprintNumber, lessonsLearned);
+  } catch (e) {}
+  
   return { success: true, message: "Sprint cerrado exitosamente" };
 }

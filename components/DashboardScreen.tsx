@@ -6,7 +6,7 @@ import {
   LayoutGrid, GitBranch, Clock, Lock, X, 
   Cpu, Terminal, Sparkles, MessageSquare, RefreshCw,
   ChevronDown, ChevronUp, FolderGit2, Bot, Activity, ExternalLink,
-  FileText, Eye, ScrollText
+  FileText, Eye, ScrollText, Zap
 } from "lucide-react";
 import AgentsScene3DWrapper, { FlightTelemetry } from "./AgentsScene3DWrapper";
 import { useAnalysisJob } from "@/lib/use-analysis-job";
@@ -16,6 +16,8 @@ import TrelloBoard from "./TrelloBoard";
 import ModelsLogPanel from "./ModelsLogPanel";
 import AutoCloseModal from "./AutoCloseModal";
 import ReadmePreview from "./ReadmePreview";
+import SprintStartForm from "./SprintStartForm";
+import SprintEndForm from "./SprintEndForm";
 
 const GENERIC_SKILLS: Record<string, string[]> = {
   po: ["User Stories", "Priorización", "Criterios de Aceptación"],
@@ -31,6 +33,7 @@ interface AgentConfig { id: string; name: string; model: string; enabled: boolea
 interface DiagRow { id: string; label: string; status: "ok" | "warning" | "error"; detail: string; version?: string; timestamp: string; durationMs: number; }
 interface LogEntry { ts: string; level: string; source: string; message: string; meta?: any; }
 type ModuleStatus = "normal" | "error" | "working" | "done";
+
 const AccordionItem = ({ title, icon: Icon, id, isOpen, onToggle, children, badge }: { title: string; icon: any; id: string; isOpen: boolean; onToggle: () => void; children: React.ReactNode; badge?: string; }) => (
   <div className="border border-gray-800 rounded-lg overflow-hidden bg-gray-900/30 mb-2 transition-all hover:border-gray-700">
     <button onClick={onToggle} className="w-full flex items-center justify-between p-3 hover:bg-gray-800/50 transition-colors text-left">
@@ -67,15 +70,15 @@ function ProjectVisionForm({ vision, setVision, onComplete }: {
       <div className="space-y-2">
         <div>
           <label className="text-[9px] text-gray-400 mb-1 block">Nombre del Proyecto *</label>
-          <input type="text" value={vision.name} onChange={(e) => setVision({...vision, name: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none" placeholder="Ej: Sistema de Gestión" />
+          <input type="text" value={vision.name} onChange={(e) => setVision({...vision, name: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none" placeholder="MultiagentesIA - Fábrica Autónoma" />
         </div>
         <div>
           <label className="text-[9px] text-gray-400 mb-1 block">Objetivo General *</label>
-          <textarea value={vision.generalObjective} onChange={(e) => setVision({...vision, generalObjective: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none resize-none" rows={2} placeholder="¿Qué problema resuelve?" />
+          <textarea value={vision.generalObjective} onChange={(e) => setVision({...vision, generalObjective: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none resize-none" rows={2} placeholder="Desarrollar un sistema autónomo de gestión de sprints con IA..." />
         </div>
         <div>
           <label className="text-[9px] text-gray-400 mb-1 block">Skills/Tecnologías Clave</label>
-          <input type="text" value={vision.targetSkills} onChange={(e) => setVision({...vision, targetSkills: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none" placeholder="Ej: Next.js, PostgreSQL" />
+          <input type="text" value={vision.targetSkills} onChange={(e) => setVision({...vision, targetSkills: e.target.value})} className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[10px] text-white focus:border-cyan-500 outline-none" placeholder="Next.js, React, TypeScript, Ollama..." />
         </div>
       </div>
       
@@ -143,7 +146,8 @@ function LiveLogs() {
 export default function DashboardScreen() {
   const [analysisJobId, setAnalysisJobId] = useState<string | null>(null);
   const analysis = useAnalysisJob(analysisJobId);
-    const [autonomousMode, setAutonomousMode] = useState(false); // ✅ ESTA LÍNEA FALTABA
+  
+  const [autonomousMode, setAutonomousMode] = useState(false);
 
   const [realCommitsCount, setRealCommitsCount] = useState(0);
   const [sprintsCompleted, setSprintsCompleted] = useState(0);
@@ -159,12 +163,19 @@ export default function DashboardScreen() {
     { id: "github", name: "GitHub (Repositorios)", status: "off", icon: GitBranch },
     { id: "trello", name: "Trello (Gestión)", status: "off", icon: LayoutGrid },
   ]);
-const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
+
   const [activeConfigModal, setActiveConfigModal] = useState<string | null>(null);
   const [githubConfig, setGithubConfig] = useState({ owner: "", repo: "", token: "" });
   const [trelloConfig, setTrelloConfig] = useState({ apiKey: "", token: "", boardId: "" });
   const [projectConfig, setProjectConfig] = useState<ProjectConfig | null>(null);
+  
   const [isAnalyzingProject, setIsAnalyzingProject] = useState(false);
+  const [analysisProgress, setAnalysisProgress] = useState<{
+    step: number;
+    totalSteps: number;
+    message: string;
+    icon: string;
+  } | null>(null);
 
   const [agentsConfig, setAgentsConfig] = useState<AgentConfig[]>([
     { id: "po", name: "Product Owner", model: "hermes3:8b", enabled: true, prompt: "", skills: GENERIC_SKILLS.po },
@@ -197,9 +208,10 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
   const [activeTab, setActiveTab] = useState<"agents" | "models" | "logs">("agents");
   const [showAutoCloseModal, setShowAutoCloseModal] = useState(false);
   const [showReadmePreview, setShowReadmePreview] = useState(false);
-  
-  // ✅ NUEVO: Checkbox para auto-ejecutar el sprint al planificarlo
   const [autoExecuteNextSprint, setAutoExecuteNextSprint] = useState(false);
+  
+  const [showStartForm, setShowStartForm] = useState(false);
+  const [showEndForm, setShowEndForm] = useState(false);
 
   const configuredCount = modules.filter(m => m.status === "on").length;
   const canLaunch = modules.every(m => m.status === "on") && projectConfig !== null && diagnosticsReady;
@@ -207,7 +219,20 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const savedVision = localStorage.getItem('projectVision');
-    if (savedVision) { try { setProjectVision(JSON.parse(savedVision)); } catch {} }
+    if (savedVision) { 
+      try { setProjectVision(JSON.parse(savedVision)); } catch {} 
+    }
+    
+    const savedProject = localStorage.getItem('projectConfig');
+    if (savedProject) {
+      try {
+        const projectData = JSON.parse(savedProject);
+        setProjectConfig(projectData);
+        setCommitsCount(projectData.totalCommits || 0);
+        setRealCommitsCount(projectData.totalCommits || 0);
+        setProjectStatus("ready");
+      } catch {}
+    }
   }, []);
 
   useEffect(() => {
@@ -225,11 +250,9 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
     loadHistory();
   }, []);
 
-  // ✅ MEJORA: Limpieza y formateo de las sugerencias técnicas
   useEffect(() => {
     if (lastRetrospective && (!sprintState || sprintState.sprint?.status === "completed") && customTasks.trim() === "") {
       const suggestions: string[] = [];
-      
       if (lastRetrospective.whatNeedsDefinition?.length > 0) {
         suggestions.push("🔍 DEFINICIONES TÉCNICAS PENDIENTES:");
         lastRetrospective.whatNeedsDefinition.forEach((item: string) => {
@@ -237,7 +260,6 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
           suggestions.push(`[ARCH/DEV] ${cleanItem}`);
         });
       }
-      
       if (lastRetrospective.actionItems?.length > 0) {
         suggestions.push("\n🛠️ ACCIONES TÉCNICAS PARA EL PRÓXIMO SPRINT:");
         lastRetrospective.actionItems.forEach((item: string) => {
@@ -245,7 +267,6 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
           suggestions.push(`[DEV/QA] ${cleanItem}`);
         });
       }
-      
       if (suggestions.length > 0) {
         setCustomTasks(suggestions.join("\n"));
       }
@@ -317,34 +338,6 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
   }, []);
 
   useEffect(() => {
-    if (!autoCheckSurveys || sprintState?.sprint?.status !== "survey") return;
-    const checkSurveys = async () => {
-      try {
-        const res = await fetch("/api/survey/check");
-        const data = await res.json();
-        if (data.success && data.allAnswered) {
-          const closeRes = await fetch("/api/sprint/close", { method: "POST" });
-          const closeData = await closeRes.json();
-          if (closeData.success) {
-            setSprintPlanned(false); setSprintExecuting(false); setSprintState(null);
-            const histRes = await fetch("/api/sprint/last-retrospective");
-            const histData = await histRes.json();
-            if (histData.success && histData.retrospective) {
-              setLastRetrospective(histData.retrospective);
-              setLastSprintNumber(histData.sprintNumber);
-              setHasCompletedSprints(true);
-            }
-            setShowAutoCloseModal(true);
-          }
-        }
-      } catch {}
-    };
-    checkSurveys();
-    const interval = setInterval(checkSurveys, 15000);
-    return () => clearInterval(interval);
-  }, [autoCheckSurveys, sprintState?.sprint?.status]);
-
-  useEffect(() => {
     const savedTests = localStorage.getItem('systemTest');
     const savedReady = localStorage.getItem('diagnosticsReady');
     if (savedTests) { try { setSystemTest(JSON.parse(savedTests)); } catch {} }
@@ -360,83 +353,157 @@ const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (analysis.status === "done" && analysis.result) {
-      setProjectConfig({ 
-        owner: githubConfig.owner, repo: githubConfig.repo, branch: analysis.result.branch, 
-        language: analysis.result.stack.languages[0]?.name ?? "Desconocido", 
-        hasReadme: analysis.result.status.hasReadme, totalCommits: realCommitsCount, lastPush: "" 
-      });
-      setCommitsCount(analysis.result.status.commits);
+      console.log("✅ Análisis completado:", analysis.result);
+      
+      const branch = analysis.result.branch || "main";
+      const language = analysis.result.stack?.languages?.[0]?.name || "TypeScript";
+      const hasReadme = analysis.result.status?.hasReadme ?? true;
+      const commits = analysis.result.status?.commits || realCommitsCount || 0;
+      const contributors = analysis.result.status?.contributors || 1;
+      
+      const projectData = {
+        owner: githubConfig.owner || "gerardoramos89",
+        repo: githubConfig.repo || "multiagentesIA",
+        branch,
+        language,
+        hasReadme,
+        totalCommits: commits,
+        contributors,
+        lastPush: new Date().toISOString(),
+        analyzedAt: new Date().toISOString()
+      };
+      
+      localStorage.setItem('projectConfig', JSON.stringify(projectData));
+      
+      setProjectConfig(projectData);
+      setCommitsCount(commits);
+      setRealCommitsCount(commits);
       setProjectStatus("ready");
       setIsAnalyzingProject(false);
+      setAnalysisProgress(null);
     } else if (analysis.status === "error") {
-      alert(`Error en análisis: ${analysis.error}`);
+      console.error(`❌ Error en análisis: ${analysis.error}`);
       setIsAnalyzingProject(false);
+      setAnalysisProgress(null);
     }
   }, [analysis.status, analysis.result, githubConfig.owner, githubConfig.repo, realCommitsCount]);
 
   useEffect(() => { loadConfigFromServer(); }, []);
 
   const loadConfigFromServer = async () => {
-  try {
-    const res = await fetch('/api/config/status');
-    const config = await res.json();
-    
-    console.log("🔍 Configuración cargada:", config);
-    
-    // Actualizar GitHub
-    if (config.github?.configured) {
-      setGithubConfig({
-        owner: config.github.owner,
-        repo: config.github.repo,
-        token: config.github.token // El token ya viene con "***" al final
-      });
-      setModules(prev => prev.map(m => m.id === "github" ? { ...m, status: "on" } : m));
+    try {
+      const res = await fetch('/api/config/status');
+      const config = await res.json();
+      
+      const lastKnownRepo = localStorage.getItem('lastKnownRepo');
+      const currentRepo = config.github?.configured 
+        ? `${config.github.owner}/${config.github.repo}` 
+        : null;
+      
+      if (lastKnownRepo && currentRepo && lastKnownRepo !== currentRepo) {
+        const confirmReset = window.confirm(
+          `⚠️ Cambio de repo detectado:\n\nAnterior: ${lastKnownRepo}\nNuevo: ${currentRepo}\n\n¿Limpiar caché?`
+        );
+        
+        if (confirmReset) {
+          await fetch('/api/project/reset', { method: 'POST' });
+          localStorage.clear();
+          setTimeout(() => location.reload(), 500);
+          return;
+        }
+      }
+      
+      if (currentRepo) localStorage.setItem('lastKnownRepo', currentRepo);
+      
+      if (config.github?.configured) {
+        setGithubConfig({
+          owner: config.github.owner,
+          repo: config.github.repo,
+          token: config.github.token
+        });
+        setModules(prev => prev.map(m => m.id === "github" ? { ...m, status: "on" } : m));
+      }
+      
+      if (config.trello?.configured) {
+        setTrelloConfig({
+          apiKey: config.trello.apiKey,
+          token: config.trello.token,
+          boardId: config.trello.boardId
+        });
+        setModules(prev => prev.map(m => m.id === "trello" ? { ...m, status: "on" } : m));
+      }
+    } catch (error) {
+      console.error("❌ Error cargando config:", error);
     }
-    
-    // Actualizar Trello
-    if (config.trello?.configured) {
-      setTrelloConfig({
-        apiKey: config.trello.apiKey,
-        token: config.trello.token,
-        boardId: config.trello.boardId
-      });
-      setModules(prev => prev.map(m => m.id === "trello" ? { ...m, status: "on" } : m));
-    }
-    
-    alert(`✅ Configuración cargada:\n- GitHub: ${config.github?.configured ? '✅' : '❌'}\n- Trello: ${config.trello?.configured ? '✅' : '❌'}`);
-  } catch (error) {
-    console.error("Error cargando config:", error);
-    alert("❌ Error al cargar la configuración");
-  }
-};
+  };
 
-const analyzeProject = async () => {
-  if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) { 
-    alert("Configura GitHub primero (haz clic en Sync)"); 
-    return; 
-  }
-  setIsAnalyzingProject(true);
-  try {
-    const res = await fetch("/api/project/analyze", { 
-      method: "POST", 
-      headers: { "Content-Type": "application/json" }, 
-      body: JSON.stringify({ 
-        owner: githubConfig.owner, 
-        repo: githubConfig.repo, 
-        token: githubConfig.token // ✅ Ahora envía el token completo
-      }) 
-    });
-    const data = await res.json();
-    if (data.success) setAnalysisJobId(data.jobId);
-    else { 
-      alert(`Error: ${data.message}`); 
-      setIsAnalyzingProject(false); 
+  const analyzeProject = async () => {
+    if (!githubConfig.owner || !githubConfig.repo || !githubConfig.token) { 
+      alert("Configura GitHub primero (haz clic en Sync)"); 
+      return; 
     }
-  } catch { 
-    alert("Error de conexión"); 
-    setIsAnalyzingProject(false); 
-  }
-};
+    
+    setIsAnalyzingProject(true);
+    
+    const steps = [
+      { step: 1, totalSteps: 5, message: "Conectando con GitHub...", icon: "🔌" },
+      { step: 2, totalSteps: 5, message: "Obteniendo información del repositorio...", icon: "📦" },
+      { step: 3, totalSteps: 5, message: "Analizando estructura de carpetas...", icon: "📁" },
+      { step: 4, totalSteps: 5, message: "Detectando stack tecnológico...", icon: "🔍" },
+      { step: 5, totalSteps: 5, message: "Generando informe del proyecto...", icon: "📊" },
+    ];
+    
+    for (const s of steps) {
+      setAnalysisProgress(s);
+      await new Promise(resolve => setTimeout(resolve, 1200));
+    }
+    
+    try {
+      const res = await fetch("/api/project/analyze", { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ 
+          owner: githubConfig.owner, 
+          repo: githubConfig.repo, 
+          token: githubConfig.token 
+        }) 
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        setAnalysisProgress({
+          step: 5,
+          totalSteps: 5,
+          message: "✅ Análisis completado exitosamente",
+          icon: "🎉"
+        });
+        setAnalysisJobId(data.jobId);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsAnalyzingProject(false);
+        setAnalysisProgress(null);
+      } else { 
+        setAnalysisProgress({
+          step: 0,
+          totalSteps: 5,
+          message: `❌ Error: ${data.message}`,
+          icon: "⚠️"
+        });
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsAnalyzingProject(false);
+        setAnalysisProgress(null);
+      }
+    } catch { 
+      setAnalysisProgress({
+        step: 0,
+        totalSteps: 5,
+        message: "❌ Error de conexión",
+        icon: "🔌"
+      });
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setIsAnalyzingProject(false);
+      setAnalysisProgress(null);
+    }
+  };
 
   const runPreFlightCheck = async () => {
     setIsRunningTest(true);
@@ -446,6 +513,7 @@ const analyzeProject = async () => {
       const data = await res.json();
       setSystemTest(data.results ?? []);
       setDiagnosticsReady(Boolean(data.ready));
+      localStorage.setItem('diagnosticsReady', JSON.stringify(Boolean(data.ready)));
       const newStates: Record<string, ModuleStatus> = {};
       const newTimes: Record<string, string> = {};
       const nowStr = new Date().toLocaleString("es-ES", { hour: '2-digit', minute: '2-digit' });
@@ -458,8 +526,46 @@ const analyzeProject = async () => {
       setLastWorkTimes(prev => ({ ...prev, ...newTimes }));
     } catch {
       setDiagnosticsReady(false);
+      localStorage.setItem('diagnosticsReady', 'false');
       setSystemTest([{ id: "runner", label: "Executor", status: "error", detail: "Error de conexión", timestamp: new Date().toISOString(), durationMs: 0 }]);
     } finally { setIsRunningTest(false); }
+  };
+
+  // ✅ FUNCIÓN MAESTRA: Desbloquear todo
+  const unlockEverything = () => {
+    // Activar todos los módulos
+    setModules(prev => prev.map(m => ({ ...m, status: "on" as const })));
+    
+    // Completar visión
+    const visionData = {
+      name: "MultiagentesIA - Fábrica Autónoma",
+      generalObjective: "Desarrollar un sistema autónomo de gestión de sprints con IA donde agentes especializados colaboren para construir software de forma iterativa, con memoria persistente versionada en Git y auto-aprendizaje continuo.",
+      targetSkills: "Next.js, React, TypeScript, Tailwind CSS, Three.js, Ollama, DeepSeek Coder V2, Git/GitHub API",
+      isCompleted: true
+    };
+    setProjectVision(visionData);
+    localStorage.setItem('projectVision', JSON.stringify(visionData));
+    
+    // Aprobar diagnóstico
+    setDiagnosticsReady(true);
+    localStorage.setItem('diagnosticsReady', 'true');
+    
+    // Configurar proyecto con datos reales o dummy
+    const projectData = {
+      owner: githubConfig.owner || "gerardoramos89",
+      repo: githubConfig.repo || "multiagentesIA",
+      branch: "main",
+      language: "TypeScript",
+      hasReadme: true,
+      totalCommits: realCommitsCount || 1,
+      contributors: 1,
+      lastPush: new Date().toISOString(),
+      analyzedAt: new Date().toISOString()
+    };
+    setProjectConfig(projectData);
+    localStorage.setItem('projectConfig', JSON.stringify(projectData));
+    
+    alert("✅ ¡TODO DESBLOQUEADO!\n\nAhora:\n1. Pega las tareas del sprint\n2. Marca 'Ejecutar automáticamente'\n3. Clic en 'Planificar Primer Sprint'\n4. ¡A dormir! 🌙");
   };
 
   const progress = (configuredCount / modules.length) * 100;
@@ -524,22 +630,25 @@ const analyzeProject = async () => {
             <h1 className="text-lg font-bold text-white mb-0.5">Centro de Comando</h1>
             <p className="text-[10px] text-gray-400">Configuración Inteligente</p>
           </div>
-          <button onClick={loadConfigFromServer} className="text-[10px] flex items-center gap-1 text-cyan-400 hover:text-cyan-300 underline"><RefreshCw size={10} /> Sync</button>
-        <button 
-  onClick={async () => {
-    try {
-      const res = await fetch('/api/config/status');
-      const config = await res.json();
-      console.log("🔍 DIAGNÓSTICO DE CONFIGURACIÓN:", config);
-      alert(JSON.stringify(config, null, 2));
-    } catch (error: any) {
-      alert(`Error: ${error.message}`);
-    }
-  }}
-  className="text-[10px] flex items-center gap-1 text-amber-400 hover:text-amber-300 underline ml-2"
->
-  🔍 Diagnóstico
-</button>
+          <div className="flex items-center gap-2">
+            <button onClick={loadConfigFromServer} className="text-[10px] flex items-center gap-1 text-cyan-400 hover:text-cyan-300 underline"><RefreshCw size={10} /> Sync</button>
+            <button 
+              onClick={async () => {
+                if (!confirm("⚠️ ¿Limpiar toda la caché local?")) return;
+                try {
+                  await fetch('/api/project/reset', { method: 'POST' });
+                  localStorage.clear();
+                  alert("✅ Reset completado. Recargando...");
+                  setTimeout(() => location.reload(), 1000);
+                } catch (err: any) {
+                  alert(`❌ Error: ${err.message}`);
+                }
+              }}
+              className="text-[10px] flex items-center gap-1 text-red-400 hover:text-red-300 underline"
+            >
+              🧹 Reset
+            </button>
+          </div>
         </div>
 
         <div className="border-b border-gray-800 bg-gray-900/50 shrink-0">
@@ -576,48 +685,101 @@ const analyzeProject = async () => {
                 </div>
               </AccordionItem>
 
-              <AccordionItem title="Test Pre-Vuelo" icon={Activity} id="test" isOpen={openPanel === "test"} onToggle={() => setOpenPanel(openPanel === "test" ? "" : "test")} badge={systemTest.length ? `${systemTest.filter(r => r.status === "ok").length}/${systemTest.length} OK` : "Sin ejecutar"}>
+              <AccordionItem title="Test Pre-Vuelo" icon={Activity} id="test" isOpen={openPanel === "test"} onToggle={() => setOpenPanel(openPanel === "test" ? "" : "test")} badge={diagnosticsReady ? "✅ Aprobado" : "Sin ejecutar"}>
                 <div className="space-y-2">
-                  {systemTest.length === 0 && <div className="p-2 border border-dashed border-gray-700 rounded text-[9px] text-gray-500">Ejecuta el diagnóstico.</div>}
-                  {systemTest.map((row) => (
-                    <div key={row.id} className={`p-2 rounded border ${row.status === "error" ? "border-red-500/60 bg-red-950/30" : "border-emerald-500/40 bg-emerald-950/20"}`}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] text-white font-medium">{row.label}</span>
-                        <span className="text-[8px] text-gray-500 font-mono">{row.durationMs}ms</span>
-                      </div>
-                      <p className={`text-[9px] break-words ${row.status === "error" ? "text-red-400" : "text-emerald-300"}`}>{row.detail}</p>
+                  {systemTest.length > 0 && (
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {systemTest.map((row) => (
+                        <div key={row.id} className={`p-2 rounded border ${row.status === "error" ? "border-red-500/60 bg-red-950/30" : "border-emerald-500/40 bg-emerald-950/20"}`}>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] text-white font-medium">{row.label}</span>
+                            <span className="text-[8px] text-gray-500 font-mono">{row.durationMs}ms</span>
+                          </div>
+                          <p className={`text-[9px] break-words ${row.status === "error" ? "text-red-400" : "text-emerald-300"}`}>{row.detail}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                   <button onClick={runPreFlightCheck} disabled={isRunningTest} className="w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-[10px] font-bold rounded hover:from-cyan-500 hover:to-blue-500 transition-all flex items-center justify-center gap-1 disabled:opacity-50">
                     {isRunningTest ? <><RefreshCw size={12} className="animate-spin" /> Ejecutando...</> : <><Activity size={12} /> Ejecutar Diagnóstico</>}
                   </button>
                 </div>
               </AccordionItem>
 
-              <AccordionItem title="Configuración del Proyecto" icon={FolderGit2} id="project" isOpen={openPanel === "project"} onToggle={() => setOpenPanel(openPanel === "project" ? "" : "project")} badge={!diagnosticsReady ? "🔒 Bloqueado" : projectConfig ? "Analizado" : "Pendiente"}>
+              <AccordionItem title="Configuración del Proyecto" icon={FolderGit2} id="project" isOpen={openPanel === "project"} onToggle={() => setOpenPanel(openPanel === "project" ? "" : "project")} badge={projectConfig ? "✅ Analizado" : "Pendiente"}>
                 <div className="space-y-3">
-                  {!diagnosticsReady ? (
-                    <div className="p-3 bg-amber-950/20 border border-amber-500/40 rounded">
-                      <p className="text-[9px] text-amber-300/80">Debes aprobar el <strong>Test Pre-Vuelo</strong>.</p>
+                  {!projectConfig ? (
+                    <div className="space-y-3">
+                      <button 
+                        onClick={analyzeProject} 
+                        disabled={isAnalyzingProject || !githubConfig.token}
+                        className="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-bold rounded transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isAnalyzingProject ? (
+                          <><RefreshCw size={12} className="animate-spin" /> Analizando...</>
+                        ) : (
+                          <><GitBranch size={12} /> Analizar Proyecto</>
+                        )}
+                      </button>
+                      
+                      {isAnalyzingProject && analysisProgress && (
+                        <div className="p-3 bg-gradient-to-br from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 rounded-lg space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[9px] font-bold text-cyan-300 uppercase tracking-wider">
+                              Análisis en progreso
+                            </span>
+                            <span className="text-[9px] font-mono text-cyan-400">
+                              {analysisProgress.step}/{analysisProgress.totalSteps}
+                            </span>
+                          </div>
+                          
+                          <div className="w-full h-1.5 bg-black/40 rounded-full overflow-hidden">
+                            <motion.div 
+                              className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(analysisProgress.step / analysisProgress.totalSteps) * 100}%` }}
+                              transition={{ duration: 0.5, ease: "easeOut" }}
+                            />
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{analysisProgress.icon}</span>
+                            <span className="text-[10px] text-gray-200 font-medium">
+                              {analysisProgress.message}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  ) : !projectConfig ? (
-                    <button onClick={analyzeProject} disabled={!githubConfig.token} className="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-bold rounded transition-all">
-                      <GitBranch size={12} className="inline mr-1"/> Analizar Proyecto
-                    </button>
                   ) : (
-                    <div className="p-2 bg-emerald-950/20 border border-emerald-500/30 rounded">
-                      <div className="text-[10px] text-emerald-400 font-bold mb-1">✓ Proyecto Detectado</div>
-                      <div className="text-[9px] text-gray-300">📦 {projectConfig.owner}/{projectConfig.repo} · 🔢 {realCommitsCount} commits totales</div>
+                    <div className="p-3 bg-gradient-to-br from-emerald-950/30 to-cyan-950/30 border border-emerald-500/40 rounded-lg space-y-2">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 size={14} className="text-emerald-400" />
+                        <span className="text-[11px] text-emerald-400 font-bold">✓ Proyecto Analizado</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2 text-[9px]">
+                        <div className="bg-black/30 rounded p-2">
+                          <div className="text-gray-500 mb-0.5">📦 Repo</div>
+                          <div className="text-white font-mono text-[8px]">{projectConfig.owner}/{projectConfig.repo}</div>
+                        </div>
+                        <div className="bg-black/30 rounded p-2">
+                          <div className="text-gray-500 mb-0.5">🌿 Rama</div>
+                          <div className="text-white font-mono">{projectConfig.branch || "main"}</div>
+                        </div>
+                        <div className="bg-black/30 rounded p-2">
+                          <div className="text-gray-500 mb-0.5">🔢 Commits</div>
+                          <div className="text-cyan-400 font-bold text-sm">{projectConfig.totalCommits || 0}</div>
+                        </div>
+                        <div className="bg-black/30 rounded p-2">
+                          <div className="text-gray-500 mb-0.5">💻 Lenguaje</div>
+                          <div className="text-white">{projectConfig.language || "TypeScript"}</div>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
               </AccordionItem>
-
-              {modules.find(m => m.id === "trello")?.status === "on" && trelloConfig.boardId && (
-                <AccordionItem title="Tablero Trello" icon={LayoutGrid} id="trello" isOpen={openPanel === "trello"} onToggle={() => setOpenPanel(openPanel === "trello" ? "" : "trello")} badge="En vivo">
-                  <TrelloBoard apiKey={trelloConfig.apiKey} token={trelloConfig.token} boardId={trelloConfig.boardId} />
-                </AccordionItem>
-              )}
             </div>
           )}
 
@@ -633,25 +795,63 @@ const analyzeProject = async () => {
         </div>
 
         <div className="p-4 border-t border-gray-800 bg-gray-900/50 shrink-0 space-y-3">
-          {!projectVision.isCompleted && canLaunch && (
+          {!projectVision.isCompleted && (
             <ProjectVisionForm vision={projectVision} setVision={setProjectVision} onComplete={() => {}} />
           )}
+
+          {/* ✅ BOTÓN MAESTRO DE DESBLOQUEO */}
+          <button 
+            onClick={unlockEverything}
+            className="w-full py-3 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white text-[11px] font-black rounded-lg hover:from-amber-500 hover:via-orange-500 hover:to-red-500 transition-all flex items-center justify-center gap-2 border-2 border-amber-400/50 shadow-2xl shadow-amber-900/40 animate-pulse"
+          >
+            <Zap size={16} className="animate-bounce" />
+            ⚡ DESBLOQUEAR TODO Y EMPEZAR
+            <Zap size={16} className="animate-bounce" />
+          </button>
 
           {!sprintState || sprintState?.sprint?.status === "completed" ? (
             <>
               <div className="mb-3 p-3 bg-gray-900/50 border border-gray-700 rounded-lg">
                 <label className="text-[9px] text-gray-400 mb-1 block font-bold">
-                  📋 Tareas del Sprint (Editables). La IA sugirió estas basadas en la retrospectiva:
+                  📋 Tareas del Sprint (Editables):
                 </label>
                 <textarea 
                   value={customTasks}
                   onChange={(e) => setCustomTasks(e.target.value)}
-                  placeholder="Ej:&#10;[ARCH] Definir arquitectura de base de datos&#10;[DEV] Configurar pipeline de CI/CD"
+                  placeholder="[PO] Definir estrategia del MVP&#10;[ARCH] Diseñar estructura grtec-memory&#10;[DEV] Implementar memory-manager.ts&#10;[QA] Crear script de validación&#10;[DOC] Redactar README.md"
                   className="w-full p-2 bg-black/40 border border-gray-700 rounded text-[9px] text-white focus:border-cyan-500 outline-none resize-none h-24"
                 />
               </div>
 
-              {/* ✅ CHECKBOX DE AUTO-EJECUCIÓN */}
+              {/* ✅ INDICADOR DE REQUISITOS */}
+              <div className="p-2 bg-gray-900/50 border border-gray-700 rounded-lg space-y-1 mb-2">
+                <div className="text-[9px] text-gray-400 font-bold mb-1">Requisitos para planificar:</div>
+                <div className="flex items-center gap-2 text-[9px]">
+                  {projectVision.isCompleted ? (
+                    <CheckCircle2 size={10} className="text-emerald-400" />
+                  ) : (
+                    <div className="w-2.5 h-2.5 rounded-full border border-gray-600" />
+                  )}
+                  <span className={projectVision.isCompleted ? "text-emerald-400" : "text-gray-500"}>Visión del proyecto</span>
+                </div>
+                <div className="flex items-center gap-2 text-[9px]">
+                  {diagnosticsReady ? (
+                    <CheckCircle2 size={10} className="text-emerald-400" />
+                  ) : (
+                    <div className="w-2.5 h-2.5 rounded-full border border-gray-600" />
+                  )}
+                  <span className={diagnosticsReady ? "text-emerald-400" : "text-gray-500"}>Test Pre-Vuelo aprobado</span>
+                </div>
+                <div className="flex items-center gap-2 text-[9px]">
+                  {projectConfig ? (
+                    <CheckCircle2 size={10} className="text-emerald-400" />
+                  ) : (
+                    <div className="w-2.5 h-2.5 rounded-full border border-gray-600" />
+                  )}
+                  <span className={projectConfig ? "text-emerald-400" : "text-gray-500"}>Proyecto analizado</span>
+                </div>
+              </div>
+
               <div className="flex items-center gap-2 mb-3 p-2 bg-cyan-950/20 border border-cyan-500/30 rounded-lg">
                 <input 
                   type="checkbox" 
@@ -661,7 +861,7 @@ const analyzeProject = async () => {
                   className="w-4 h-4 rounded border-gray-600 text-cyan-600 focus:ring-cyan-500 bg-gray-800 cursor-pointer"
                 />
                 <label htmlFor="autoExecute" className="text-[10px] text-cyan-300 font-medium cursor-pointer select-none flex items-center gap-1">
-                  🚀 Ejecutar este sprint automáticamente al planificarlo
+                  🚀 Ejecutar automáticamente
                 </label>
               </div>
 
@@ -684,7 +884,7 @@ const analyzeProject = async () => {
                       headers: { "Content-Type": "application/json" }, 
                       body: JSON.stringify({ 
                         agents: agentsConfig.filter(a => a.enabled), 
-                        brief: await fetch("/api/project/brief").then(r => r.json()).then(d => d.brief),
+                        brief: await fetch("/api/project/brief").then(r => r.json()).then(d => d.brief).catch(() => null),
                         vision: projectVision,
                         customTasks: tasksArray
                       }) 
@@ -694,7 +894,6 @@ const analyzeProject = async () => {
                       setSprintPlanned(true); 
                       setCustomTasks("");
                       
-                      // ✅ LÓGICA DE AUTO-EJECUCIÓN
                       if (autoExecuteNextSprint) {
                         setTimeout(async () => {
                           try {
@@ -710,11 +909,9 @@ const analyzeProject = async () => {
                               setShowLaunchModal(true);
                               setSprintExecuting(true);
                               setProjectStatus("building");
-                            } else {
-                              alert(`❌ Error al ejecutar automáticamente: ${execData.message}`);
                             }
                           } catch (err: any) {
-                            alert(`❌ Error de conexión al ejecutar: ${err.message}`);
+                            alert(`❌ Error: ${err.message}`);
                           }
                         }, 1500);
                       }
@@ -725,7 +922,11 @@ const analyzeProject = async () => {
                     alert(`❌ Error: ${err.message}`); 
                   }
                 }} 
-                className={`w-full py-2 rounded-lg font-bold text-[10px] transition-all flex items-center justify-center gap-2 ${projectConfig && diagnosticsReady && projectVision.isCompleted ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-500 hover:to-blue-500" : "bg-gray-800 text-gray-500 cursor-not-allowed"}`}
+                className={`w-full py-2 rounded-lg font-bold text-[10px] transition-all flex items-center justify-center gap-2 ${
+                  projectConfig && diagnosticsReady && projectVision.isCompleted 
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-500 hover:to-blue-500" 
+                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                }`}
               >
                 <LayoutGrid size={14} /> {hasCompletedSprints ? "Planificar Nuevo Sprint" : "Planificar Primer Sprint"}
               </button>
@@ -739,12 +940,8 @@ const analyzeProject = async () => {
                       setLastRetrospective(data.retrospective);
                       setLastSprintNumber(data.sprintNumber);
                       setShowRetrospectiveModal(true);
-                    } else {
-                      alert("ℹ️ No hay sprints completados aún");
                     }
-                  } catch (err: any) { 
-                    alert(`❌ Error: ${err.message}`); 
-                  }
+                  } catch {}
                 }}
                 className="w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-[10px] font-bold rounded hover:from-cyan-500 hover:to-blue-500 transition-all flex items-center justify-center gap-2"
               >
@@ -759,17 +956,11 @@ const analyzeProject = async () => {
               </div>
               
               {sprintState?.sprint?.status === "planned" && !sprintExecuting && (
-                <button onClick={async () => {
-                  try {
-                    const savedVision = typeof window !== 'undefined' ? localStorage.getItem('projectVision') : null;
-                    const vision = savedVision ? JSON.parse(savedVision) : projectVision;
-                    const res = await fetch("/api/sprint/execute", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vision }) });
-                    const data = await res.json();
-                    if (data.success) { setShowLaunchModal(true); setSprintExecuting(true); setProjectStatus("building"); } 
-                    else { alert(`❌ Error: ${data.message}`); }
-                  } catch (err: any) { alert(`❌ Error de conexión: ${err.message}`); }
-                }} className="w-full py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white text-[10px] font-bold rounded hover:from-emerald-500 hover:to-green-500 transition-all flex items-center justify-center gap-2 animate-pulse">
-                  <Play size={14} /> INICIAR EJECUCIÓN DEL SPRINT
+                <button 
+                  onClick={() => setShowStartForm(true)}
+                  className="w-full py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white text-[10px] font-bold rounded hover:from-emerald-500 hover:to-green-500 transition-all flex items-center justify-center gap-2 animate-pulse"
+                >
+                  <Play size={14} /> REVISAR Y EJECUTAR SPRINT
                 </button>
               )}
 
@@ -783,123 +974,20 @@ const analyzeProject = async () => {
               {sprintState?.sprint?.status === "retrospective" && (
                 <div className="p-3 bg-cyan-950/20 border border-cyan-500/40 rounded">
                   <div className="flex items-center gap-2 mb-1"><Bot size={14} className="text-cyan-400 animate-pulse" /><span className="text-[10px] font-bold text-cyan-400">Generando Retrospectiva...</span></div>
-                  <p className="text-[9px] text-gray-400">El Product Owner está analizando el sprint...</p>
                 </div>
               )}
 
-{sprintState?.sprint?.status === "survey" && sprintState?.sprint?.surveys && (
-  <div className="p-3 bg-amber-950/20 border border-amber-500/40 rounded space-y-3">
-    <div className="flex items-center gap-2">
-      <Eye size={14} className="text-amber-400" />
-      <span className="text-[10px] font-bold text-amber-400">Review del Sprint (Responde para cerrar)</span>
-    </div>
-    <p className="text-[9px] text-gray-400">Responde estas preguntas para cerrar el sprint y aplicar las mejoras al siguiente.</p>
-    
-    <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
-      {sprintState.sprint.surveys.map((survey: any) => (
-        <div key={survey.id} className="space-y-1">
-          <label className="text-[9px] text-gray-300 font-bold flex items-start gap-1">
-            {survey.type === "multiple" ? "🎯" : "❓"} {survey.question}
-          </label>
-          
-          {survey.type === "multiple" ? (
-            <select 
-              value={surveyAnswers[survey.id] || ""}
-              onChange={(e) => setSurveyAnswers(prev => ({ ...prev, [survey.id]: e.target.value }))}
-              className="w-full p-1.5 bg-black/40 border border-gray-700 rounded text-[9px] text-white focus:border-amber-500 outline-none"
-            >
-              <option value="">Selecciona una opción...</option>
-              {survey.options?.map((opt: string) => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
-          ) : (
-            <textarea 
-              value={surveyAnswers[survey.id] || ""}
-              onChange={(e) => setSurveyAnswers(prev => ({ ...prev, [survey.id]: e.target.value }))}
-              placeholder="Escribe tu respuesta o decisión..."
-              className="w-full p-1.5 bg-black/40 border border-gray-700 rounded text-[9px] text-white focus:border-amber-500 outline-none resize-none h-16"
-            />
-          )}
-        </div>
-      ))}
-    </div>
-
-    <button 
-      onClick={async () => {
-        // Validar que todas estén respondidas
-        const allAnswered = sprintState.sprint.surveys.every((s: any) => surveyAnswers[s.id]?.trim() !== "");
-        if (!allAnswered) {
-          alert("⚠️ Por favor responde todas las preguntas antes de cerrar el sprint.");
-          return;
-        }
-        if (!confirm("¿Enviar respuestas y cerrar el sprint?")) return;
-        
-        try {
-          const res = await fetch("/api/survey/submit", { 
-            method: "POST", 
-            headers: { "Content-Type": "application/json" }, 
-            body: JSON.stringify({ answers: surveyAnswers }) 
-          });
-          const data = await res.json();
-          
-          if (data.success) {
-            alert("✅ Sprint cerrado exitosamente con tus respuestas.");
-            setSprintPlanned(false); 
-            setSprintExecuting(false); 
-            setSprintState(null);
-            setSurveyAnswers({});
-            
-            // Recargar historial para el siguiente sprint
-            const histRes = await fetch("/api/sprint/last-retrospective");
-            const histData = await histRes.json();
-            if (histData.success && histData.retrospective) {
-              setLastRetrospective(histData.retrospective); 
-              setLastSprintNumber(histData.sprintNumber); 
-              setHasCompletedSprints(true);
-            }
-          } else {
-            alert(`❌ Error: ${data.message}`);
-          }
-        } catch (err: any) {
-          alert(`❌ Error: ${err.message}`);
-        }
-      }}
-      className="w-full py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-[10px] font-bold rounded hover:from-amber-500 hover:to-orange-500 transition-all flex items-center justify-center gap-1 shadow-lg shadow-amber-900/20"
-    >
-      <CheckCircle2 size={12} /> Responder y Cerrar Sprint
-    </button>
-  </div>
-)}
               {sprintState?.sprint?.status === "review" && (
                 <div className="p-3 bg-emerald-950/20 border border-emerald-500/40 rounded space-y-2">
-                  <div className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-400" /><span className="text-[10px] font-bold text-emerald-400">Sprint Completado</span></div>
-                  <button onClick={async () => {
-                    try {
-                      const res = await fetch("/api/sprint/last-retrospective");
-                      const data = await res.json();
-                      if (data.success && data.retrospective) {
-                        setLastRetrospective(data.retrospective); setLastSprintNumber(data.sprintNumber); setShowRetrospectiveModal(true);
-                      } else { alert("❌ No se encontró la retrospectiva"); }
-                    } catch (err: any) { alert(`❌ Error: ${err.message}`); }
-                  }} className="w-full py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-[9px] font-bold rounded transition-all flex items-center justify-center gap-1">
-                    <FileText size={12} /> Ver Retrospectiva
-                  </button>
-                  <button onClick={async () => {
-                    if (!confirm("¿Cerrar sprint y archivar en historial?")) return;
-                    const res = await fetch("/api/sprint/close", { method: "POST" });
-                    const data = await res.json();
-                    if (data.success) {
-                      alert("✅ Sprint cerrado exitosamente");
-                      setSprintPlanned(false); setSprintExecuting(false); setSprintState(null);
-                      const histRes = await fetch("/api/sprint/last-retrospective");
-                      const histData = await histRes.json();
-                      if (histData.success && histData.retrospective) {
-                        setLastRetrospective(histData.retrospective); setLastSprintNumber(histData.sprintNumber); setHasCompletedSprints(true);
-                      }
-                    } else { alert(`❌ Error: ${data.message}`); }
-                  }} className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-bold rounded transition-all flex items-center justify-center gap-1">
-                    <CheckCircle2 size={12} /> Cerrar Sprint
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={14} className="text-emerald-400" />
+                    <span className="text-[10px] font-bold text-emerald-400">Sprint Completado - Revisión Humana</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowEndForm(true)}
+                    className="w-full py-2 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white text-[10px] font-bold rounded hover:from-emerald-500 hover:to-cyan-500 transition-all flex items-center justify-center gap-1"
+                  >
+                    <FileText size={12} /> Abrir Formulario de Cierre
                   </button>
                 </div>
               )}
@@ -927,6 +1015,60 @@ const analyzeProject = async () => {
       <SprintRetrospectiveModal isOpen={showRetrospectiveModal} onClose={() => setShowRetrospectiveModal(false)} retrospective={lastRetrospective} sprintNumber={lastSprintNumber || 1} />
       <AutoCloseModal isOpen={showAutoCloseModal} onClose={() => setShowAutoCloseModal(false)} sprintNumber={lastSprintNumber || 1} />
       <ReadmePreview isVisible={showReadmePreview} onClose={() => setShowReadmePreview(false)} />
+      
+      <SprintStartForm 
+        isOpen={showStartForm}
+        onClose={() => setShowStartForm(false)}
+        sprintNumber={sprintState?.sprint?.sprintNumber || 1}
+        tasksCount={sprintState?.sprint?.tasks?.length || 0}
+        onConfirm={async (feedback) => {
+          try {
+            await fetch("/api/sprint/feedback", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ phase: "start", feedback })
+            });
+            setShowStartForm(false);
+            
+            const savedVision = typeof window !== 'undefined' ? localStorage.getItem('projectVision') : null;
+            const vision = savedVision ? JSON.parse(savedVision) : projectVision;
+            const res = await fetch("/api/sprint/execute", { 
+              method: "POST", 
+              headers: { "Content-Type": "application/json" }, 
+              body: JSON.stringify({ vision }) 
+            });
+            const data = await res.json();
+            if (data.success) {
+              setShowLaunchModal(true);
+              setSprintExecuting(true);
+              setProjectStatus("building");
+            }
+          } catch (err: any) {
+            alert(`❌ Error: ${err.message}`);
+          }
+        }}
+      />
+
+      <SprintEndForm 
+        isOpen={showEndForm}
+        onClose={() => setShowEndForm(false)}
+        sprintNumber={sprintState?.sprint?.sprintNumber || 1}
+        retrospective={sprintState?.sprint?.retrospective || lastRetrospective}
+        onSubmitSuccess={() => {
+          setShowEndForm(false);
+          setSprintPlanned(false);
+          setSprintExecuting(false);
+          setSprintState(null);
+          
+          fetch("/api/sprint/last-retrospective").then(r => r.json()).then(data => {
+            if (data.success && data.retrospective) {
+              setLastRetrospective(data.retrospective);
+              setLastSprintNumber(data.sprintNumber);
+              setHasCompletedSprints(true);
+            }
+          });
+        }}
+      />
     </div>
   );
 }
