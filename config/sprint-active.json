@@ -56,15 +56,24 @@
       "title": "Refactorizar el módulo de recuperación de datos para mejorar su eficiencia y escalabilidad.",
       "description": "[DEV/QA] Refactorizar el módulo de recuperación de datos para mejorar su eficiencia y escalabilidad.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T15:26:41.553Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:26:41.553Z",
+      "completedAt": "2026-10-25T15:27:41.368Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "b416981a8d0a15a22a890892318885355581eb25"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792905402017-4",
       "title": "Añadir casos de prueba para la nueva función de recuperación de datos.",
       "description": "[DEV/QA] Añadir casos de prueba para la nueva función de recuperación de datos.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:27:43.385Z"
     },
     {
       "id": "task-1792905402017-5",
@@ -110,6 +119,7 @@
   "filesChanged": [
     "STRATEGY.md",
     "arquitectura_proyecto_f_brica_de_agentes.md",
-    "Plan_de_Pruebas_de_Regresion.md"
+    "Plan_de_Pruebas_de_Regresion.md",
+    "nombre_del_archivo.ext"
   ]
 }

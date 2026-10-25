@@ -331,5 +331,17 @@
     "completedAt": "2026-10-25T15:27:38.357Z",
     "fileName": "nombre_del_archivo.ext",
     "duration": 57
+  },
+  {
+    "agent": "dev",
+    "taskId": "task-1792905402017-4",
+    "taskTitle": "Añadir casos de prueba para la nueva función de recuperación de datos.",
+    "prompt": "Eres un Developer Senior (10x Engineer) experto en Clean Code. Tu trabajo es IMPLEMENTAR. \nREGLAS OBLIGATORIAS:\n1. Usa principios SOLID y patrones de diseño mencionados por el Arquitecto.\n2. Maneja TODOS los errores posibles (try/catch, validaciones de input).\n3. El código debe ser modular, testeable y estar profusamente comentado.\n4. Si el contexto del Arquitecto menciona tecnologías específicas, ÚSALAS estrictamente.\n5. Responde SOLO con el contenido del archivo. Primera línea: 'ARCHIVO: ruta/nombre.ext'\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: Añadir c...",
+    "response": "import { describe, it, expect } from 'vitest';\nimport { render, screen } from '@testing-library/react';\nimport { Provider } from 'react-redux';\nimport { configureStore } from '@reduxjs/toolkit';\nimport rootReducer from '../reducers';\nimport DataFetching from '../components/DataFetching';\nimport axios from 'axios';\n\ndescribe('DataFetching Component', () => {\n  const store = configureStore({\n    reducer: rootReducer,\n  });\n\n  it('should fetch and display data from Trello API', async () => {\n    // Mocking the axios get request\n    axios.get = vitest.fn().mockResolvedValue({\n      data: {\n        cards: [\n          { id: '1', name: 'Task 1' },\n          { id: '2', name: 'Task 2' },\n        ],\n      },\n    });\n\n    render(\n      <Provider store={store}>\n        <DataFetching />\n      </Provider>\n    );\n\n    expect(axios.get).toHaveBeenCalledWith('https://api.trello.com/1/boards/yourBoardId/cards');\n\n    const task1 = await screen.findByText('Task 1');\n    const task2 = await screen.findByT...",
+    "status": "done",
+    "startedAt": "2026-10-25T15:27:43.396Z",
+    "completedAt": "2026-10-25T15:28:37.078Z",
+    "fileName": "nombre_del_archivo.ext",
+    "duration": 54
   }
 ]

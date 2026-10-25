@@ -1,54 +1,55 @@
-```javascript
-// Importaciones necesarias
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from '../reducers';
+import DataFetching from '../components/DataFetching';
 import axios from 'axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Definición de la URL base para las llamadas a la API
-const API_BASE_URL = 'https://api.trello.com/1';
+describe('DataFetching Component', () => {
+  const store = configureStore({
+    reducer: rootReducer,
+  });
 
-// Creación de un thunk para obtener datos de Trello
-export const fetchTrelloData = createAsyncThunk(
-  'trello/fetchData',
-  async (boardId, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/boards/${boardId}/cards`, {
-        params: {
-          key: process.env.REACT_APP_TRELLO_API_KEY,
-          token: process.env.REACT_APP_TRELLO_API_TOKEN,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : { message: error.message });
-    }
-  }
-);
+  it('should fetch and display data from Trello API', async () => {
+    // Mocking the axios get request
+    axios.get = vitest.fn().mockResolvedValue({
+      data: {
+        cards: [
+          { id: '1', name: 'Task 1' },
+          { id: '2', name: 'Task 2' },
+        ],
+      },
+    });
 
-// Definición del slice de Redux para el estado de Trello
-const trelloSlice = createSlice({
-  name: 'trello',
-  initialState: {
-    data: [],
-    status: 'idle',
-    error: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchTrelloData.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchTrelloData.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.data = action.payload;
-      })
-      .addCase(fetchTrelloData.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      });
-  },
+    render(
+      <Provider store={store}>
+        <DataFetching />
+      </Provider>
+    );
+
+    expect(axios.get).toHaveBeenCalledWith('https://api.trello.com/1/boards/yourBoardId/cards');
+
+    const task1 = await screen.findByText('Task 1');
+    const task2 = await screen.findByText('Task 2');
+
+    expect(task1).toBeInTheDocument();
+    expect(task2).toBeInTheDocument();
+  });
+
+  it('should handle error when fetching data from Trello API', async () => {
+    // Mocking the axios get request to fail
+    axios.get = vitest.fn().mockRejectedValueOnce(new Error('Network Error'));
+
+    render(
+      <Provider store={store}>
+        <DataFetching />
+      </Provider>
+    );
+
+    expect(axios.get).toHaveBeenCalledWith('https://api.trello.com/1/boards/yourBoardId/cards');
+
+    const errorMessage = await screen.findByText('Error fetching data');
+    expect(errorMessage).toBeInTheDocument();
+  });
 });
-
-// Exportación de los reducers y thunks
-export default trelloSlice.reducer;
-```
