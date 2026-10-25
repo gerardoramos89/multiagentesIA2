@@ -72,15 +72,24 @@
       "title": "Añadir casos de prueba para la nueva función de recuperación de datos.",
       "description": "[DEV/QA] Añadir casos de prueba para la nueva función de recuperación de datos.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T15:27:43.385Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:27:43.385Z",
+      "completedAt": "2026-10-25T15:28:40.207Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "93c7e6d8533b98be3ad37f408c55f786f115d85d"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792905402017-5",
       "title": "Actualizar la guía de despliegue con pasos más detallados para facilitar la configuración de variables de entorno.",
       "description": "[DEV/QA] Actualizar la guía de despliegue con pasos más detallados para facilitar la configuración de variables de entorno.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:28:42.221Z"
     },
     {
       "id": "task-1792905402017-6",

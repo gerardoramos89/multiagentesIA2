@@ -343,5 +343,17 @@
     "completedAt": "2026-10-25T15:28:37.078Z",
     "fileName": "nombre_del_archivo.ext",
     "duration": 54
+  },
+  {
+    "agent": "dev",
+    "taskId": "task-1792905402017-5",
+    "taskTitle": "Actualizar la guía de despliegue con pasos más detallados para facilitar la configuración de variables de entorno.",
+    "prompt": "Eres un Developer Senior (10x Engineer) experto en Clean Code. Tu trabajo es IMPLEMENTAR. \nREGLAS OBLIGATORIAS:\n1. Usa principios SOLID y patrones de diseño mencionados por el Arquitecto.\n2. Maneja TODOS los errores posibles (try/catch, validaciones de input).\n3. El código debe ser modular, testeable y estar profusamente comentado.\n4. Si el contexto del Arquitecto menciona tecnologías específicas, ÚSALAS estrictamente.\n5. Responde SOLO con el contenido del archivo. Primera línea: 'ARCHIVO: ruta/nombre.ext'\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: Actualiz...",
+    "response": "# Guía de Despliegue para Proyecto de Fábrica de Agentes\n\n## 1. Introducción\nEste documento proporciona una guía detallada para la configuración de variables de entorno necesarias para el correcto funcionamiento del Proyecto de Fábrica de Agentes. Estas variables son cruciales para la gestión de sprints y la integración con APIs externas como Trello y Ollama.\n\n## 2. Variables de Entorno\n\n### 2.1. Variables Generales\nEstas variables son comunes a todos los componentes del sistema.\n\n- **NEXT_PUBLIC_API_BASE_URL**: URL base de la API backend.\n- **NEXT_PUBLIC_TRELLO_API_KEY**: Clave de API de Trello.\n- **NEXT_PUBLIC_TRELLO_TOKEN**: Token de autenticación para Trello.\n- **NEXT_PUBLIC_OLLAMA_API_URL**: URL de la API de Ollama.\n\n### 2.2. Variables Específicas de Desarrollo\nEstas variables se utilizan durante el desarrollo y deben mantenerse en secreto en el entorno de desarrollo.\n\n- **NEXT_PUBLIC_DEVELOPMENT_MODE**: Establecido en `true` para indicar que el entorno es de desarrollo.\n- **NEXT_...",
+    "status": "done",
+    "startedAt": "2026-10-25T15:28:42.230Z",
+    "completedAt": "2026-10-25T15:30:39.636Z",
+    "fileName": "nombre_del_archivo.ext",
+    "duration": 117
   }
 ]
