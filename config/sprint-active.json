@@ -72,15 +72,24 @@
       "title": "Implementar pruebas unitarias para la función de commit automático.",
       "description": "[DEV/QA] Implementar pruebas unitarias para la función de commit automático.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T04:55:48.972Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:55:48.972Z",
+      "completedAt": "2026-10-25T04:59:30.752Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "98b2df93468467ce63c1eba3b1e37a12dba79014"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792903831648-5",
       "title": "Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "description": "[DEV/QA] Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:59:32.773Z"
     },
     {
       "id": "task-1792903831648-6",

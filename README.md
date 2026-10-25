@@ -1,112 +1,104 @@
-# MultiagentesIA - Fábrica Autónoma
+# Proyecto de Fábrica de Agentes
 
-## Descripción del Proyecto
+## Introducción
+El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
+- Frontend: Next.js, React, Tailwind
+- Backend: Node.js
+- IA: Ollama
+- APIs: Trello API, GitHub API
 
-**Nombre:** MultiagentesIA - Fábrica Autónoma
+## Estructura de Carpetas
+La estructura de carpetas del proyecto se organizará de la siguiente manera:
+```
+/src
+  /components
+  /pages
+  /services
+  /utils
+  /public
+```
 
-**Objetivo:** Desarrollar un sistema autónomo de gestión de sprints con IA donde agentes especializados colaboren para construir software de forma iterativa, con memoria persistente versionada en Git y auto-aprendizaje continuo.
+## Patrones de Diseño
+### Patrón de Diseño de Servicios
+Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.
 
-## Estado del Desarrollo
+### Patrón de Diseño de Componentes
+Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código.
 
-El proyecto se encuentra en una fase avanzada de desarrollo. Se han implementado las siguientes funcionalidades:
+## Decisiones Técnicas
+### Administración de Estado
+Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones.
 
-- **Autenticación y Seguridad:** Implementación de autenticación basada en tokens para interactuar con las APIs externas.
-- **Integración con Trello API:** Gestión de sprints y tareas utilizando la API de Trello.
-- **Integración con GitHub API:** Gestión de repositorios y colaboración en el desarrollo del software.
-- **Autonomía y Aprendizaje:** Implementación de un modelo de IA para auto-aprendizaje y toma de decisiones en la gestión de sprints.
+### Gestión de Errores
+Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo.
 
-## Historial de Sprints
+### Autenticación y Seguridad
+La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud.
 
-- **Sprint 1:** Configuración del entorno de desarrollo y base de datos.
-- **Sprint 2:** Implementación de la autenticación y conexión con Trello API.
-- **Sprint 3:** Integración con GitHub API y desarrollo de la lógica de auto-aprendizaje.
-- **Sprint 4:** Pruebas y ajustes finales del sistema autónomo.
+## Escalabilidad
+### Escalabilidad del Backend
+El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios.
 
-## Guía de Instalación y Uso
+## Despliegue y Configuración de Variables de Entorno
 
-### Requisitos
+### Requisitos Previos
+Asegúrate de tener instaladas las siguientes herramientas:
+- Node.js (versión 14.x o superior)
+- npm (versión 6.x o superior)
+- Git
 
-- Node.js v14.x o superior
-- npm v6.x o superior
-- Una cuenta en Trello y GitHub con API keys.
+### Paso 1: Clonar el Repositorio
+Clona el repositorio del proyecto desde GitHub:
+```bash
+git clone https://github.com/tu-usuario/proyecto-de-fábrica-de-agentes.git
+cd proyecto-de-fábrica-de-agentes
+```
 
-### Instalación
+### Paso 2: Instalar Dependencias
+Instala las dependencias del proyecto:
+```bash
+npm install
+```
 
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/multiagentesia-fabrica-autonoma.git
-   cd multiagentesia-fabrica-autonoma
-   ```
+### Paso 3: Configuración de Variables de Entorno
+Crea un archivo `.env` en la raíz del proyecto y configura las siguientes variables:
+```
+# Variables de entorno para el backend
+PORT=3001
+DB_URI=mongodb://localhost:27017/fábrica_de_agentes
+JWT_SECRET=tu_secreto_jwt
 
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
+# Variables de entorno para la API de Trello
+TRELLO_API_KEY=tu_api_key_de_trello
+TRELLO_API_TOKEN=tu_token_de_trello
 
-3. Crea los archivos `.env` basado en los ejemplos proporcionados (`env.example`):
-   ```bash
-   cp .env.example .env.local
-   cp .env.example .env.development
-   cp .env.example .env.production
-   ```
+# Variables de entorno para la API de GitHub
+GITHUB_API_TOKEN=tu_token_de_github
+```
 
-4. Configura las variables de entorno (`TRELLO_API_KEY`, `GITHUB_API_KEY`, etc.).
+### Paso 4: Despliegue
+Para desplegar el proyecto, sigue estos pasos:
 
-5. Inicia el servidor de desarrollo:
-   ```bash
-   npm run dev
-   ```
+#### Despliegue del Frontend
+Entra en la carpeta del frontend y construye la aplicación:
+```bash
+cd frontend
+npm run build
+```
+Luego, despliega la aplicación en un servidor de tu elección.
 
-### Ejemplos de Uso
+#### Despliegue del Backend
+En una terminal separada, inicia el servidor backend:
+```bash
+npm start
+```
 
-1. **Autenticación:**
-   - Utiliza el hook de autenticación para obtener y mantener una sesión válida.
-   ```javascript
-   import useAuth from './hooks/useAuth';
+### Paso 5: Verificación
+Abre tu navegador y navega a la URL de tu servidor frontend. Verifica que la aplicación esté funcionando correctamente.
 
-   const { login, logout, isAuthenticated } = useAuth();
-   ```
-
-2. **Gestión de Sprints:**
-   - Utiliza el servicio de Trello para crear, actualizar y eliminar sprints y tareas.
-   ```javascript
-   import { trelloService } from './services/trelloService';
-
-   const createSprint = async () => {
-     await trelloService.createSprint();
-   };
-   ```
-
-3. **Integración con GitHub:**
-   - Utiliza el servicio de GitHub para colaborar en repositorios.
-   ```javascript
-   import { githubService } from './services/githubService';
-
-   const pushToRepo = async () => {
-     await githubService.pushCode();
-   };
-   ```
-
-## Próximos Pasos
-
-- **Mejora de la IA:** Implementar modelos avanzados de aprendizaje automático para mejorar la toma de decisiones y la gestión de sprints.
-- **Optimización del Rendimiento:** Ajustar y optimizar el rendimiento del sistema para escalabilidad y eficiencia.
-- **Documentación y Herramientas:** Documentar el código y mejorar las herramientas de desarrollo para facilitar la colaboración y el mantenimiento del proyecto.
-
-## Contribución
-
-¡Estamos emocionados de recibir contribuciones de la comunidad! Para contribuir, sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza los cambios y realiza commits (`git commit -m 'Añade nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-5. Abre una solicitud de pull request.
-
-## Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+## Conclusion
+Este documento proporciona una guía detallada para el despliegue y configuración de variables de entorno del proyecto de Fábrica de Agentes. Asegúrate de seguir cada paso con cuidado para garantizar un funcionamiento correcto del sistema.
 
 ---
 
-¡Gracias por usar MultiagentesIA - Fábrica Autónoma!
+ARCHIVO: README.md

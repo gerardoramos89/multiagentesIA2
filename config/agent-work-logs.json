@@ -238,5 +238,17 @@
     "completedAt": "2026-10-25T04:59:27.723Z",
     "fileName": "nombre_del_archivo.ext",
     "duration": 219
+  },
+  {
+    "agent": "dev",
+    "taskId": "task-1792903831648-5",
+    "taskTitle": "Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
+    "prompt": "Eres un Developer Senior (10x Engineer) experto en Clean Code. Tu trabajo es IMPLEMENTAR. \nREGLAS OBLIGATORIAS:\n1. Usa principios SOLID y patrones de diseño mencionados por el Arquitecto.\n2. Maneja TODOS los errores posibles (try/catch, validaciones de input).\n3. El código debe ser modular, testeable y estar profusamente comentado.\n4. Si el contexto del Arquitecto menciona tecnologías específicas, ÚSALAS estrictamente.\n5. Responde SOLO con el contenido del archivo. Primera línea: 'ARCHIVO: ruta/nombre.ext'\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: Actualiz...",
+    "response": "# Proyecto de Fábrica de Agentes\n\n## Introducción\nEl proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:\n- Frontend: Next.js, React, Tailwind\n- Backend: Node.js\n- IA: Ollama\n- APIs: Trello API, GitHub API\n\n## Estructura de Carpetas\nLa estructura de carpetas del proyecto se organizará de la siguiente manera:\n```\n/src\n  /components\n  /pages\n  /services\n  /utils\n  /public\n```\n\n## Patrones de Diseño\n### Patrón de Diseño de Servicios\nSe utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.\n\n### Patrón de Diseño de Componentes\nLos componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organizac...",
+    "status": "done",
+    "startedAt": "2026-10-25T04:59:32.785Z",
+    "completedAt": "2026-10-25T05:01:16.239Z",
+    "fileName": "README.md",
+    "duration": 103
   }
 ]
