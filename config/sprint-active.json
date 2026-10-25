@@ -88,15 +88,24 @@
       "title": "Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "description": "[DEV/QA] Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T04:38:47.068Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:38:47.068Z",
+      "completedAt": "2026-10-25T04:40:51.976Z",
+      "output": "Generado: README.md",
+      "commits": [
+        "4e08fb4f478de5280ed50176f9f1944782567e18"
+      ],
+      "filesModified": [
+        "README.md"
+      ]
     },
     {
       "id": "task-1792902767330-6",
       "title": "🧪 [QA] Revisión de calidad y pruebas",
       "description": "Como QA Engineer, revisa TODO el código generado en este sprint. Crea un archivo QA_REPORT.md con: 1) Bugs encontrados, 2) Cobertura de tests, 3) Recomendaciones de mejora, 4) Casos de prueba críticos. Si es posible, crea tests unitarios funcionales.",
       "agent": "qa",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:40:53.998Z"
     },
     {
       "id": "task-1792902767330-7",
@@ -131,6 +140,7 @@
     "arquitectura_proyecto_f_brica_de_agentes.md",
     "ImplementacionFuncionRecuperacionDatos.md",
     "src_config_schemas.ts",
-    "nombre_del_archivo.ext"
+    "nombre_del_archivo.ext",
+    "README.md"
   ]
 }
