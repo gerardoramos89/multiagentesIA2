@@ -1,60 +1,120 @@
-# Arquitectura del Proyecto de Fábrica de Agentes
+# Sistema de Logs y Limpieza de Archivos
 
 ## 1. Introducción
-El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
-- Frontend: Next.js, React, Tailwind
-- Backend: Node.js
-- IA: Ollama
-- APIs: Trello API, GitHub API
+
+El objetivo de este proyecto es desarrollar un sistema autónomo de gestión de sprints con IA, que incluya un sistema de logs detallado para el seguimiento de eventos en la función de recuperación de datos. Además, se implementará una limpieza de archivos que elimine aquellos que ya no sean necesarios.
 
 ## 2. Estructura de Carpetas
-La estructura de carpetas del proyecto se organizará de la siguiente manera:
+
+### 2.1. Estructura General
+
 ```
-/src
-  /components
-  /pages
-  /services
-  /utils
-  /public
+/proyecto-de-fabrica-de-agentes
+├── src/
+│   ├── logs/
+│   ├── data_recovery/
+│   ├── utils/
+│   ├── config/
+│   ├── public/
+│   └── index.js
+├── package.json
+├── .gitignore
+├── README.md
+└── ARCHITECTURE.md
 ```
 
-## 3. Patrones de Diseño
-### 3.1. Patrón de Diseño de Servicios
-Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.
+### 2.2. Carpetas y Archivos
 
-### 3.2. Patrón de Diseño de Componentes
-Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código.
+- **logs/**: Contendrá los registros detallados de eventos y errores.
+- **data_recovery/**: Contendrá la lógica para la recuperación de datos.
+- **utils/**: Contendrá funciones utilitarias reutilizables.
+- **config/**: Contendrá la configuración de la aplicación.
+- **public/**: Contendrá los archivos estáticos.
+- **index.js**: Punto de entrada principal de la aplicación.
 
-## 4. Decisiones Técnicas
-### 4.1. Administración de Estado
-Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones.
+## 3. Tecnologías Utilizadas
 
-### 4.2. Gestión de Errores
-Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo.
+- **Next.js**: Para el desarrollo de la aplicación web.
+- **React**: Para la interfaz de usuario.
+- **Tailwind**: Para el diseño.
+- **Node.js**: Para el backend.
+- **Ollama**: Para la IA.
+- **Trello API**: Para la integración con Trello.
+- **GitHub API**: Para la integración con GitHub.
 
-### 4.3. Autenticación y Seguridad
-La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud.
+## 4. Patrones de Diseño
 
-## 5. Escalabilidad
-### 5.1. Escalabilidad del Backend
-El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios.
+### 4.1. Patrón de Registro (Logging)
 
-### 5.2. Escalabilidad del Frontend
-El frontend estará construido con Next.js, que soporta SSR (Server-Side Rendering) y SSG (Static Site Generation). Esto permitirá una carga rápida y una mejor experiencia de usuario, además de facilitar la escalabilidad horizontal.
+Se utilizará el patrón de diseño **Strategy** para implementar diferentes estrategias de registro dependiendo del entorno de ejecución (desarrollo, producción, etc.).
 
-## 6. Seguridad
-### 6.1. Protección de Datos
-Todos los datos sensibles se almacenarán de manera segura utilizando encriptación en reposo y transmisión. Además, se utilizarán prácticas como el uso de HTTPS para proteger las comunicaciones entre el frontend y el backend.
+```javascript
+// src/logs/strategies/fileLogger.js
+class FileLogger {
+  log(message) {
+    // Implementación para registrar en un archivo
+  }
+}
 
-### 6.2. Prevención de Vulnerabilidades
-Se utilizarán herramientas de análisis de código estático y dinámico para detectar y corregir vulnerabilidades en el código. Además, se mantendrán actualizadas las dependencias y las bibliotecas utilizadas.
+// src/logs/strategies/consoleLogger.js
+class ConsoleLogger {
+  log(message) {
+    // Implementación para registrar en la consola
+  }
+}
+```
 
-## 7. Reducción de Deuda Técnica
-### 7.1. Pruebas Automatizadas
-Se implementarán pruebas unitarias y de integración utilizando Jest y Testing Library. Esto ayudará a identificar y corregir errores antes de la implementación en producción y a mantener un código limpio y confiable.
+### 4.2. Limpieza de Archivos
 
-### 7.2. Monitoreo y Registro
-Se utilizará una solución de monitoreo y registro como Prometheus y Grafana para monitorear el rendimiento del sistema y registrar las actividades del sistema. Esto permitirá una detección rápida de problemas y una mejor comprensión del estado del sistema.
+Se utilizará el patrón de diseño **Command** para la limpieza de archivos antiguos y no utilizados.
 
-## 8. Conclusiones
-Este documento resume las decisiones arquitectónicas y técnicas tomadas para el desarrollo del Proyecto de Fábrica de Agentes. Las tecnologías y patrones de diseño seleccionados buscan garantizar una solución escalable, segura y mantenible.
+```javascript
+// src/utils/deleteFileCommand.js
+class DeleteFileCommand {
+  execute(filePath) {
+    // Implementación para eliminar un archivo
+  }
+}
+```
+
+## 5. Decisiones Técnicas
+
+### 5.1. Gestión de Dependencias
+
+Se utilizará **npm** para la gestión de dependencias.
+
+```json
+"dependencies": {
+  "next": "^13.0.0",
+  "react": "^18.0.0",
+  "tailwindcss": "^3.0.0"
+}
+```
+
+### 5.2. Configuración de Entorno
+
+Se utilizará un archivo `.env` para la configuración de variables de entorno.
+
+```env
+NEXT_PUBLIC_API_KEY=your_api_key
+```
+
+### 5.3. Seguridad
+
+Se implementarán medidas de seguridad estándar, como la autenticación y la validación de datos.
+
+## 6. Escalabilidad
+
+Para escalar el sistema, se podría considerar la implementación de un sistema de mensajería asíncrona (como RabbitMQ) para manejar las solicitudes de recuperación de datos de manera más eficiente.
+
+## 7. Seguridad
+
+Se implementarán medidas de seguridad estándar, como la autenticación y la validación de datos. Además, se utilizarán prácticas de cifrado para proteger la información sensible.
+
+## 8. Reducción de Deuda Técnica
+
+Para reducir la deuda técnica, se realizarán revisiones regulares del código y se implementarán pruebas unitarias y de integración. Además, se utilizarán herramientas de análisis estático para detectar y corregir posibles problemas de calidad del código.
+
+## 9. Conclusiones
+
+Este documento describe la arquitectura del sistema de logs y limpieza de archivos para el proyecto de Fábrica de Agentes. Se han tomado decisiones específicas en términos de patrones de diseño, tecnologías, seguridad y escalabilidad, con el objetivo de garantizar un sistema robusto y mantenible.
