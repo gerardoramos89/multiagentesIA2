@@ -1,5 +1,5 @@
 {
-  "totalCommits": 36,
+  "totalCommits": 37,
   "filesEverChanged": [
     "STRATEGY.md",
     "ARCHITECTURE.md",
@@ -10,8 +10,9 @@
     "arquitectura_proyecto_f_brica_de_agentes.md",
     "ImplementacionFuncionRecuperacionDatos.md",
     "src_config_schemas.ts",
-    "nombre_del_archivo.ext"
+    "nombre_del_archivo.ext",
+    "Plan_de_Pruebas_de_Regresion.md"
   ],
-  "sprintsCompleted": 3,
-  "lastCommitHash": "d431ab2643a38463272c72bae744cf0f3692fb01"
+  "sprintsCompleted": 4,
+  "lastCommitHash": "b74d24c85a89d6003a748edbfa69716237f542e8"
 }
