@@ -1,88 +1,54 @@
-```javascript
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
-
-/**
- * Función para obtener el estado de un commit en GitHub
- * @param {string} repo - Nombre del repositorio en GitHub
- * @param {string} commitHash - Hash del commit
- * @returns {Promise<Object>} - Información del commit
- */
-async function getCommitStatus(repo, commitHash) {
-  try {
-    const response = await axios.get(`https://api.github.com/repos/${repo}/commits/${commitHash}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error al obtener el estado del commit ${commitHash} en el repositorio ${repo}:`, error);
-    throw error;
-  }
+```json
+{
+  "nombre_del_archivo": "nombre_del_archivo.ext",
+  "contenido": [
+    {
+      "seccion": "Introducción",
+      "contenido": "El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías: Frontend: Next.js, React, Tailwind, Backend: Node.js, IA: Ollama, APIs: Trello API, GitHub API."
+    },
+    {
+      "seccion": "Estructura de Carpetas",
+      "contenido": "/src /components /pages /services /utils /public"
+    },
+    {
+      "seccion": "Patrones de Diseño",
+      "contenido": [
+        {
+          "patron": "Patrón de Diseño de Servicios",
+          "contenido": "Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta /services."
+        },
+        {
+          "patron": "Patrón de Diseño de Componentes",
+          "contenido": "Los componentes de React se organizarán en la carpeta /components. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código."
+        }
+      ]
+    },
+    {
+      "seccion": "Decisiones Técnicas",
+      "contenido": [
+        {
+          "decision": "Administración de Estado",
+          "contenido": "Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones."
+        },
+        {
+          "decision": "Gestión de Errores",
+          "contenido": "Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo."
+        },
+        {
+          "decision": "Autenticación y Seguridad",
+          "contenido": "La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud."
+        }
+      ]
+    },
+    {
+      "seccion": "Escalabilidad",
+      "contenido": [
+        {
+          "escalabilidad": "Escalabilidad del Backend",
+          "contenido": "El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios."
+        }
+      ]
+    }
+  ]
 }
-
-/**
- * Función para crear un nuevo commit en GitHub
- * @param {string} repo - Nombre del repositorio en GitHub
- * @param {string} branch - Nombre de la rama
- * @param {string} message - Mensaje del commit
- * @param {string} filePath - Ruta del archivo a modificar
- * @param {Buffer} fileContent - Contenido del archivo
- * @returns {Promise<Object>} - Información del commit creado
- */
-async function createCommit(repo, branch, message, filePath, fileContent) {
-  try {
-    const response = await axios.put(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
-      message,
-      content: fileContent.toString('base64'),
-      branch,
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error al crear el commit en el repositorio ${repo}:`, error);
-    throw error;
-  }
-}
-
-/**
- * Función para implementar la función de commit automático
- * @param {string} repo - Nombre del repositorio en GitHub
- * @param {string} branch - Nombre de la rama
- * @param {string} message - Mensaje del commit
- * @param {string} filePath - Ruta del archivo a modificar
- * @param {Buffer} fileContent - Contenido del archivo
- * @returns {Promise<Object>} - Información del commit creado
- */
-async function autoCommit(repo, branch, message, filePath, fileContent) {
-  try {
-    const commitInfo = await createCommit(repo, branch, message, filePath, fileContent);
-    return commitInfo;
-  } catch (error) {
-    console.error('Error en la función de commit automático:', error);
-    throw error;
-  }
-}
-
-// Pruebas unitarias para la función de commit automático
-describe('autoCommit', () => {
-  it('debería crear un nuevo commit en GitHub', async () => {
-    const repo = 'nombre-repo';
-    const branch = 'main';
-    const message = `Commit ${uuidv4()}`;
-    const filePath = 'src/index.js';
-    const fileContent = Buffer.from('console.log("Hello, World!");');
-
-    const commitInfo = await autoCommit(repo, branch, message, filePath, fileContent);
-
-    expect(commitInfo).toHaveProperty('commit');
-    expect(commitInfo.commit).toHaveProperty('message', message);
-  });
-
-  it('debería lanzar un error si el repositorio no existe', async () => {
-    const repo = 'nonexistent-repo';
-    const branch = 'main';
-    const message = `Commit ${uuidv4()}`;
-    const filePath = 'src/index.js';
-    const fileContent = Buffer.from('console.log("Hello, World!");');
-
-    await expect(autoCommit(repo, branch, message, filePath, fileContent)).rejects.toThrow('Error al crear el commit en el repositorio nonexistent-repo:');
-  });
-});
 ```

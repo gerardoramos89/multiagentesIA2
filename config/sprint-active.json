@@ -40,15 +40,24 @@
       "title": "Implementar una función de recuperación de datos en caso de fallo del sistema.",
       "description": "[ARCH/DEV] Implementar una función de recuperación de datos en caso de fallo del sistema.",
       "agent": "arch",
-      "status": "working",
-      "startedAt": "2026-10-25T04:53:20.055Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:53:20.055Z",
+      "completedAt": "2026-10-25T04:54:28.061Z",
+      "output": "Generado: ARCHITECTURE.md",
+      "commits": [
+        "ed921fd09fcee049026816902e0cacbcf59dac58"
+      ],
+      "filesModified": [
+        "ARCHITECTURE.md"
+      ]
     },
     {
       "id": "task-1792903831648-3",
       "title": "Revisar y ajustar los esquemas JSON para mayor flexibilidad y eficiencia.",
       "description": "[DEV/QA] Revisar y ajustar los esquemas JSON para mayor flexibilidad y eficiencia.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:54:30.076Z"
     },
     {
       "id": "task-1792903831648-4",
@@ -100,6 +109,7 @@
   },
   "filesChanged": [
     "STRATEGY.md",
-    "arquitectura_proyecto_f_brica_de_agentes.md"
+    "arquitectura_proyecto_f_brica_de_agentes.md",
+    "ARCHITECTURE.md"
   ]
 }
