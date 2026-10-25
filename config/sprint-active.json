@@ -88,15 +88,24 @@
       "title": "Actualizar la guía de despliegue con pasos más detallados para facilitar la configuración de variables de entorno.",
       "description": "[DEV/QA] Actualizar la guía de despliegue con pasos más detallados para facilitar la configuración de variables de entorno.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T15:28:42.221Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:28:42.221Z",
+      "completedAt": "2026-10-25T15:30:42.649Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "4a4c7ee9d7476975241ed085b8c09298ffc1d0b4"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792905402017-6",
       "title": "🧪 [QA] Revisión de calidad y pruebas",
       "description": "Como QA Engineer, revisa TODO el código generado en este sprint. Crea un archivo QA_REPORT.md con: 1) Bugs encontrados, 2) Cobertura de tests, 3) Recomendaciones de mejora, 4) Casos de prueba críticos. Si es posible, crea tests unitarios funcionales.",
       "agent": "qa",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:30:44.659Z"
     },
     {
       "id": "task-1792905402017-7",
