@@ -1,100 +1,147 @@
-# MultiagentesIA
+# MultiagentesIA - Fábrica Autónoma
 
-## 1. Introducción
-El proyecto MultiagentesIA tiene como objetivo desarrollar una plataforma multiagente para gestionar la Inteligencia Artificial y equipos de agentes con reglas de gestión de sprints autónomas. Este proyecto está construido utilizando tecnologías avanzadas como Next.js, React, Tailwind, Node.js, Ollama, Trello API, y GitHub API.
+## Descripción del Proyecto
 
-## 2. Estructura de Carpetas
-La estructura de carpetas del proyecto se organiza de la siguiente manera:
+**Nombre:** MultiagentesIA - Fábrica Autónoma
 
-```
-/src
-  /components
-  /context
-  /hooks
-  /pages
-  /public
-  /services
-  /utils
-```
+**Objetivo:** Desarrollar un sistema autónomo de gestión de sprints con IA donde agentes especializados colaboren para construir software de forma iterativa, con memoria persistente versionada en Git y auto-aprendizaje continuo.
 
-## 3. Patrones de Diseño Específicos
-### 3.1. Patrón de Diseño: Modelo-Vista-Controlador (MVC)
-Se utilizará el patrón MVC para separar las responsabilidades en el backend y frontend.
+## Estructura de Carpetas
 
-### 3.2. Patrón de Diseño: Repositorio
-Se implementará un patrón de repositorio para abstraer las operaciones de acceso a datos, facilitando la inserción de capas de persistencia y de servicios.
+### `src/`
 
-## 4. Decisiones Técnicas
-### 4.1. API RESTful
-Se diseñará una API RESTful para la gestión de sprints y la integración con Trello y GitHub.
+#### `components/`
 
-## 5. Guía de Instalación y Uso
-### 5.1. Requisitos
+Componentes reutilizables de React.
+
+#### `pages/`
+
+Páginas de la aplicación Next.js.
+
+#### `utils/`
+
+Funciones y utilidades reutilizables.
+
+#### `providers/`
+
+Provedores de contexto y estado global.
+
+#### `services/`
+
+Servicios para interactuar con APIs externas (Trello API, GitHub API).
+
+#### `types/`
+
+Definiciones de tipos TypeScript.
+
+#### `hooks/`
+
+Hooks personalizados.
+
+#### `assets/`
+
+Recursos estáticos como imágenes, fuentes, etc.
+
+#### `config/`
+
+Configuraciones específicas de la aplicación.
+
+### `public/`
+
+Recursos estáticos a los que se puede acceder directamente.
+
+## Guía de Instalación Paso a Paso
+
+### Requisitos
+
 - Node.js v14.x o superior
-- npm v6.x o superior
-- Una cuenta en Trello y GitHub
+- npm o yarn
 
-### 5.2. Instalación
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/MultiagentesIA.git
-   ```
-2. Navega al directorio del proyecto:
-   ```bash
-   cd MultiagentesIA
-   ```
-3. Instala las dependencias:
-   ```bash
-   npm install
-   ```
+### Paso 1: Clonar el Repositorio
 
-### 5.3. Configuración
-1. Crea un archivo `.env` en la raíz del proyecto y añade tus credenciales de Trello y GitHub.
-   ```env
-   TRELLO_API_KEY=tu_api_key_de_trello
-   TRELLO_TOKEN=tu_token_de_trello
-   GITHUB_TOKEN=tu_token_de_github
-   ```
-2. Ejecuta el servidor de desarrollo:
-   ```bash
-   npm run dev
-   ```
+```bash
+git clone https://github.com/tu-usuario/multiagentesia-fabrica-autonoma.git
+cd multiagentesia-fabrica-autonoma
+```
 
-### 5.4. Ejecución de Pruebas
-1. Para ejecutar las pruebas unitarias:
-   ```bash
-   npm test
-   ```
+### Paso 2: Instalar Dependencias
 
-## 6. Ejemplos de Uso
-### 6.1. Gestión de Sprint
-1. Abre la aplicación en tu navegador.
-2. Inicia sesión con tus credenciales de Trello y GitHub.
-3. Crea un nuevo sprint y asigna tareas a los agentes.
-4. Visualiza el progreso del sprint en tiempo real.
+```bash
+npm install
+# o
+yarn install
+```
 
-## 7. Próximos Pasos
-- Integración con Ollama para la IA en la gestión de sprints.
-- Mejora de la interfaz de usuario para una experiencia de usuario más intuitiva.
-- Implementación de notificaciones y alertas para los usuarios.
+### Paso 3: Configurar Variables de Entorno
 
-## 8. Historial de Sprints
-- Sprint 1: Configuración del entorno y desarrollo básico de la API RESTful.
-- Sprint 2: Implementación de la autenticación y la integración con Trello.
-- Sprint 3: Desarrollo de la interfaz de usuario y pruebas iniciales.
+Crear un archivo `.env.local` en la raíz del proyecto y configurar las siguientes variables:
 
-## 9. Estado del Desarrollo
-El proyecto se encuentra en fase de desarrollo activa. Los sprints se gestionan de manera autónoma y los agentes trabajan en colaboración para mejorar la eficiencia de la gestión de sprints.
+```env
+NEXT_PUBLIC_TRELLO_API_KEY=tu_api_key_de_trello
+NEXT_PUBLIC_TRELLO_TOKEN=tu_token_de_trello
+NEXT_PUBLIC_GITHUB_TOKEN=tu_token_de_github
+```
 
-## 10. Contribuciones
-¡Estamos emocionados por tu interés en contribuir al proyecto! Para contribuir, sigue estos pasos:
+### Paso 4: Ejecutar la Aplicación
+
+```bash
+npm run dev
+# o
+yarn dev
+```
+
+La aplicación estará disponible en `http://localhost:3000`.
+
+## Ejemplos de Uso
+
+### Flujo de Trabajo de los Agentes
+
+1. **Agentes de Sprint Planning:**
+   - Utilizan la API de Trello para crear y gestionar tarjetas de sprint.
+   - Integran con la API de GitHub para versionar el código de manera continua.
+
+2. **Agentes de Desarrollo:**
+   - Desarrollan funcionalidades específicas utilizando React y TypeScript.
+   - Utilizan servicios personalizados para interactuar con APIs externas.
+
+3. **Agentes de IA:**
+   - Utilizan el modelo de IA Ollama para tomar decisiones automatizadas.
+   - Integran con el flujo de trabajo de Trello y GitHub para optimizar el proceso de desarrollo.
+
+## Cómo la Arquitectura Diseñada Resuelve el Problema
+
+La arquitectura del proyecto está diseñada para maximizar la eficiencia y la colaboración entre los agentes. Cada agente tiene una función específica pero se integra perfectamente gracias a:
+
+- **Servicios Reutilizables:** Los servicios en `services/` proporcionan una capa de abstracción para interactuar con APIs externas, facilitando la reutilización de código y la escalabilidad.
+- **Estado Global:** Los provedores en `providers/` mantienen el estado global de la aplicación, asegurando que todos los componentes puedan acceder a los datos necesarios.
+- **Integración Continua:** La integración con GitHub API permite una gestión de versiones eficiente y una rápida detección de cambios.
+
+## Variables de Entorno
+
+Las siguientes variables de entorno deben configurarse en el archivo `.env.local`:
+
+- `NEXT_PUBLIC_TRELLO_API_KEY`: API key de Trello.
+- `NEXT_PUBLIC_TRELLO_TOKEN`: Token de Trello.
+- `NEXT_PUBLIC_GITHUB_TOKEN`: Token de GitHub.
+
+## Flujo de Trabajo de los Agentes
+
+El flujo de trabajo de los agentes se describe en la sección de **Ejemplos de Uso**.
+
+## Contribución
+
+Si deseas contribuir al proyecto, sigue estos pasos:
+
 1. Haz un fork del repositorio.
-2. Crea una nueva rama para tu característica o corrección de errores.
-3. Haz los cambios y realiza un pull request.
+2. Crea una nueva rama para tu funcionalidad: `git checkout -b mi-nueva-funcionalidad`.
+3. Realiza los cambios y haz commit: `git commit -m 'Añadir nueva funcionalidad'`.
+4. Haz push a la rama: `git push origin mi-nueva-funcionalidad`.
+5. Abre una Pull Request.
 
-## 11. Contacto
-Para cualquier consulta o ayuda, no dudes en contactar al equipo de desarrollo en:
-- Email: contacto@multiagentesia.com
-- Sitio web: [MultiagentesIA](https://multiagentesia.com)
+## Licencia
 
-¡Gracias por usar MultiagentesIA!
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+¡Gracias por usar MultiagentesIA - Fábrica Autónoma!
