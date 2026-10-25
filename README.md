@@ -1,81 +1,109 @@
 # MultiagentesIA - Fábrica Autónoma
 
-## 1. Introducción
-El proyecto de MultiagentesIA - Fábrica Autónoma tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
-- Frontend: Next.js, React, Tailwind
-- Backend: Node.js
-- IA: Ollama
-- APIs: Trello API, GitHub API
+## Descripción del Proyecto
 
-## 2. Estructura de Carpetas
-La estructura de carpetas del proyecto se organizará de la siguiente manera:
-```
-/src
-  /components
-  /pages
-  /services
-  /utils
-  /public
-```
+**Nombre:** MultiagentesIA - Fábrica Autónoma
 
-## 3. Patrones de Diseño
-### 3.1. Patrón de Diseño de Servicios
-Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.
+**Objetivo:** Desarrollar un sistema autónomo de gestión de sprints con IA donde agentes especializados colaboren para construir software de forma iterativa, con memoria persistente versionada en Git y auto-aprendizaje continuo.
 
-### 3.2. Patrón de Diseño de Componentes
-Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la modularidad del código.
+## Estado del Desarrollo
 
-## 4. Guía de Instalación y Uso
-### 4.1. Requisitos Previos
-Asegúrate de tener instaladas las siguientes herramientas y dependencias:
-- Node.js (versión 14.x o superior)
-- npm (versión 6.x o superior)
+El proyecto se encuentra en una fase avanzada de desarrollo. Se han implementado las siguientes funcionalidades:
+
+- **Integración con Ollama:** Sistema de IA para la gestión de sprints y toma de decisiones.
+- **API de Trello:** Para la gestión de tareas y seguimiento de progreso.
+- **API de GitHub:** Para la gestión de repositorios y control de versiones.
+- **Sistemas de Logs:** Registro detallado de eventos y errores en la función de recuperación de datos.
+- **Limpieza de Archivos:** Eliminación de archivos no utilizados para liberar espacio.
+
+## Historial de Sprints
+
+- **Sprint 1:** Configuración del entorno de desarrollo y primeros avances en la integración con Ollama.
+- **Sprint 2:** Implementación de la API de Trello para la gestión de tareas.
+- **Sprint 3:** Desarrollo de la API de GitHub para el control de versiones y gestión de repositorios.
+- **Sprint 4:** Implementación de sistemas de logs y limpieza de archivos.
+
+## Guía de Instalación y Uso
+
+### Requisitos
+
+- Node.js v14.x o superior
+- npm v6.x o superior
 - Git
 
-### 4.2. Instalación
-1. Clona el repositorio desde GitHub:
+### Instalación
+
+1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/multiagentesia-fabrica-autonoma.git
+   git clone https://github.com/tu-usuario/proyecto-de-fabrica-de-agentes.git
+   cd proyecto-de-fabrica-de-agentes
    ```
-2. Navega al directorio del proyecto:
-   ```bash
-   cd multiagentesia-fabrica-autonoma
-   ```
-3. Instala las dependencias del proyecto:
+
+2. Instala las dependencias:
    ```bash
    npm install
    ```
 
-### 4.3. Configuración
-1. Renombra el archivo `.env.example` a `.env` y configura las variables de entorno necesarias.
-2. Ejecuta el servidor de desarrollo:
+3. Configura las variables de entorno (ver `config/config.env.example` y renombrar a `config.env`):
    ```bash
-   npm run dev
+   cp config/config.env.example config/config.env
    ```
 
-### 4.4. Uso
-1. Una vez el servidor esté en funcionamiento, abre tu navegador y navega a `http://localhost:3000` para ver la aplicación en funcionamiento.
-2. Para interactuar con las APIs, asegúrate de tener las credenciales y tokens necesarios para Trello y GitHub.
+4. Ejecuta la aplicación:
+   ```bash
+   npm start
+   ```
 
-## 5. Próximos Pasos
-- Integración de Ollama para el auto-aprendizaje continuo.
-- Mejoras en la interfaz de usuario para una experiencia de usuario más fluida.
-- Implementación de pruebas unitarias y de integración.
+### Ejemplos de Uso
 
-## 6. Historial de Sprints
-- Sprint 1: Configuración del entorno de desarrollo y primeros componentes de la interfaz de usuario.
-- Sprint 2: Implementación de la lógica de negocio y conexión con Trello API.
-- Sprint 3: Integración de Ollama para la IA y pruebas iniciales.
-- Sprint 4: Optimización de la interfaz de usuario y ajustes finales.
+1. **Gestión de Sprints:**
+   ```bash
+   npm run sprint:start
+   ```
 
-## 7. Estado del Desarrollo
-El proyecto se encuentra en una etapa avanzada de desarrollo, con un 80% de las funcionalidades implementadas y en funcionamiento. El equipo de desarrollo está enfocado en la integración de Ollama para el auto-aprendizaje continuo y las mejoras en la experiencia de usuario.
+2. **Recuperación de Datos:**
+   ```bash
+   npm run data:recover
+   ```
 
-## 8. Contacto
-Para cualquier consulta o soporte técnico, puedes contactar al equipo de desarrollo a través de:
-- Correo electrónico: contacto@multiagentesia.com
-- Sitio web: [MultiagentesIA](https://multiagentesia.com)
+## Próximos Pasos
+
+- **Mejora de la IA:** Implementar modelos de aprendizaje más avanzados para la IA.
+- **Integración con Herramientas de Colaboración:** Mejorar la integración con herramientas de colaboración para un flujo de trabajo más eficiente.
+- **Optimización de Limpieza de Archivos:** Implementar un sistema de clasificación para archivos a eliminar.
+
+## Arquitectura del Proyecto
+
+### Estructura de Carpetas
+
+```
+/proyecto-de-fabrica-de-agentes
+├── src/
+│   ├── logs/
+│   ├── data_recovery/
+│   ├── utils/
+│   ├── config/
+│   ├── public/
+│   └── index.js
+├── package.json
+├── .gitignore
+├── README.md
+└── ARCHITECTURE.md
+```
+
+### Descripción de las Carpetas y Archivos
+
+- **logs/**:** Contendrá los registros detallados de eventos y errores.
+- **data_recovery/**:** Contendrá la lógica para la recuperación de datos.
+- **utils/**:** Contendrá funciones utilitarias reutilizables.
+- **config/**:** Contendrá la configuración de la aplicación.
+- **public/**:** Contendrá los archivos estáticos.
+- **index.js**: Punto de entrada principal de la aplicación.
+
+## Conclusion
+
+El proyecto MultiagentesIA - Fábrica Autónoma se enfoca en la creación de un sistema autónomo de gestión de sprints con IA, utilizando tecnologías modernas como Next.js, React, Tailwind, Node.js, Ollama, Trello API y GitHub API. La arquitectura diseñada permite una gestión eficiente de los sprints, la recuperación de datos detallada y la limpieza de archivos no utilizados, todo ello con un enfoque en la eficiencia y la precisión.
 
 ---
 
-¡Gracias por utilizar MultiagentesIA - Fábrica Autónoma!
+Este README.md proporciona una visión general del proyecto, incluyendo su objetivo, estado del desarrollo, historial de sprints, guía de instalación y uso, y arquitectura. Está estructurado de manera clara y concisa, facilitando la comprensión y la implementación del proyecto por parte de cualquier desarrollador interesado.
