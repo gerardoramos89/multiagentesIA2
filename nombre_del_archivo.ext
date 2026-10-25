@@ -1,83 +1,56 @@
-# Guía de Despliegue para Proyecto de Fábrica de Agentes
+```javascript
+import { createServer } from 'http';
+import { v4 as uuidv4 } from 'uuid';
+import { UserRepository } from './repositories/userRepository.js';
+import { UserService } from './services/userService.js';
+import { UserController } from './controllers/userController.js';
+import { UserModel } from './models/userModel.js';
+import { UserValidator } from './validators/userValidator.js';
+import { Logger } from './utils/logger.js';
 
-## 1. Introducción
-Este documento proporciona una guía detallada para la configuración de variables de entorno necesarias para el correcto funcionamiento del Proyecto de Fábrica de Agentes. Estas variables son cruciales para la gestión de sprints y la integración con APIs externas como Trello y Ollama.
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
+const userController = new UserController(userService);
+const logger = new Logger('UserService');
 
-## 2. Variables de Entorno
+const server = createServer(async (req, res) => {
+  try {
+    if (req.method === 'GET' && req.url === '/users') {
+      const users = await userController.getUsers();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(users));
+    } else if (req.method === 'POST' && req.url === '/users') {
+      let body = '';
+      req.on('data', chunk => {
+        body += chunk.toString();
+      });
+      req.on('end', async () => {
+        const userData = JSON.parse(body);
+        const validationResult = UserValidator.validateUser(userData);
+        if (validationResult.isValid) {
+          const user = { id: uuidv4(), ...userData };
+          await userRepository.addUser(user);
+          logger.info(`User added: ${user.id}`);
+          res.writeHead(201, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(user));
+        } else {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: validationResult.message }));
+        }
+      });
+    } else {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not Found' }));
+    }
+  } catch (error) {
+    logger.error(`Error: ${error.message}`);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Internal Server Error' }));
+  }
+});
 
-### 2.1. Variables Generales
-Estas variables son comunes a todos los componentes del sistema.
-
-- **NEXT_PUBLIC_API_BASE_URL**: URL base de la API backend.
-- **NEXT_PUBLIC_TRELLO_API_KEY**: Clave de API de Trello.
-- **NEXT_PUBLIC_TRELLO_TOKEN**: Token de autenticación para Trello.
-- **NEXT_PUBLIC_OLLAMA_API_URL**: URL de la API de Ollama.
-
-### 2.2. Variables Específicas de Desarrollo
-Estas variables se utilizan durante el desarrollo y deben mantenerse en secreto en el entorno de desarrollo.
-
-- **NEXT_PUBLIC_DEVELOPMENT_MODE**: Establecido en `true` para indicar que el entorno es de desarrollo.
-- **NEXT_PUBLIC_DEVELOPMENT_API_URL**: URL alternativa para la API backend en modo de desarrollo.
-
-### 2.3. Variables de Pruebas
-Estas variables se utilizan en el entorno de pruebas y deben ser diferentes a las de desarrollo.
-
-- **NEXT_PUBLIC_TEST_API_URL**: URL de la API backend para pruebas.
-- **NEXT_PUBLIC_TEST_TRELLO_API_KEY**: Clave de API de Trello para pruebas.
-
-### 2.4. Variables de Producción
-Estas variables se utilizan en el entorno de producción y deben mantenerse en secreto.
-
-- **NEXT_PUBLIC_PRODUCTION_API_URL**: URL de la API backend en producción.
-- **NEXT_PUBLIC_PRODUCTION_TRELLO_API_KEY**: Clave de API de Trello en producción.
-- **NEXT_PUBLIC_PRODUCTION_OLLAMA_API_URL**: URL de la API de Ollama en producción.
-
-## 3. Configuración de Variables de Entorno
-
-### 3.1. Configuración en el Servidor
-Para asegurar que las variables de entorno estén disponibles en el servidor, se debe configurar el archivo `.env` en la raíz del proyecto.
-
-```env
-# .env
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_TRELLO_API_KEY=tu_clave_de_api_trello
-NEXT_PUBLIC_TRELLO_TOKEN=tu_token_de_autenticacion_trello
-NEXT_PUBLIC_OLLAMA_API_URL=http://localhost:8000
-
-NEXT_PUBLIC_DEVELOPMENT_MODE=true
-NEXT_PUBLIC_DEVELOPMENT_API_URL=http://localhost:3000
-
-NEXT_PUBLIC_TEST_API_URL=https://api.test.com
-NEXT_PUBLIC_TEST_TRELLO_API_KEY=tu_clave_de_api_trello_test
-
-NEXT_PUBLIC_PRODUCTION_API_URL=https://api.production.com
-NEXT_PUBLIC_PRODUCTION_TRELLO_API_KEY=tu_clave_de_api_trello_production
-NEXT_PUBLIC_PRODUCTION_OLLAMA_API_URL=https://api.ollama.com
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});
 ```
-
-### 3.2. Configuración en el Cliente
-Para asegurar que las variables de entorno estén disponibles en el cliente, se debe configurar el archivo `.env.local` en la raíz del proyecto.
-
-```env
-# .env.local
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_TRELLO_API_KEY=tu_clave_de_api_trello
-NEXT_PUBLIC_TRELLO_TOKEN=tu_token_de_autenticacion_trello
-NEXT_PUBLIC_OLLAMA_API_URL=http://localhost:8000
-
-NEXT_PUBLIC_DEVELOPMENT_MODE=true
-NEXT_PUBLIC_DEVELOPMENT_API_URL=http://localhost:3000
-
-NEXT_PUBLIC_TEST_API_URL=https://api.test.com
-NEXT_PUBLIC_TEST_TRELLO_API_KEY=tu_clave_de_api_trello_test
-
-NEXT_PUBLIC_PRODUCTION_API_URL=https://api.production.com
-NEXT_PUBLIC_PRODUCTION_TRELLO_API_KEY=tu_clave_de_api_trello_production
-NEXT_PUBLIC_PRODUCTION_OLLAMA_API_URL=https://api.ollama.com
-```
-
-## 4. Seguridad
-Para proteger las variables de entorno sensibles, se recomienda utilizar herramientas de gestión de secretos como Vault, AWS Secrets Manager, o cualquier otro servicio de gestión de secretos que el equipo considere adecuado.
-
-## 5. Conclusion
-Este documento proporciona una guía detallada para la configuración de variables de entorno en el Proyecto de Fábrica de Agentes. Asegúrate de seguir estrictamente las instrucciones proporcionadas para garantizar un despliegue exitoso y seguro del sistema.

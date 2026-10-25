@@ -56,15 +56,24 @@
       "title": "Refactorizar el módulo de autenticación para aplicar patrón Repository.",
       "description": "[DEV/QA] Refactorizar el módulo de autenticación para aplicar patrón Repository.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T15:44:43.416Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:44:43.416Z",
+      "completedAt": "2026-10-25T15:45:49.286Z",
+      "output": "Generado: src_auth_repository.js",
+      "commits": [
+        "c5e35a59c3bb46a5df2dbb374404fff1bd62289e"
+      ],
+      "filesModified": [
+        "src_auth_repository.js"
+      ]
     },
     {
       "id": "task-1792942844976-4",
       "title": "Añadir tests de integración para el endpoint de usuarios.",
       "description": "[DEV/QA] Añadir tests de integración para el endpoint de usuarios.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:45:51.297Z"
     },
     {
       "id": "task-1792942844976-5",
@@ -110,6 +119,7 @@
   "filesChanged": [
     "STRATEGY.md",
     "manejo-de-errores-multiagentes.md",
-    "ARCHITECTURE.md"
+    "ARCHITECTURE.md",
+    "src_auth_repository.js"
   ]
 }
