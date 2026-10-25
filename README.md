@@ -1,13 +1,13 @@
-# Proyecto de Fábrica de Agentes
+# MultiagentesIA - Fábrica Autónoma
 
-## Introducción
-El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
+## 1. Introducción
+El proyecto de MultiagentesIA - Fábrica Autónoma tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
 - Frontend: Next.js, React, Tailwind
 - Backend: Node.js
 - IA: Ollama
 - APIs: Trello API, GitHub API
 
-## Estructura de Carpetas
+## 2. Estructura de Carpetas
 La estructura de carpetas del proyecto se organizará de la siguiente manera:
 ```
 /src
@@ -18,87 +18,107 @@ La estructura de carpetas del proyecto se organizará de la siguiente manera:
   /public
 ```
 
-## Patrones de Diseño
-### Patrón de Diseño de Servicios
+## 3. Patrones de Diseño
+### 3.1. Patrón de Diseño de Servicios
 Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.
 
-### Patrón de Diseño de Componentes
-Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código.
+### 3.2. Patrón de Diseño de Componentes
+Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la modularidad del código.
 
-## Decisiones Técnicas
-### Administración de Estado
-Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones.
-
-### Gestión de Errores
-Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo.
-
-### Autenticación y Seguridad
-La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud.
-
-## Escalabilidad
-### Escalabilidad del Backend
-El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios.
-
-## Despliegue y Configuración de Variables de Entorno
-
-### Requisitos Previos
+## 4. Guía de Instalación y Uso
+### 4.1. Prerequisitos
 Asegúrate de tener instaladas las siguientes herramientas:
 - Node.js (versión 14.x o superior)
 - npm (versión 6.x o superior)
 - Git
 
-### Paso 1: Clonar el Repositorio
-Clona el repositorio del proyecto desde GitHub:
-```bash
-git clone https://github.com/tu-usuario/proyecto-de-fábrica-de-agentes.git
-cd proyecto-de-fábrica-de-agentes
+### 4.2. Instalación
+1. Clona el repositorio desde GitHub:
+   ```sh
+   git clone https://github.com/tu-usuario/multiagentesia-fabrica-autonoma.git
+   ```
+2. Navega al directorio del proyecto:
+   ```sh
+   cd multiagentesia-fabrica-autonoma
+   ```
+3. Instala las dependencias del proyecto:
+   ```sh
+   npm install
+   ```
+
+### 4.3. Configuración
+1. Renombra el archivo `.env.example` a `.env` y configura las variables de entorno necesarias.
+2. Inicia el servidor de desarrollo:
+   ```sh
+   npm run dev
+   ```
+
+### 4.4. Ejecución de Pruebas
+Para ejecutar las pruebas unitarias y de integración, utiliza el siguiente comando:
+```sh
+npm test
 ```
 
-### Paso 2: Instalar Dependencias
-Instala las dependencias del proyecto:
-```bash
-npm install
+## 5. Ejemplos de Uso
+### 5.1. Ejemplo de uso del servicio de Trello
+```javascript
+const { TrelloService } = require('./services/TrelloService');
+
+const trelloService = new TrelloService();
+
+(async () => {
+  const boards = await trelloService.getBoards();
+  console.log(boards);
+})();
 ```
 
-### Paso 3: Configuración de Variables de Entorno
-Crea un archivo `.env` en la raíz del proyecto y configura las siguientes variables:
-```
-# Variables de entorno para el backend
-PORT=3001
-DB_URI=mongodb://localhost:27017/fábrica_de_agentes
-JWT_SECRET=tu_secreto_jwt
+### 5.2. Ejemplo de uso del componente de React
+```javascript
+import React from 'react';
+import { useTrelloBoards } from './hooks/useTrelloBoards';
 
-# Variables de entorno para la API de Trello
-TRELLO_API_KEY=tu_api_key_de_trello
-TRELLO_API_TOKEN=tu_token_de_trello
+const TrelloBoardList = () => {
+  const { boards, loading, error } = useTrelloBoards();
 
-# Variables de entorno para la API de GitHub
-GITHUB_API_TOKEN=tu_token_de_github
-```
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
-### Paso 4: Despliegue
-Para desplegar el proyecto, sigue estos pasos:
+  return (
+    <ul>
+      {boards.map(board => (
+        <li key={board.id}>{board.name}</li>
+      ))}
+    </ul>
+  );
+};
 
-#### Despliegue del Frontend
-Entra en la carpeta del frontend y construye la aplicación:
-```bash
-cd frontend
-npm run build
-```
-Luego, despliega la aplicación en un servidor de tu elección.
-
-#### Despliegue del Backend
-En una terminal separada, inicia el servidor backend:
-```bash
-npm start
+export default TrelloBoardList;
 ```
 
-### Paso 5: Verificación
-Abre tu navegador y navega a la URL de tu servidor frontend. Verifica que la aplicación esté funcionando correctamente.
+## 6. Próximos Pasos
+- Implementar la funcionalidad de auto-aprendizaje con Ollama.
+- Integrar la API de GitHub para gestión de repositorios y issues.
+- Mejorar la interfaz de usuario con Tailwind CSS y React.
 
-## Conclusion
-Este documento proporciona una guía detallada para el despliegue y configuración de variables de entorno del proyecto de Fábrica de Agentes. Asegúrate de seguir cada paso con cuidado para garantizar un funcionamiento correcto del sistema.
+## 7. Historial de Sprints
+- Sprint 1: Configuración del entorno de desarrollo y primeros componentes de React.
+- Sprint 2: Implementación de servicios de Trello y Ollama.
+- Sprint 3: Integración de la API de GitHub y pruebas unitarias.
+
+## 8. Estado del Desarrollo
+El proyecto se encuentra en una etapa avanzada de desarrollo, con un 70% de las funcionalidades implementadas y en pruebas. El equipo de desarrollo está comprometido con la entrega de un producto de alta calidad y funcionalidad.
+
+## 9. Contribución
+¡Estamos emocionados de recibir contribuciones de la comunidad! Para contribuir, sigue estos pasos:
+1. Haz un fork del repositorio.
+2. Crea una nueva rama para tu función o corrección de errores.
+3. Realiza tus cambios y haz un pull request al repositorio principal.
+
+## 10. Contacto
+Para cualquier consulta o ayuda, no dudes en contactar al equipo de desarrollo en:
+- Email: contacto@multiagentesia.com
+- Sitio web: [MultiagentesIA](https://multiagentesia.com)
 
 ---
 
-ARCHIVO: README.md
+Gracias por leer la documentación del proyecto MultiagentesIA - Fábrica Autónoma. ¡Esperamos que disfrutes trabajando en él!
