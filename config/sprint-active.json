@@ -24,15 +24,24 @@
       "title": "Refinar la definición de los esquemas JSON para un mejor manejo de datos en el futuro.",
       "description": "[ARCH/DEV] Refinar la definición de los esquemas JSON para un mejor manejo de datos en el futuro.",
       "agent": "arch",
-      "status": "working",
-      "startedAt": "2026-10-25T04:52:09.746Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:52:09.746Z",
+      "completedAt": "2026-10-25T04:53:18.041Z",
+      "output": "Generado: arquitectura_proyecto_f_brica_de_agentes.md",
+      "commits": [
+        "205cca133354fd34ffde0b03c57e84158763f13a"
+      ],
+      "filesModified": [
+        "arquitectura_proyecto_f_brica_de_agentes.md"
+      ]
     },
     {
       "id": "task-1792903831648-2",
       "title": "Implementar una función de recuperación de datos en caso de fallo del sistema.",
       "description": "[ARCH/DEV] Implementar una función de recuperación de datos en caso de fallo del sistema.",
       "agent": "arch",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:53:20.055Z"
     },
     {
       "id": "task-1792903831648-3",
@@ -90,6 +99,7 @@
     "isCompleted": true
   },
   "filesChanged": [
-    "STRATEGY.md"
+    "STRATEGY.md",
+    "arquitectura_proyecto_f_brica_de_agentes.md"
   ]
 }

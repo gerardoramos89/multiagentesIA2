@@ -1,194 +1,60 @@
-# Estructura de Carpetas
+# Arquitectura del Proyecto de Fábrica de Agentes
 
-## Estructura General
+## 1. Introducción
+El proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con Inteligencia Artificial (IA). El sistema estará construido utilizando las siguientes tecnologías:
+- Frontend: Next.js, React, Tailwind
+- Backend: Node.js
+- IA: Ollama
+- APIs: Trello API, GitHub API
 
+## 2. Estructura de Carpetas
+La estructura de carpetas del proyecto se organizará de la siguiente manera:
 ```
-grtec-memory/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── utils/
-│   ├── providers/
-│   ├── services/
-│   ├── types/
-│   ├── hooks/
-│   ├── assets/
-│   └── config/
-├── public/
-├── .env.local
-├── .env.development
-├── .env.production
-├── package.json
-├── next.config.js
-├── tailwind.config.js
-├── tsconfig.json
-└── README.md
+/src
+  /components
+  /pages
+  /services
+  /utils
+  /public
 ```
 
-## Estructura de Carpetas Detallada
+## 3. Patrones de Diseño
+### 3.1. Patrón de Diseño de Servicios
+Se utilizará el patrón de diseño de Servicios (Service Pattern) para manejar la lógica de negocio y la interacción con las APIs. Cada servicio estará encapsulado en su propio módulo dentro de la carpeta `/services`.
 
-### `src/`
+### 3.2. Patrón de Diseño de Componentes
+Los componentes de React se organizarán en la carpeta `/components`. Cada componente tendrá su propio archivo y directorio para mantener la organización y la reutilización de código.
 
-#### `components/`
+## 4. Decisiones Técnicas
+### 4.1. Administración de Estado
+Se utilizará Redux Toolkit para la administración de estado global. Esto permitirá una gestión eficiente del estado de la aplicación y una fácil implementación de reducers y acciones.
 
-Componentes reutilizables de React.
+### 4.2. Gestión de Errores
+Se implementará un middleware de gestión de errores en el backend utilizando Express. Este middleware capturará y manejará los errores de manera uniforme, proporcionando una respuesta estandarizada en caso de fallo.
 
-#### `pages/`
+### 4.3. Autenticación y Seguridad
+La autenticación se manejará mediante JSON Web Tokens (JWT). Todos los endpoints que requieran autenticación validarán el token en el encabezado de la solicitud.
 
-Páginas de la aplicación Next.js.
+## 5. Escalabilidad
+### 5.1. Escalabilidad del Backend
+El backend estará construido con Node.js y Express. Para escalar el backend, se utilizarán tecnologías como Kubernetes para la orquestación de contenedores y servicios.
 
-#### `utils/`
+### 5.2. Escalabilidad del Frontend
+El frontend estará construido con Next.js, que soporta SSR (Server-Side Rendering) y SSG (Static Site Generation). Esto permitirá una carga rápida y una mejor experiencia de usuario, además de facilitar la escalabilidad horizontal.
 
-Funciones y utilidades reutilizables.
+## 6. Seguridad
+### 6.1. Protección de Datos
+Todos los datos sensibles se almacenarán de manera segura utilizando encriptación en reposo y transmisión. Además, se utilizarán prácticas como el uso de HTTPS para proteger las comunicaciones entre el frontend y el backend.
 
-#### `providers/`
+### 6.2. Prevención de Vulnerabilidades
+Se utilizarán herramientas de análisis de código estático y dinámico para detectar y corregir vulnerabilidades en el código. Además, se mantendrán actualizadas las dependencias y las bibliotecas utilizadas.
 
-Provedores de contexto y estado global.
+## 7. Reducción de Deuda Técnica
+### 7.1. Pruebas Automatizadas
+Se implementarán pruebas unitarias y de integración utilizando Jest y Testing Library. Esto ayudará a identificar y corregir errores antes de la implementación en producción y a mantener un código limpio y confiable.
 
-#### `services/`
+### 7.2. Monitoreo y Registro
+Se utilizará una solución de monitoreo y registro como Prometheus y Grafana para monitorear el rendimiento del sistema y registrar las actividades del sistema. Esto permitirá una detección rápida de problemas y una mejor comprensión del estado del sistema.
 
-Servicios para interactuar con APIs externas (Trello API, GitHub API).
-
-#### `types/`
-
-Definiciones de tipos TypeScript.
-
-#### `hooks/`
-
-Hooks personalizados.
-
-#### `assets/`
-
-Recursos estáticos como imágenes, fuentes, etc.
-
-#### `config/`
-
-Configuraciones específicas de la aplicación.
-
-### `public/`
-
-Recursos estáticos accesibles públicamente.
-
-### `.env.local`
-
-Variables de entorno específicas de desarrollo.
-
-### `.env.development`
-
-Variables de entorno para el entorno de desarrollo.
-
-### `.env.production`
-
-Variables de entorno para el entorno de producción.
-
-### `package.json`
-
-Dependencias y scripts de la aplicación.
-
-### `next.config.js`
-
-Configuración de Next.js.
-
-### `tailwind.config.js`
-
-Configuración de Tailwind CSS.
-
-### `tsconfig.json`
-
-Configuración de TypeScript.
-
-### `README.md`
-
-Documentación del proyecto.
-
-# Patrones de Persistencia de Datos
-
-## Esquemas JSON de Sprints
-
-```json
-{
-  "sprint": {
-    "id": "UUID",
-    "name": "string",
-    "startDate": "date",
-    "endDate": "date",
-    "tasks": [
-      {
-        "id": "UUID",
-        "title": "string",
-        "description": "string",
-        "status": "ToDo | InProgress | Done",
-        "dueDate": "date"
-      }
-    ]
-  }
-}
-```
-
-## Patrones de Persistencia
-
-### Base de Datos
-
-Utilizaremos MongoDB como base de datos NoSQL debido a su flexibilidad y escalabilidad.
-
-### ORM
-
-Utilizaremos Mongoose como ORM para interactuar con MongoDB.
-
-### Patrón de Repositorio
-
-Implementaremos un patrón de repositorio con repositorios abstractos para mantener una separación clara de responsabilidades.
-
-### Patrón de Servicios
-
-Utilizaremos servicios para manejar la lógica de negocio, asegurando que los controladores de rutas solo se ocupen de la interacción con los datos.
-
-# Decisiones Técnicas
-
-## ADR-001: Uso de Next.js y React
-
-Utilizaremos Next.js para el desarrollo de la aplicación debido a su enfoque en SSR (Server-Side Rendering) y su facilidad para manejar rutas estáticas y dinámicas. React se utilizará para la construcción de interfaces de usuario reactivas y eficientes.
-
-## ADR-002: Estilo con Tailwind CSS
-
-Utilizaremos Tailwind CSS para el diseño de la aplicación debido a su enfoque en clases utilitarias y su capacidad para generar diseños rápidos y consistentes.
-
-## ADR-003: Autenticación con Ollama
-
-Utilizaremos Ollama para la autenticación de usuarios debido a su robustez y capacidad para manejar tokens de acceso y verificación.
-
-## ADR-004: Seguridad en la API
-
-Implementaremos medidas de seguridad como autenticación de OAuth 2.0, validación de entradas y protección contra ataques comunes utilizando middlewares en Node.js.
-
-## ADR-005: Escalabilidad
-
-Para asegurar la escalabilidad, utilizaremos un enfoque de microservicios con servicios de backend y frontend desplegados en contenedores de Docker. Además, implementaremos patrones de caché y balanceo de carga para reducir la carga en los servidores.
-
-# Seguridad
-
-## Autenticación y Autorización
-
-Utilizaremos OAuth 2.0 con Passport para la autenticación de usuarios. Todas las solicitudes a la API requerirán un token de acceso válido.
-
-## Protección de Datos
-
-Todos los datos sensibles se almacenarán de manera cifrada en la base de datos MongoDB. Además, se implementarán políticas de acceso basado en roles para proteger los datos según el nivel de acceso del usuario.
-
-## Pruebas y Validaciones
-
-Implementaremos pruebas unitarias y de integración utilizando Jest y Supertest para asegurar que la aplicación funcione correctamente y para detectar errores temprano.
-
-# Reducción de Deuda Técnica
-
-## Revisión Continua
-
-Realizaremos revisiones continuas de código utilizando herramientas como SonarQube para identificar y corregir problemas de calidad y seguridad en el código.
-
-## Refactorización Regular
-
-Realizaremos refactorizaciones periódicas para mantener el código limpio y modular, asegurando que la aplicación sea fácil de mantener y escalar.
-
-## Documentación
-
-Documentaremos todas las decisiones técnicas y arquitectura en este archivo `ARCHITECTURE.md`, y proporcionaremos documentación de usuario en el `README.md` para facilitar la comprensión y uso del proyecto por parte de los usuarios y mantenedores.
+## 8. Conclusiones
+Este documento resume las decisiones arquitectónicas y técnicas tomadas para el desarrollo del Proyecto de Fábrica de Agentes. Las tecnologías y patrones de diseño seleccionados buscan garantizar una solución escalable, segura y mantenible.
