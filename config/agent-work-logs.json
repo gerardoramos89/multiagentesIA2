@@ -130,5 +130,17 @@
     "completedAt": "2026-10-25T04:38:42.021Z",
     "fileName": "nombre_del_archivo.ext",
     "duration": 89
+  },
+  {
+    "agent": "dev",
+    "taskId": "task-1792902767330-5",
+    "taskTitle": "Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
+    "prompt": "Eres un Developer Senior (10x Engineer) experto en Clean Code. Tu trabajo es IMPLEMENTAR. \nREGLAS OBLIGATORIAS:\n1. Usa principios SOLID y patrones de diseño mencionados por el Arquitecto.\n2. Maneja TODOS los errores posibles (try/catch, validaciones de input).\n3. El código debe ser modular, testeable y estar profusamente comentado.\n4. Si el contexto del Arquitecto menciona tecnologías específicas, ÚSALAS estrictamente.\n5. Responde SOLO con el contenido del archivo. Primera línea: 'ARCHIVO: ruta/nombre.ext'\n\n📂 CONTEXTO GLOBAL DEL PROYECTO:\n- Nombre: Proyecto de Fábrica de Agentes\n- Objetivo General: Desarrollar un sistema autónomo de gestión de sprints con IA.\n- Stack/Tecnologías: Next.js, React, Tailwind, Node.js, Ollama, Trello API, GitHub API.\n\n📋 TU TAREA ESPECÍFICA:\n- Título: Actualiz...",
+    "response": "# Proyecto de Fábrica de Agentes\n\n## Despliegue y Configuración de Variables de Entorno\n\n### 1. Estructura de Carpetas\n\n#### General\n\n```\ngrtec-memory/\n├── src/\n│   ├── components/\n│   ├── pages/\n│   ├── utils/\n│   ├── providers/\n│   ├── services/\n│   ├── types/\n│   ├── hooks/\n│   ├── assets/\n│   └── config/\n├── public/\n├── .env.local\n├── .env.development\n├── .env.production\n├── package.json\n├── next.config.js\n├── tailwind.config.js\n├── tsconfig.json\n└── README.md\n```\n\n#### Detallada\n\n##### `src/`\n\n- **`components/`**: Componentes reutilizables de React.\n- **`pages/`**: Páginas de la aplicación Next.js.\n- **`utils/`**: Funciones y utilidades reutilizables.\n- **`providers/`**: Provedores de contexto y estado global.\n- **`services/`**: Servicios para interactuar con APIs externas (Trello API, GitHub API).\n- **`types/`**: Definiciones de tipos TypeScript.\n- **`hooks/`**: Hooks personalizados.\n- **`assets/`**: Recursos estáticos como imágenes, fuentes, etc.\n- **`config/`**: Configuraciones...",
+    "status": "done",
+    "startedAt": "2026-10-25T04:38:47.078Z",
+    "completedAt": "2026-10-25T04:40:48.937Z",
+    "fileName": "README.md",
+    "duration": 122
   }
 ]

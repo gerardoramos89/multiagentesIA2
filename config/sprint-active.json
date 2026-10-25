@@ -72,15 +72,24 @@
       "title": "Implementar pruebas unitarias para la función de commit automático.",
       "description": "[DEV/QA] Implementar pruebas unitarias para la función de commit automático.",
       "agent": "dev",
-      "status": "working",
-      "startedAt": "2026-10-25T04:37:12.880Z"
+      "status": "done",
+      "startedAt": "2026-10-25T04:37:12.880Z",
+      "completedAt": "2026-10-25T04:38:45.055Z",
+      "output": "Generado: nombre_del_archivo.ext",
+      "commits": [
+        "256dd7c49f33b920937e8c24d426cff26d716d89"
+      ],
+      "filesModified": [
+        "nombre_del_archivo.ext"
+      ]
     },
     {
       "id": "task-1792902767330-5",
       "title": "Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "description": "[DEV/QA] Actualizar el `README.md` con pasos detallados para el despliegue y configuración de variables de entorno.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T04:38:47.068Z"
     },
     {
       "id": "task-1792902767330-6",
@@ -121,6 +130,7 @@
     "STRATEGY.md",
     "arquitectura_proyecto_f_brica_de_agentes.md",
     "ImplementacionFuncionRecuperacionDatos.md",
-    "src_config_schemas.ts"
+    "src_config_schemas.ts",
+    "nombre_del_archivo.ext"
   ]
 }

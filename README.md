@@ -1,147 +1,140 @@
-# MultiagentesIA - Fábrica Autónoma
+# Proyecto de Fábrica de Agentes
 
-## Descripción del Proyecto
+## Despliegue y Configuración de Variables de Entorno
 
-**Nombre:** MultiagentesIA - Fábrica Autónoma
+### 1. Estructura de Carpetas
 
-**Objetivo:** Desarrollar un sistema autónomo de gestión de sprints con IA donde agentes especializados colaboren para construir software de forma iterativa, con memoria persistente versionada en Git y auto-aprendizaje continuo.
+#### General
 
-## Estructura de Carpetas
-
-### `src/`
-
-#### `components/`
-
-Componentes reutilizables de React.
-
-#### `pages/`
-
-Páginas de la aplicación Next.js.
-
-#### `utils/`
-
-Funciones y utilidades reutilizables.
-
-#### `providers/`
-
-Provedores de contexto y estado global.
-
-#### `services/`
-
-Servicios para interactuar con APIs externas (Trello API, GitHub API).
-
-#### `types/`
-
-Definiciones de tipos TypeScript.
-
-#### `hooks/`
-
-Hooks personalizados.
-
-#### `assets/`
-
-Recursos estáticos como imágenes, fuentes, etc.
-
-#### `config/`
-
-Configuraciones específicas de la aplicación.
-
-### `public/`
-
-Recursos estáticos a los que se puede acceder directamente.
-
-## Guía de Instalación Paso a Paso
-
-### Requisitos
-
-- Node.js v14.x o superior
-- npm o yarn
-
-### Paso 1: Clonar el Repositorio
-
-```bash
-git clone https://github.com/tu-usuario/multiagentesia-fabrica-autonoma.git
-cd multiagentesia-fabrica-autonoma
+```
+grtec-memory/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── utils/
+│   ├── providers/
+│   ├── services/
+│   ├── types/
+│   ├── hooks/
+│   ├── assets/
+│   └── config/
+├── public/
+├── .env.local
+├── .env.development
+├── .env.production
+├── package.json
+├── next.config.js
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 ```
 
-### Paso 2: Instalar Dependencias
+#### Detallada
 
-```bash
-npm install
-# o
-yarn install
-```
+##### `src/`
 
-### Paso 3: Configurar Variables de Entorno
+- **`components/`**: Componentes reutilizables de React.
+- **`pages/`**: Páginas de la aplicación Next.js.
+- **`utils/`**: Funciones y utilidades reutilizables.
+- **`providers/`**: Provedores de contexto y estado global.
+- **`services/`**: Servicios para interactuar con APIs externas (Trello API, GitHub API).
+- **`types/`**: Definiciones de tipos TypeScript.
+- **`hooks/`**: Hooks personalizados.
+- **`assets/`**: Recursos estáticos como imágenes, fuentes, etc.
+- **`config/`**: Configuraciones específicas de la aplicación.
 
-Crear un archivo `.env.local` en la raíz del proyecto y configurar las siguientes variables:
+##### `public/`
 
-```env
-NEXT_PUBLIC_TRELLO_API_KEY=tu_api_key_de_trello
-NEXT_PUBLIC_TRELLO_TOKEN=tu_token_de_trello
-NEXT_PUBLIC_GITHUB_TOKEN=tu_token_de_github
-```
+Recursos estáticos accesibles públicamente.
 
-### Paso 4: Ejecutar la Aplicación
+##### `.env.local`
 
-```bash
-npm run dev
-# o
-yarn dev
-```
+Variables de entorno específicas de desarrollo.
 
-La aplicación estará disponible en `http://localhost:3000`.
+##### `.env.development`
 
-## Ejemplos de Uso
+Variables de entorno para el entorno de desarrollo.
 
-### Flujo de Trabajo de los Agentes
+##### `.env.production`
 
-1. **Agentes de Sprint Planning:**
-   - Utilizan la API de Trello para crear y gestionar tarjetas de sprint.
-   - Integran con la API de GitHub para versionar el código de manera continua.
+Variables de entorno para el entorno de producción.
 
-2. **Agentes de Desarrollo:**
-   - Desarrollan funcionalidades específicas utilizando React y TypeScript.
-   - Utilizan servicios personalizados para interactuar con APIs externas.
+##### `package.json`
 
-3. **Agentes de IA:**
-   - Utilizan el modelo de IA Ollama para tomar decisiones automatizadas.
-   - Integran con el flujo de trabajo de Trello y GitHub para optimizar el proceso de desarrollo.
+Dependencias y scripts de la aplicación.
 
-## Cómo la Arquitectura Diseñada Resuelve el Problema
+##### `next.config.js`
 
-La arquitectura del proyecto está diseñada para maximizar la eficiencia y la colaboración entre los agentes. Cada agente tiene una función específica pero se integra perfectamente gracias a:
+Configuración de Next.js.
 
-- **Servicios Reutilizables:** Los servicios en `services/` proporcionan una capa de abstracción para interactuar con APIs externas, facilitando la reutilización de código y la escalabilidad.
-- **Estado Global:** Los provedores en `providers/` mantienen el estado global de la aplicación, asegurando que todos los componentes puedan acceder a los datos necesarios.
-- **Integración Continua:** La integración con GitHub API permite una gestión de versiones eficiente y una rápida detección de cambios.
+##### `tailwind.config.js`
 
-## Variables de Entorno
+Configuración de Tailwind CSS.
 
-Las siguientes variables de entorno deben configurarse en el archivo `.env.local`:
+##### `tsconfig.json`
 
-- `NEXT_PUBLIC_TRELLO_API_KEY`: API key de Trello.
-- `NEXT_PUBLIC_TRELLO_TOKEN`: Token de Trello.
-- `NEXT_PUBLIC_GITHUB_TOKEN`: Token de GitHub.
+Configuración de TypeScript.
 
-## Flujo de Trabajo de los Agentes
+### 2. Variables de Entorno
 
-El flujo de trabajo de los agentes se describe en la sección de **Ejemplos de Uso**.
+#### Variables Obligatorias
 
-## Contribución
+- **`NEXT_PUBLIC_API_KEY`**: Clave API para acceso a servicios externos.
+- **`NEXT_PUBLIC_API_SECRET`**: Secreto API para acceso a servicios externos.
+- **`NEXT_PUBLIC_OLLAMA_URL`**: URL de la API de Ollama.
+- **`NEXT_PUBLIC_TRELLO_API_KEY`**: Clave API de Trello.
+- **`NEXT_PUBLIC_TRELLO_API_TOKEN`**: Token API de Trello.
+- **`NEXT_PUBLIC_GITHUB_TOKEN`**: Token de acceso para GitHub API.
 
-Si deseas contribuir al proyecto, sigue estos pasos:
+#### Configuración de Variables
 
-1. Haz un fork del repositorio.
-2. Crea una nueva rama para tu funcionalidad: `git checkout -b mi-nueva-funcionalidad`.
-3. Realiza los cambios y haz commit: `git commit -m 'Añadir nueva funcionalidad'`.
-4. Haz push a la rama: `git push origin mi-nueva-funcionalidad`.
-5. Abre una Pull Request.
+1. **Crear el archivo `.env.local`**:
+   ```env
+   NEXT_PUBLIC_API_KEY=your_api_key
+   NEXT_PUBLIC_API_SECRET=your_api_secret
+   NEXT_PUBLIC_OLLAMA_URL=https://api.ollama.com
+   NEXT_PUBLIC_TRELLO_API_KEY=your_trello_api_key
+   NEXT_PUBLIC_TRELLO_API_TOKEN=your_trello_api_token
+   NEXT_PUBLIC_GITHUB_TOKEN=your_github_token
+   ```
 
-## Licencia
+2. **Configuración de Variables de Desarrollo (`env.development`)**:
+   ```env
+   NEXT_PUBLIC_API_KEY=dev_api_key
+   NEXT_PUBLIC_API_SECRET=dev_api_secret
+   NEXT_PUBLIC_OLLAMA_URL=https://api.ollama.com/dev
+   NEXT_PUBLIC_TRELLO_API_KEY=dev_trello_api_key
+   NEXT_PUBLIC_TRELLO_API_TOKEN=dev_trello_api_token
+   NEXT_PUBLIC_GITHUB_TOKEN=dev_github_token
+   ```
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+3. **Configuración de Variables de Producción (`env.production`)**:
+   ```env
+   NEXT_PUBLIC_API_KEY=prod_api_key
+   NEXT_PUBLIC_API_SECRET=prod_api_secret
+   NEXT_PUBLIC_OLLAMA_URL=https://api.ollama.com/prod
+   NEXT_PUBLIC_TRELLO_API_KEY=prod_trello_api_key
+   NEXT_PUBLIC_TRELLO_API_TOKEN=prod_trello_api_token
+   NEXT_PUBLIC_GITHUB_TOKEN=prod_github_token
+   ```
+
+### 3. Ejecución de la Aplicación
+
+- **Desarrollo**:
+  ```bash
+  npm run dev
+  ```
+
+- **Producción**:
+  ```bash
+  npm run build
+  npm start
+  ```
+
+### 4. Documentación de Despliegue
+
+Para obtener más detalles sobre el despliegue y configuración de la aplicación, por favor consulte la [documentación oficial de Next.js](https://nextjs.org/docs/deployment).
 
 ---
 
-¡Gracias por usar MultiagentesIA - Fábrica Autónoma!
+Este archivo proporciona una guía detallada para el despliegue y configuración de variables de entorno en el proyecto de Fábrica de Agentes. Asegúrese de proteger todas las variables sensibles y seguir las prácticas recomendadas de seguridad informática.
