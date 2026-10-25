@@ -40,15 +40,24 @@
       "title": "Implementar un sistema de logs detallado para el seguimiento de eventos en la función de recuperación de datos. hacer una liempieza de arcxhivos borrar archivos de la raiz que no se requeiren",
       "description": "[ARCH/DEV] Implementar un sistema de logs detallado para el seguimiento de eventos en la función de recuperación de datos. hacer una liempieza de arcxhivos borrar archivos de la raiz que no se requeiren",
       "agent": "arch",
-      "status": "working",
-      "startedAt": "2026-10-25T15:42:56.308Z"
+      "status": "done",
+      "startedAt": "2026-10-25T15:42:56.308Z",
+      "completedAt": "2026-10-25T15:44:41.402Z",
+      "output": "Generado: ARCHITECTURE.md",
+      "commits": [
+        "751b0d7e7deca42dd3dc8f6743b4473274dd2511"
+      ],
+      "filesModified": [
+        "ARCHITECTURE.md"
+      ]
     },
     {
       "id": "task-1792942844976-3",
       "title": "Refactorizar el módulo de autenticación para aplicar patrón Repository.",
       "description": "[DEV/QA] Refactorizar el módulo de autenticación para aplicar patrón Repository.",
       "agent": "dev",
-      "status": "pending"
+      "status": "working",
+      "startedAt": "2026-10-25T15:44:43.416Z"
     },
     {
       "id": "task-1792942844976-4",
@@ -100,6 +109,7 @@
   },
   "filesChanged": [
     "STRATEGY.md",
-    "manejo-de-errores-multiagentes.md"
+    "manejo-de-errores-multiagentes.md",
+    "ARCHITECTURE.md"
   ]
 }
