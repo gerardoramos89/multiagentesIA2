@@ -1,87 +1,194 @@
-# Arquitectura del Proyecto de Fábrica de Agentes
+# Estructura de Carpetas
 
-## 1. Introducción
-El Proyecto de Fábrica de Agentes tiene como objetivo principal desarrollar un sistema autónomo de gestión de sprints con IA. Este sistema estará construido utilizando un stack tecnológico avanzado que incluye Next.js, React, Tailwind, Node.js, Ollama, Trello API, y GitHub API.
-
-## 2. Estructura de Carpetas
-La estructura de carpetas del proyecto se organiza de la siguiente manera:
+## Estructura General
 
 ```
-/src
-  /components
-  /context
-  /hooks
-  /pages
-  /public
-  /services
-  /utils
+grtec-memory/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── utils/
+│   ├── providers/
+│   ├── services/
+│   ├── types/
+│   ├── hooks/
+│   ├── assets/
+│   └── config/
+├── public/
+├── .env.local
+├── .env.development
+├── .env.production
+├── package.json
+├── next.config.js
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 ```
 
-## 3. Patrones de Diseño Específicos
-### 3.1. Patrón de Diseño: Modelo-Vista-Controlador (MVC)
-Se utilizará el patrón MVC para separar las responsabilidades en el backend y frontend.
+## Estructura de Carpetas Detallada
 
-### 3.2. Patrón de Diseño: Repositorio
-Se implementará un patrón de repositorio para abstraer las operaciones de acceso a datos, facilitando la inserción de capas de persistencia y de servicios.
+### `src/`
 
-## 4. Decisiones Técnicas
-### 4.1. API RESTful
-Se diseñará una API RESTful para interactuar con el backend, utilizando Node.js y Express.
+#### `components/`
 
-### 4.2. Autenticación y Seguridad
-Se implementará OAuth 2.0 para la autenticación de usuarios, asegurando que solo usuarios autenticados puedan acceder a los endpoints sensibles.
+Componentes reutilizables de React.
 
-### 4.3. Escalabilidad
-Se diseñará la arquitectura para ser escalable, utilizando servicios en la nube y patrones de diseño como el modelo de microservicios para manejar un gran número de usuarios y transacciones.
+#### `pages/`
 
-## 5. Herramientas y Tecnologías
-- **Frontend:** Next.js, React, Tailwind CSS
-- **Backend:** Node.js, Express
-- **Base de Datos:** MongoDB (cloud o local)
-- **IA:** Ollama
-- **Herramientas de Colaboración:** Trello API, GitHub API
+Páginas de la aplicación Next.js.
 
-## 6. Seguridad
-- Implementación de OAuth 2.0 para autenticación de usuarios.
-- Uso de HTTPS para todas las comunicaciones.
-- Validación de entradas en el servidor y en el cliente.
+#### `utils/`
 
-## 7. Reducción de Deuda Técnica
-- Implementación de pruebas unitarias y de integración para detectar errores temprano.
-- Uso de herramientas como SonarQube para monitorear y mejorar la calidad del código.
-- Regular reviews de código para asegurar prácticas de codificación limpias y seguras.
+Funciones y utilidades reutilizables.
 
-## 8. Casos de Prueba
-### 8.1. Creación de Casos de Prueba para Errores de Validación en el Endpoint de Usuarios
-Se crearán casos de prueba específicos para validar los errores de validación en el endpoint de usuarios. Estos casos de prueba deberán cubrir:
-- Validación de campos obligatorios.
-- Validación de formatos de datos (ej., correos electrónicos).
-- Validación de unicidad de datos (ej., nombres de usuario únicos).
+#### `providers/`
 
-### 8.2. Ejemplo de Caso de Prueba
-```javascript
-describe('Validación del endpoint de usuarios', () => {
-  it('Debería retornar un error 400 si el campo "nombre" es omitido', async () => {
-    const response = await request(app)
-      .post('/api/usuarios')
-      .send({ email: 'invalid-email', username: 'testuser' });
+Provedores de contexto y estado global.
 
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'El campo "nombre" es obligatorio');
-  });
+#### `services/`
 
-  it('Debería retornar un error 400 si el campo "email" tiene un formato inválido', async () => {
-    const response = await request(app)
-      .post('/api/usuarios')
-      .send({ nombre: 'Test User', username: 'testuser', email: 'invalid-email' });
+Servicios para interactuar con APIs externas (Trello API, GitHub API).
 
-    expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'El formato del campo "email" es inválido');
-  });
+#### `types/`
 
-  // Agregar más casos de prueba según sea necesario
-});
+Definiciones de tipos TypeScript.
+
+#### `hooks/`
+
+Hooks personalizados.
+
+#### `assets/`
+
+Recursos estáticos como imágenes, fuentes, etc.
+
+#### `config/`
+
+Configuraciones específicas de la aplicación.
+
+### `public/`
+
+Recursos estáticos accesibles públicamente.
+
+### `.env.local`
+
+Variables de entorno específicas de desarrollo.
+
+### `.env.development`
+
+Variables de entorno para el entorno de desarrollo.
+
+### `.env.production`
+
+Variables de entorno para el entorno de producción.
+
+### `package.json`
+
+Dependencias y scripts de la aplicación.
+
+### `next.config.js`
+
+Configuración de Next.js.
+
+### `tailwind.config.js`
+
+Configuración de Tailwind CSS.
+
+### `tsconfig.json`
+
+Configuración de TypeScript.
+
+### `README.md`
+
+Documentación del proyecto.
+
+# Patrones de Persistencia de Datos
+
+## Esquemas JSON de Sprints
+
+```json
+{
+  "sprint": {
+    "id": "UUID",
+    "name": "string",
+    "startDate": "date",
+    "endDate": "date",
+    "tasks": [
+      {
+        "id": "UUID",
+        "title": "string",
+        "description": "string",
+        "status": "ToDo | InProgress | Done",
+        "dueDate": "date"
+      }
+    ]
+  }
+}
 ```
 
-## 9. Conclusiones
-Este documento resume las decisiones arquitectónicas y técnicas tomadas para el desarrollo del Proyecto de Fábrica de Agentes. Las tecnologías y patrones de diseño elegidos buscan garantizar una solución escalable, segura y de alta calidad. Las pruebas unitarias y de integración aseguran que el sistema pueda ser mantenido y escalado de manera eficiente.
+## Patrones de Persistencia
+
+### Base de Datos
+
+Utilizaremos MongoDB como base de datos NoSQL debido a su flexibilidad y escalabilidad.
+
+### ORM
+
+Utilizaremos Mongoose como ORM para interactuar con MongoDB.
+
+### Patrón de Repositorio
+
+Implementaremos un patrón de repositorio con repositorios abstractos para mantener una separación clara de responsabilidades.
+
+### Patrón de Servicios
+
+Utilizaremos servicios para manejar la lógica de negocio, asegurando que los controladores de rutas solo se ocupen de la interacción con los datos.
+
+# Decisiones Técnicas
+
+## ADR-001: Uso de Next.js y React
+
+Utilizaremos Next.js para el desarrollo de la aplicación debido a su enfoque en SSR (Server-Side Rendering) y su facilidad para manejar rutas estáticas y dinámicas. React se utilizará para la construcción de interfaces de usuario reactivas y eficientes.
+
+## ADR-002: Estilo con Tailwind CSS
+
+Utilizaremos Tailwind CSS para el diseño de la aplicación debido a su enfoque en clases utilitarias y su capacidad para generar diseños rápidos y consistentes.
+
+## ADR-003: Autenticación con Ollama
+
+Utilizaremos Ollama para la autenticación de usuarios debido a su robustez y capacidad para manejar tokens de acceso y verificación.
+
+## ADR-004: Seguridad en la API
+
+Implementaremos medidas de seguridad como autenticación de OAuth 2.0, validación de entradas y protección contra ataques comunes utilizando middlewares en Node.js.
+
+## ADR-005: Escalabilidad
+
+Para asegurar la escalabilidad, utilizaremos un enfoque de microservicios con servicios de backend y frontend desplegados en contenedores de Docker. Además, implementaremos patrones de caché y balanceo de carga para reducir la carga en los servidores.
+
+# Seguridad
+
+## Autenticación y Autorización
+
+Utilizaremos OAuth 2.0 con Passport para la autenticación de usuarios. Todas las solicitudes a la API requerirán un token de acceso válido.
+
+## Protección de Datos
+
+Todos los datos sensibles se almacenarán de manera cifrada en la base de datos MongoDB. Además, se implementarán políticas de acceso basado en roles para proteger los datos según el nivel de acceso del usuario.
+
+## Pruebas y Validaciones
+
+Implementaremos pruebas unitarias y de integración utilizando Jest y Supertest para asegurar que la aplicación funcione correctamente y para detectar errores temprano.
+
+# Reducción de Deuda Técnica
+
+## Revisión Continua
+
+Realizaremos revisiones continuas de código utilizando herramientas como SonarQube para identificar y corregir problemas de calidad y seguridad en el código.
+
+## Refactorización Regular
+
+Realizaremos refactorizaciones periódicas para mantener el código limpio y modular, asegurando que la aplicación sea fácil de mantener y escalar.
+
+## Documentación
+
+Documentaremos todas las decisiones técnicas y arquitectura en este archivo `ARCHITECTURE.md`, y proporcionaremos documentación de usuario en el `README.md` para facilitar la comprensión y uso del proyecto por parte de los usuarios y mantenedores.
